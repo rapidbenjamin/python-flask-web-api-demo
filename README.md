@@ -2,7 +2,7 @@ Flask WEB API DEMO
 ========================
 
 
-#### This is a demo app that includes the most important things you'll be probably using for your flask projects.
+#### This is a demo app forked from AndreiD/Flask-Easy-Template : https://github.com/AndreiD/Flask-Easy-Template
 
 ### Features:
 
