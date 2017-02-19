@@ -1,12 +1,8 @@
-Flask Easy-Template
+Flask WEB API DEMO
 ========================
 
 
-#### Save time on your initial setup. This is a template app that includes the most important things you'll be probably using for your flask projects.
-
-
-You can change the theme just by replacing one word in ***base.html*** 
-
+#### This is a demo app that includes the most important things you'll be probably using for your flask projects.
 
 ### Features:
 
@@ -42,15 +38,6 @@ In case you don't like the "slate" theme, you can chose a nice theme from http:/
 
 Step 2. ???
 Step 3. PROFIT
-
-#### About Stars
-
-Starring a repository allows you to keep track of projects that you find interesting, even if you aren't associated with the project.
-
-When you star a repository, you're actually performing two distinct actions:
-
-Creating a bookmark for easier access
-**Showing appreciation to the repository maintainer for their work**
 
 ##### Extras for you:
 
@@ -101,7 +88,7 @@ Your Feedback is appreciated :)
 ##### License: Apache 2.0
 
 ~~~~
-Copyright 2015 AndroidAdvance.com
+Copyright 2017 Systemaker.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
