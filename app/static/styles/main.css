@@ -1,0 +1,29 @@
+/* Main stylesheet */
+
+/* @section body */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Padding top by fixed header navbar height */  
+  padding-top: 60px;
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.sticky-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin: 0px;
+  padding: 5px  0px;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+}
+
+
+/* @section forms */
+.btn.cancel { margin-left: 0.5rem; }
+.nowrap { white-space: nowrap; }
+
+/* Your customizations here */

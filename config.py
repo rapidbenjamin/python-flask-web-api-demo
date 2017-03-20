@@ -1,15 +1,28 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# ------- IMPORT DEPENDENCIES ------- 
 import os
+
+# ------- IMPORT LOCAL DEPENDENCIES  -------
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
-class Config(object):
+class BaseConfig(object):
+    """
+    Common configurations
+    Put any configurations here that are common across all environments
+    """
     ADMIN_EMAIL = "your_email@gmail.com"
 
     DEBUG = False
     TESTING = False
+    SQLALCHEMY_ECHO = False
+
     SQLALCHEMY_DATABASE_URI = ''
-    APP_NAME = 'Flask Easy-Template'
+    APP_NAME = 'Flask WEB API DEMO'
     SECRET_KEY = 'write-a-secret-string-here'
     LISTINGS_PER_PAGE = 5
 
@@ -36,18 +49,51 @@ class Config(object):
 
 
 
-class ProductionConfig(Config):
+class ProductionConfig(BaseConfig):
+    """
+    Production configurations
+    """
+
+    SECRET_CONFIG = 'prod-config.py'
+
     SQLALCHEMY_DATABASE_URI = 'mysql://user:pass@server_ip:server_port/db_name'
+
+    PORT = 5000
     DEBUG = False
+    SQLALCHEMY_ECHO = False
 
+class DevelopmentConfig(BaseConfig):
+    """
+    Development configurations
+    """
+    
+    SECRET_CONFIG = 'dev-config.py'
 
-class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'db.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data/db.sqlite')
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+
+    PORT = 5000
     DEBUG = True
 
+    # Allow SQLAlchemy to log errors
+    SQLALCHEMY_ECHO = True 
 
-class TestingConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'db.sqlite')
+
+class TestingConfig(BaseConfig):
+    """
+    Testing configurations
+    """
+
+    SECRET_CONFIG = 'test-config.py'
+
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data/db.sqlite')
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
     TESTING = True
+
+
+app_config = {  
+    'default': DevelopmentConfig,  
+    'production': ProductionConfig,
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+}

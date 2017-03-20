@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %} {{ group.id }} - {{ group.title }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+    <h3>{{ group.id }} - {{ group.title }}</h3>
+    <hr/>
+
+    <p>{{ group.description }}</p>
+    <p>{{ group.added_time }}</p>
+{% endblock content %}
+

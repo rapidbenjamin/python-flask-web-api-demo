@@ -12,6 +12,9 @@ __pycache__/
 *.swp
 *.bak
 
+# secrets instance variables
+.instance/*.*
+
 local_config.py
 .idea/
 .vscode/

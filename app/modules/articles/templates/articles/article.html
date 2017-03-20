@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %} {{ post.id }} - {{ post.title }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+    <h3>{{ post.id }} - {{ post.title }}</h3>
+    <hr/>
+
+    <p>{{ post.description }}</p>
+
+{% endblock content %}
+
