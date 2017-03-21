@@ -4,6 +4,7 @@
 # ------- IMPORT DEPENDENCIES ------- 
 from flask import request, render_template, flash, current_app, redirect, abort, jsonify
 import sendgrid
+from flask_login import login_required, current_user
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from . import home_page
@@ -19,11 +20,20 @@ def index():
 
         # html or Json response
         if request.is_xhr == True :
-            return jsonify(data = post)
+            return jsonify(data = post), 200, {'Content-Type': 'application/json'}
         else:
             return render_template('home/home.html', post = post, app = app )
 
     except Exception, ex:
-        print("------------ ERROR  ------------" + str(ex.message))
+        print("------------ ERROR  ------------\n" + str(ex.message))
         return render_template('404.html', post = {'title' : 'Error' , 'description' : str(ex.message) }, app = app )
         #abort(404)
+
+@home_page.route('/dashboard')
+@login_required
+def dashboard():
+    post = { 'title' : 'Dashboard' , 'description' : 'dashboard ' }
+    # prevent non-admins from accessing the page
+    if not current_user.is_admin:
+        abort(403)
+    return render_template('home/dashboard.html', post = post, app = app )

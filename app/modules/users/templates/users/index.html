@@ -10,21 +10,32 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>First name</th>
-            <th>Last name</th>
+            <th>Email</th>
+            <th>User name</th>
             <th>Created Date</th>
+            <th colspan="2">Actions</th>
             
         </tr>
         </thead>
-        {% for user in list_users.items %}
-            <tr>
-                <td><a href="{{ url_for('users_page.show', id = user.id) }}" >{{ user.id }}</a></td>
-                <td><a href="{{ url_for('users_page.show', id = user.id) }}" >{{ user.first_name }}</a></td>
-                <td>{{ user.last_name }}</td>
-                <td>{{ user.added_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+        {% if list_users.items %}
+            {% for user in list_users.items %}
+                <tr>
+                    <td><a href="{{ url_for('users_page.show', id = user.id) }}" >{{ user.id }}</a></td>
+                    <td><a href="{{ url_for('users_page.show', id = user.id) }}" >{{ user.email }}</a></td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.added_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td><a href="{{ url_for('users_page.edit', id = user.id) }}" ><i class="glyphicon glyphicon-pencil"></i> edit</a></td>
+                    <td><a href="{{ url_for('users_page.delete', id = user.id) }}" ><i class="glyphicon glyphicon-trash"></i> delete</a></td>
 
-            </tr>
-        {% endfor %}
+                </tr>
+            {% endfor %}
+         {% else %}
+          <tr style="text-align: center">
+              <td colspan="6">
+            <h4> No users have been added. </h4>
+            </td>
+         </tr>
+        {% endif %}
     </table>
 
     <ul class="pagination">

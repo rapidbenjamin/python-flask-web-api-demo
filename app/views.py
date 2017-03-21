@@ -3,7 +3,7 @@
 
 # ------- IMPORT DEPENDENCIES ------- 
 import sendgrid
-from flask import request, render_template, flash, current_app, jsonify
+from flask import request, render_template, flash, current_app, jsonify, abort
 from time import time
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
@@ -16,8 +16,14 @@ from . import db
 
 @app.before_first_request
 def before_first_request():
-    logger.info("-------------------- initializing everything ---------------------")
+    logger.info("-------------------- initializing everything ---------------------\n")
     db.create_all()
+
+
+
+@app.errorhandler(403)
+def page_forbidden(e):
+    return render_template('403.html', post = {'title' : 'Error 403' , 'description' : 'Forbidden' }, app = app ), 403
 
 
 @app.errorhandler(404)
@@ -29,3 +35,6 @@ def page_not_found(e):
 def server_error(e):
     return render_template('500.html'), 500
 
+@app.route('/500')
+def error():
+    abort(403)

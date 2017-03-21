@@ -30,6 +30,11 @@ class Users(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     # one-to-many relationship with the Group model
     group_id = db.Column(db.Integer, db.ForeignKey('Groups.id'))
+    # Flask_login requirements
+    is_authenticated = db.Column(db.Boolean, default=False)    
+    is_active = db.Column(db.Boolean, default=False)
+    is_anonymous = db.Column(db.Boolean, default=False) 
+
     is_admin = db.Column(db.Boolean, default=False)
     is_editor = db.Column(db.Boolean, default=False)
     is_member = db.Column(db.Boolean, default=False)
@@ -60,34 +65,41 @@ class Users(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def get_id(self, some_id):
-        record = Users.query.filter(Users.id == some_id).first_or_404()
-        user = dict()
-        user['id'] = record.id
-        user['first_name'] = record.first_name
-        user['last_name'] = record.last_name
-        user['added_time'] = record.added_time
+        user = Users.query.filter(Users.id == some_id).first_or_404()
         return user
 
 
-    def add_data(self, first_name, last_name):
-        new_record = Users(first_name=first_name, last_name=last_name)
-        db.session.add(new_record)
+    def add_data(self, form):
+        user = Users(email=form['email'], username=form['username'])
+        db.session.add(user)
         db.session.commit()
 
 
     def list_all(self, page, LISTINGS_PER_PAGE):
         return Users.query.order_by(desc(Users.added_time)).paginate(page, LISTINGS_PER_PAGE, False)
 
-    def __str__(self):
-        return '<Users %r, %s>' % (self.id, self.username)
+    
+    def update_data(self, some_id, form ):
+        user = Users.query.get_or_404(some_id)
+
+        user.email = form['email']
+        user.username = form['username']
+
+        db.session.commit()
+
+    def delete_data(self, some_id ):
+        user = Users.query.get_or_404(some_id)
+        db.session.delete(user)
+        db.session.commit()
+
 
     def __repr__(self):
-        return '<Users: {}>'.format(self.username)
+        return '<Users: {}>'.format(self.id)
 
 # Set user_loader callback for session management 
 # which Flask-Login uses to reload the user object from the user ID stored in the session
 @login_manager.user_loader
 def load_user(user_id):
+    # return Users.query.filter(Users.id == user_id)
     return Users.query.get(int(user_id))
-
 

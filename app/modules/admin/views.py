@@ -18,11 +18,11 @@ def index():
 
         # html or Json response
         if request.is_xhr == True :
-            return jsonify(data = post)
+            return jsonify(data = post), 200, {'Content-Type': 'application/json'}
         else:
             return render_template('admin/admin.html', post = post, app = app )
 
     except Exception, ex:
-        print("------------ ERROR  ------------" + str(ex.message))
+        print("------------ ERROR  ------------\n" + str(ex.message))
         return render_template('404.html', post = {'title' : 'Error' , 'description' : str(ex.message) }, app = app )
         #abort(404)

@@ -3,7 +3,7 @@
 
 # ------- IMPORT DEPENDENCIES ------- 
 import sendgrid
-from flask import request, render_template, flash, current_app, redirect, abort, jsonify
+from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for
 from forms import *
 from time import time
 
@@ -14,6 +14,14 @@ from models import Groups
 
 
 # -------  ROUTINGS AND METHODS  ------- 
+
+
+def check_admin():
+    """
+    Prevent non-admins from accessing the page
+    """
+    if not current_user.is_admin:
+        abort(403)
 
 # All groups
 @groups_page.route('/')
@@ -29,7 +37,7 @@ def groups(page=1):
             return render_template("groups/index.html", list_groups=list_groups, app = app)
 
     except Exception, ex:
-        print("------------ ERROR  ------------" + str(ex.message))
+        print("------------ ERROR  ------------\n" + str(ex.message))
         #abort(404)
 
 
@@ -49,7 +57,7 @@ def show(id=1):
             return render_template("groups/show.html", group=m_group, app = app)
 
     except Exception, ex:
-        print("------------ ERROR  ------------" + str(ex.message))
+        print("------------ ERROR  ------------\n" + str(ex.message))
         abort(404)
 
 
@@ -57,32 +65,96 @@ def show(id=1):
 @groups_page.route('/new', methods=['GET', 'POST'])
 def new():
     try : 
+
+        # check_admin()
+
         form = Form_Record_Add(request.form)
 
         if request.method == 'POST':
             if form.validate():
-                new_record = Groups()
+                groups = Groups()
 
-                title = form.title.data
-                description = form.description.data
+                sanitize_form = {
+                    'title' : form.title.data,
+                    'description' : form.description.data
+                }
 
-                new_record.add_data(title, description)
+                groups.add_data(sanitize_form)
                 logger.info("Adding a new record.")
-                flash("Record added successfully.", category="success")
-                return redirect("/groups")
+                
+                if request.is_xhr == True:
+                    return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
+                else : 
+                    flash("Record added successfully.", category="success")
+                    return redirect("/groups")
 
         
          # html or Json response
         if request.is_xhr == True:
-            return jsonify(data = form)
+            return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("groups/new.html", form=form, app = app)
     except Exception, ex:
-        print("------------ ERROR  ------------" + str(ex.message))
+        print("------------ ERROR  ------------\n" + str(ex.message))
+        abort(404)
+
+
+# Edit group
+@groups_page.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id=1):
+    try : 
+
+        # check_admin()
+
+        groups = Groups()
+        group = groups.query.get_or_404(id)
+
+        form = Form_Record_Add(request.form)
+
+        if request.method == 'POST':
+            if form.validate():
+
+                sanitize_form = {
+                    'title' : form.title.data,
+                    'description' : form.description.data
+                }
+
+                groups.update_data(group.id, sanitize_form)
+                logger.info("Editing a new record.")
+                
+                if request.is_xhr == True:
+                    return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
+                else : 
+                    flash("Record updated successfully.", category="success")
+                    return redirect("/groups")
+
+        form.title.data = group.title
+        form.description.data = group.description
+        # html or Json response
+        if request.is_xhr == True:
+            return jsonify(data = form), 200, {'Content-Type': 'application/json'}
+        else:
+            return render_template("groups/new.html", form=form, app = app)
+    except Exception, ex:
+        print("------------ ERROR  ------------\n" + str(ex.message))
         abort(404)
 
 
 
+# Delete group
+@groups_page.route('/delete/<int:id>')
+def delete(id=1):
+    try:
+        groups = Groups()
+        group = groups.query.get_or_404(id)
+        groups.delete_data(group.id)
+        # html or Json response
+        if request.is_xhr == True:
+            return jsonify(data = {message:"Record deleted successfully.", group : m_group})
+        else:
+            flash("Record deleted successfully.", category="success")
+            return redirect(url_for('groups_page.groups'))
 
-
-
+    except Exception, ex:
+        print("------------ ERROR  ------------\n" + str(ex.message))
+        abort(404)

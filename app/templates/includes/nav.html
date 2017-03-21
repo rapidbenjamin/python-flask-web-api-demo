@@ -16,8 +16,14 @@
                 <li><a href="/groups">Groups</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Register</a></li>
-                <li><a href="#">Login</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('home_page.dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('auth_page.logout') }}">Logout</a></li>
+                    <li><a><i class="fa fa-user"></i>  Hi, {{ current_user.username }}!</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth_page.register') }}">Register</a></li>
+                    <li><a href="{{ url_for('auth_page.login') }}">Login</a></li>
+                {% endif %}
                 <li><a href="/contact"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
             </ul>
         </div>

@@ -19,12 +19,12 @@ def show(article = 'article', post = { 'id': '0', 'title' : 'Default title' , 'd
     try:
         # html or Json response
         if request.is_xhr == True:
-            return jsonify(data = post)
+            return jsonify(data = post), 200, {'Content-Type': 'application/json'}
         else:
             return render_template('articles/%s.html' % article, post = post, app = app )
 
     except Exception, ex:
-        print("------------ ERROR  ------------" + str(ex.message))
+        print("------------ ERROR  ------------\n" + str(ex.message))
         return render_template('articles/default.html', post = {'id': '0', 'title' : 'Error' , 'description' : str(ex.message) }, app = app )
         #abort(404)
 

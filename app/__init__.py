@@ -7,6 +7,7 @@ import logging
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_bootstrap import Bootstrap
 
 # ------- IMPORT LOCAL DEPENDENCIES ------- 
 import os
@@ -43,7 +44,10 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_message = "You must be logged in to access this page."
-login_manager.login_view = "auth.login"
+login_manager.login_view = "auth_page.login"
+
+# REGISTER BOOTSTRAP
+Bootstrap(app)
 
 # ------- IMPORT LOCAL DEPENDENCIES AFTER REGISTERING -------  
 #To solve the problem from circular import, place the other imports which are dependent on 'db' and app below app== and db=SQLAlchemy(app).
@@ -59,8 +63,8 @@ from modules.users.models  import Users
 from modules.home import home_page
 app.register_blueprint(home_page, url_prefix='/home')
 
-from modules.authentication import authentication_page
-app.register_blueprint(authentication_page, url_prefix='/authentication')
+from modules.auth import auth_page
+app.register_blueprint(auth_page, url_prefix='/auth')
 
 from modules.admin import admin_page
 app.register_blueprint(admin_page, url_prefix='/admin')

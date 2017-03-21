@@ -22,27 +22,32 @@ class Groups(db.Model):
     users = db.relationship('Users', backref='Group', lazy='dynamic')
     added_time = db.Column(db.DateTime, default=datetime.datetime.now)
 
-    def get_id(self, some_id):
-        record = Groups.query.filter(Groups.id == some_id).first_or_404()
-        group = dict()
-        group['id'] = record.id
-        group['title'] = record.title
-        group['description'] = record.description
-        group['added_time'] = record.added_time
-        return group
-
-
-    def add_data(self, title, description):
-        new_record = Groups(title=title, description=description)
-        db.session.add(new_record)
-        db.session.commit()
-
-
     def list_all(self, page, LISTINGS_PER_PAGE):
         return Groups.query.order_by(desc(Groups.added_time)).paginate(page, LISTINGS_PER_PAGE, False)
 
+    def get_id(self, some_id):
+        group = Groups.query.filter(Groups.id == some_id).first_or_404()
+        return group
 
-    # ------ Delete them if you don't plan to use them ----------
 
-    def __str__(self):
-        return '<Groups %r, %s>' % (self.id, self.title)
+    def add_data(self, form):
+        new_record = Groups(title=form['title'], description=form['description'])
+        db.session.add(new_record)
+        db.session.commit()
+    
+    def update_data(self, some_id, form ):
+        group = Groups.query.get_or_404(some_id)
+
+        group.title = form['title']
+        group.description = form['description']
+
+        db.session.commit()
+
+    def delete_data(self, some_id ):
+        group = Groups.query.get_or_404(some_id)
+        db.session.delete(group)
+        db.session.commit()
+
+
+    def __repr__(self):
+        return '<Users: {}>'.format(self.id)

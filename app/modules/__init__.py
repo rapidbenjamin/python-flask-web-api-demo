@@ -5,4 +5,4 @@
 
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
-from . import home, articles, users, groups, contact, authentication, admin
+from . import home, articles, users, groups, contact, auth, admin

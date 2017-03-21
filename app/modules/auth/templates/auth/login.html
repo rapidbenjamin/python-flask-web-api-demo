@@ -1,0 +1,15 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Login - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+    <h3>{{ title }}</h3>
+    <hr/>
+<div class="content-section">
+  <br/>
+  <div class="center">
+    <h1>Login to your account</h1>
+    <br/>
+    {{ wtf.quick_form(form) }}
+  </div>
+</div>
+{% endblock %}

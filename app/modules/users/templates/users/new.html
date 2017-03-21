@@ -8,12 +8,12 @@
                     <fieldset>
                         <legend>Add new user</legend>
                         <div class="form-group">
-                            <label for="user_ip" class="col-lg-4 control-label">first_name</label>
+                            <label for="user_ip" class="col-lg-4 control-label">email</label>
 
                             <div class="col-lg-6">
-                                {{ form.first_name (class="form-control") }}
+                                {{ form.email (class="form-control") }}
 
-                                {% for error in form.errors.first_name %} <br/>
+                                {% for error in form.errors.email %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
@@ -23,12 +23,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="user_agent" class="col-lg-4 control-label">last_name</label>
+                            <label for="user_agent" class="col-lg-4 control-label">username</label>
 
                             <div class="col-lg-6">
-                                {{ form.last_name (class="form-control") }}
+                                {{ form.username (class="form-control") }}
 
-                                {% for error in form.errors.last_name %} <br/>
+                                {% for error in form.errors.username %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
@@ -36,7 +36,6 @@
                                 {% endfor %}
                             </div>
                         </div>
-
                         <div class="form-group">
                             <div class="col-lg-4  col-lg-offset-4">
 
