@@ -4,6 +4,7 @@
 # ------- IMPORT DEPENDENCIES ------- 
 from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for, session
 from flask_login import login_required, login_user, logout_user, current_user
+import base64
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from app.modules.auth import auth_page
@@ -36,8 +37,11 @@ def login():
         # the password entered matches the password in the database
         user = Users.query.filter_by(email=form.email.data).first()
 
+        # password decoding  when remote app client
+        if request.is_xhr == True :
+            form.password.data = base64.b64decode(form.password.data).decode('UTF-8')
+
         if user is not None and user.check_password(form.password.data):
-            
 
             # redirect to the dashboard page after login
             if request.is_xhr == True :

@@ -51,6 +51,7 @@ def show(id=1):
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
         abort(404)
 
 
@@ -59,6 +60,7 @@ def show(id=1):
 def new():
     try : 
         form = Form_Record_Add(request.form)
+        groups = Groups.query.all()
 
         if request.method == 'POST':
             if form.validate():
@@ -66,8 +68,9 @@ def new():
 
                 sanitize_form = {
                     'email' : form.email.data,
-                    'username' : form.username.data
-                }
+                    'username' : form.username.data,
+                    'group' : form.group.data
+                }                
 
                 users.add_data(sanitize_form)
                 logger.info("Adding a new record.")
@@ -82,9 +85,10 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form, app = app)
+            return render_template("users/edit.html", form=form, groups = groups, title='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
         abort(404)
 
 # Edit user
@@ -94,20 +98,23 @@ def edit(id=1):
 
         # check_admin()
 
-        users = Users()
-        user = users.query.get_or_404(id)
-
+        groups = Groups.query.all()
+        user = Users.query.get_or_404(id)
+        
         form = Form_Record_Add(request.form)
 
         if request.method == 'POST':
             if form.validate():
 
+                group = form.group.data
+
                 sanitize_form = {
                     'email' : form.email.data,
-                    'username' : form.username.data
+                    'username' : form.username.data,
+                    'group' : form.group.data
                 }
 
-                users.update_data(user.id, sanitize_form)
+                user.update_data(user.id, sanitize_form)
                 logger.info("Editing a new record.")
                 
                 if request.is_xhr == True:
@@ -124,9 +131,10 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form, app = app)
+            return render_template("users/edit.html", form=form,  groups = groups, title='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
         abort(404)
 
 
@@ -147,6 +155,7 @@ def delete(id=1):
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
         abort(404)
 
 

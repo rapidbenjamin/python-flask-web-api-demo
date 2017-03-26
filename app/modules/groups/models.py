@@ -17,9 +17,8 @@ class Groups(db.Model):
     title = db.Column(db.String(255), unique=True)
     description = db.Column(db.Text())
     # one-to-many relationship with the User model
-    # lazy defines how the data will be loaded from the database; 
-    # in this case it will be loaded dynamically, which is ideal for managing large collections.
-    users = db.relationship('Users', backref='Group', lazy='dynamic')
+    users = db.relationship('Users', backref='group', lazy='dynamic')
+
     added_time = db.Column(db.DateTime, default=datetime.datetime.now)
 
     def list_all(self, page, LISTINGS_PER_PAGE):
@@ -50,4 +49,5 @@ class Groups(db.Model):
 
 
     def __repr__(self):
-        return '<Users: {}>'.format(self.id)
+        # return '<Users: {}>'.format(self.id)
+        return '<Groups %r>' % self.id

@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-
+    <h3>{{ title }}</h3>
+    <hr/>
     <div class="row">
         <div class="col-lg-6">
-            <div class="well bs-component">
-                <form method="POST" action="{{ form.action }}" role="form" class="form-horizontal">
+            <div class="well">
+                <form method="POST" action="{{ form.action }}" role="form" class="form-horizontal" accept-charset="utf-8">
                     {{ form.csrf_token }}
                     <!-- <input id="csrf_token" name="csrf_token" value="" type="hidden"> -->
                     <fieldset>
@@ -28,7 +29,7 @@
                             <label for="group_description" class="col-lg-4 control-label">{{ form.description.label }}</label>
 
                             <div class="col-lg-6">
-                                {{ form.description (class="form-control") }}
+                                {{ form.description (cols="35", rows="5", class="form-control") }}
                                 <!-- <textarea class="form-control" id="group_description" name="group_description">form.description.data</textarea> -->
                                 {% for error in form.errors.description %} <br/>
 

@@ -59,6 +59,7 @@ def show(id=1):
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
         abort(404)
 
 
@@ -92,9 +93,10 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("groups/edit.html", form=form, app = app)
+            return render_template("groups/edit.html", form=form,  title='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
         abort(404)
 
 
@@ -134,9 +136,10 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("groups/edit.html", form=form, app = app)
+            return render_template("groups/edit.html", form=form, title='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
         abort(404)
 
 
@@ -157,4 +160,5 @@ def delete(id=1):
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
         abort(404)

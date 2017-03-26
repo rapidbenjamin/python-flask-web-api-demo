@@ -1,8 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Email, EqualTo
+import base64
 
 from app.modules.users.models import Users
+
 
 class RegistrationForm(FlaskForm):
     """
@@ -20,6 +22,7 @@ class RegistrationForm(FlaskForm):
                                                     EqualTo('confirm_password')
                                                     ])
     confirm_password = PasswordField('Confirm Password')
+
     submit = SubmitField('Register')
 
     # Method to ensure that the email entered have not been used before

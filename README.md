@@ -19,6 +19,11 @@ Flask WEB API DEMO
 - Flash messages notification
 - Logger setting service
 - Helpers (include decorators like SSL required, threaded function, random data generation sample)
+- Session based authentication
+- Basic HTTP authentication or Token based authentication (with active SSL recommended in production environement)
+- Password encryption and check with werkzeug.security (bcrypt approach) (with active SSL recommended in production environment)
+- password base64 encoding for remote app client (optional)
+- Role management (admin, editor, member)
 
 #### Security :
 You may have some sensitive variables that should not be publicly shared, such as passwords and secret keys. These can be put in an secrets/config.py file, which will not be pushed to version control.
@@ -61,6 +66,18 @@ You may have some sensitive variables that should not be publicly shared, such a
                         - `flask db migrate`
                     # then apply the migration
                         - `flask db upgrade`
+
+- For authorization condition with Flask-login 
+        - in template, use current_user  : {% if current_user.is_authenticated %} ... {% else %} ... {% endif %}
+        - in views route, use `@login_required` to check if user is already login then  `current_user` to check his role
+                            from flask_login import login_required, current_user
+                            @auth_page.route('/dashboard')
+                            @login_required
+                            def dashboard():
+                                # prevent non-admin roles from accessing the page
+                                if not(current_user.is_admin):
+                                    abort(403)
+                                return render_template('auth/dashboard.html')
 
 - To install a new package and save it on requirement file:
     `python -m pip install <new_package> && pip list > requirements.txt && pip list --format=freeze > requirements-pip2.txt`

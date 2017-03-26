@@ -12,7 +12,7 @@
     {{ wtf.quick_form(form) }}
 
     <hr/>
-      <form method="POST" action="{{ url_for('auth_page.login') }}" role="form" class="form-horizontal" >
+      <form method="POST" action="{{ url_for('auth_page.login') }}" role="form" class="form-horizontal well" accept-charset="utf-8">
         {{ form.csrf_token }}
         <!-- <input id="csrf_token" name="csrf_token" value="" type="hidden"> -->
         <fieldset>

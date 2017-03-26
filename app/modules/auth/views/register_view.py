@@ -4,6 +4,7 @@
 # ------- IMPORT DEPENDENCIES ------- 
 from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for, session
 from flask_login import login_required, login_user, logout_user, current_user
+import base64
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from app.modules.auth import auth_page
@@ -54,11 +55,16 @@ def register():
                     flash(form.errors, 'danger')
                     return render_template('auth/register.html', form=form, title='Register', app = app)
 
+            
+             # password decoding  when remote app client
+            if request.is_xhr == True :
+                form.password.data = base64.b64decode(form.password.data).decode('UTF-8')
+
             # create user
             user = Users(email=form.email.data,
                         username=form.username.data,
                         password=form.password.data)
-
+            
             # Save new user to the database
             db.session.add(user)
             db.session.commit()

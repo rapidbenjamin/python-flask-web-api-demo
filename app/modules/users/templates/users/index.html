@@ -12,6 +12,7 @@
             <th>Id</th>
             <th>Email</th>
             <th>User name</th>
+            <th>Group name</th>
             <th>Created Date</th>
             <th colspan="2">Actions</th>
             
@@ -23,6 +24,13 @@
                     <td><a href="{{ url_for('users_page.show', id = user.id) }}" >{{ user.id }}</a></td>
                     <td><a href="{{ url_for('users_page.show', id = user.id) }}" >{{ user.email }}</a></td>
                     <td>{{ user.username }}</td>
+                    <td>
+                        {% if user.group %}
+                            {{ user.group.title }}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
                     <td>{{ user.added_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td><a href="{{ url_for('users_page.edit', id = user.id) }}" ><i class="glyphicon glyphicon-pencil"></i> edit</a></td>
                     <td><a href="{{ url_for('users_page.delete', id = user.id) }}" ><i class="glyphicon glyphicon-trash"></i> delete</a></td>

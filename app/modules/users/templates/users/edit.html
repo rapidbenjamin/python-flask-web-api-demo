@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-
+    <h3>{{ title }}</h3>
+    <hr/>
     <div class="row">
         <div class="col-lg-6">
-            <div class="well bs-component">
-                <form method="POST" action="{{ form.action }}" role="form" class="form-horizontal" >
+            <div class="well">
+                <form method="POST" action="{{ form.action }}" role="form" class="form-horizontal" accept-charset="utf-8" >
                     {{ form.csrf_token }}
                     <!-- <input id="csrf_token" name="csrf_token" value="" type="hidden"> -->
                     <fieldset>
@@ -36,6 +37,28 @@
                                 {% endfor %}
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label for="user_group" class="col-lg-4 control-label">{{ form.group.label }}</label>
+                            <div class="col-lg-6">
+                                {{ form.group (class="form-control") }}
+                                <!--
+                                <select id="user_group" name="user_group" >
+                                    {% for group in groups %}
+                                        <option value="{{group.id}}">{{group.title}}</option>
+                                    {% endfor %}
+                                </select>
+                                -->
+                                {% for error in form.errors.group_id %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+
                         <div class="form-group">
                             <div class="col-lg-4  col-lg-offset-4">
                                 <button type="submit" class="btn btn-primary">Submit</button>

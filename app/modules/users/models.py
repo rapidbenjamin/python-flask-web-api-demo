@@ -12,7 +12,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from ... import db
-
+from app.modules.groups.models import Groups
 
 class Users(UserMixin, db.Model):
     """
@@ -28,7 +28,11 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String(60), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     # one-to-many relationship with the Group model
+    # the backref argument in the group field allows us to access users from the Groups model 
+    # as simple as group.users in our views.
     group_id = db.Column(db.Integer, db.ForeignKey('Groups.id'))
+    # group = db.relationship('Groups', backref=db.backref('users', lazy='dynamic'))
+
     # Flask_login requirements
 
     # is_authenticated usually returns True. 
@@ -43,7 +47,7 @@ class Users(UserMixin, db.Model):
     # This should usually return False for regular logged-in users.
     is_anonymous = db.Column(db.Boolean, default=False) 
 
-    is_admin = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, default=True)
     is_editor = db.Column(db.Boolean, default=False)
     is_member = db.Column(db.Boolean, default=False)
     added_time = db.Column(db.DateTime, default=datetime.datetime.now)
@@ -85,7 +89,7 @@ class Users(UserMixin, db.Model):
 
 
     def add_data(self, form):
-        user = Users(email=form['email'], username=form['username'])
+        user = Users(email=form['email'], username=form['username'], group = form['group'])
         db.session.add(user)
         db.session.commit()
 
@@ -99,6 +103,7 @@ class Users(UserMixin, db.Model):
 
         user.email = form['email']
         user.username = form['username']
+        user.group = form['group']
 
         db.session.commit()
 
@@ -109,7 +114,8 @@ class Users(UserMixin, db.Model):
 
 
     def __repr__(self):
-        return '<Users: {}>'.format(self.id)
+        # return '<Users: {}>'.format(self.id)
+        return '<Users %r>' % self.id
 
 
 
