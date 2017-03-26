@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
+from flask.ext.session import Session
 
 # ------- IMPORT LOCAL DEPENDENCIES ------- 
 import os
@@ -30,8 +31,10 @@ app.config.from_pyfile(app_config[config_name].SECRET_CONFIG)
 
 
 # REGISTER DATABASE
-db = SQLAlchemy()
-db.init_app(app)
+db = SQLAlchemy(app)
+
+# REGISTER SESSION
+sess = Session(app)
 
 # REGISTER LOGGING
 logger = logging.getLogger(__name__)
@@ -44,6 +47,7 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_message = "You must be logged in to access this page."
+login_manager.login_message_category = "info"
 login_manager.login_view = "auth_page.login"
 
 # REGISTER BOOTSTRAP

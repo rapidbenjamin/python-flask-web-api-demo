@@ -26,4 +26,22 @@ body {
 .btn.cancel { margin-left: 0.5rem; }
 .nowrap { white-space: nowrap; }
 
+
+.navbar-brand>img {
+
+   height: 100%;
+   width: auto;
+   margin: 0 auto;
+   min-height: 50px;
+   position: relative;
+   top : -15px;
+   left : -15px;
+
+   /* probably not needed anymore, but doesn't hurt */
+   -o-object-fit: contain;
+   object-fit: contain; 
+
+}
+
+
 /* Your customizations here */

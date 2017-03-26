@@ -42,7 +42,7 @@ def users(page=1):
 def show(id=1):
     try:
         m_users = Users()
-        m_user = m_users.get_id(id)
+        m_user = m_users.get_user(id)
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = m_user)
@@ -77,12 +77,12 @@ def new():
                     flash("Record added successfully.", category="success")
                     return redirect("/users")
 
-        
-         # html or Json response
+        form.action = url_for('users_page.new')
+        # html or Json response
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/new.html", form=form, app = app)
+            return render_template("users/edit.html", form=form, app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         abort(404)
@@ -117,13 +117,14 @@ def edit(id=1):
                     return redirect("/users")
 
         
+        form.action = url_for('users_page.edit', id = user.id)
         form.email.data = user.email
         form.username.data = user.username
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/new.html", form=form, app = app)
+            return render_template("users/edit.html", form=form, app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         abort(404)

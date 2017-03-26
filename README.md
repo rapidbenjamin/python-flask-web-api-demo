@@ -52,16 +52,22 @@ You may have some sensitive variables that should not be publicly shared, such a
     In case you don't like the "slate" theme, you can chose a nice theme from http://bootswatch.com/ and just replace the theme name
 
 - For DB migration use Flask-migrate
-    type in console :   
+    type in console :
                     # create a migrations directory
-                        "set FLASK_CONFIG=development"
-                        "set FLASK_APP=run.py"
-                        "flask db init"
+                        - `export FLASK_CONFIG=development` or in windows shell script `set FLASK_CONFIG=development`
+                        - `export FLASK_APP=run.py` or in windows `set FLASK_APP=run.py`
+                        - `flask db init`
                     # create the first migration
-                        "flask db migrate"
+                        - `flask db migrate`
                     # then apply the migration
-                        "flask db upgrade"
+                        - `flask db upgrade`
 
+- To install a new package and save it on requirement file:
+    `python -m pip install <new_package> && pip list > requirements.txt && pip list --format=freeze > requirements-pip2.txt`
+
+
+- To remove all pyc files :
+                         -  `find . -name \*.pyc -delete` or for windows users  `del /S *.pyc`
 
 
 ##### Extra configs for your server production environment : ./utils

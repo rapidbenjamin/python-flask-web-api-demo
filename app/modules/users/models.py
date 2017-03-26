@@ -6,11 +6,12 @@ import datetime
 from sqlalchemy import desc
 from sqlalchemy import or_
 
+
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
-from ... import db,  login_manager
+from ... import db
 
 
 class Users(UserMixin, db.Model):
@@ -25,14 +26,21 @@ class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(60), index=True, unique=True)
     username = db.Column(db.String(60), index=True, unique=True)
-    first_name = db.Column(db.String(60), index=True)
-    last_name = db.Column(db.String(60), index=True)
     password_hash = db.Column(db.String(128))
     # one-to-many relationship with the Group model
     group_id = db.Column(db.Integer, db.ForeignKey('Groups.id'))
     # Flask_login requirements
-    is_authenticated = db.Column(db.Boolean, default=False)    
-    is_active = db.Column(db.Boolean, default=False)
+
+    # is_authenticated usually returns True. 
+    # This should return False only in cases where we do not want a user to be authenticated. 
+    is_authenticated = db.Column(db.Boolean, default=True)
+
+    # is_active usually returns True. 
+    # This should return False only in cases where we have blocked or banned a user. 
+    is_active = db.Column(db.Boolean, default=True)
+
+    # is_anonymous is used to indicate a user who is not supposed to be logged in to the system and should access the application as anonymous. 
+    # This should usually return False for regular logged-in users.
     is_anonymous = db.Column(db.Boolean, default=False) 
 
     is_admin = db.Column(db.Boolean, default=False)
@@ -57,14 +65,21 @@ class Users(UserMixin, db.Model):
         self.password_hash = generate_password_hash(password)
     
     
-    def verify_password(self, password):
+    def check_password(self, password):
         """
         Check if hashed password matches actual password
         with Werkzeug's handy security helper method check_password_hash
         """
         return check_password_hash(self.password_hash, password)
 
-    def get_id(self, some_id):
+    def get_id(self):
+        """
+        Get id in unicode format for flask login
+        """
+        return unicode(self.id)
+
+
+    def get_user(self, some_id):
         user = Users.query.filter(Users.id == some_id).first_or_404()
         return user
 
@@ -96,10 +111,6 @@ class Users(UserMixin, db.Model):
     def __repr__(self):
         return '<Users: {}>'.format(self.id)
 
-# Set user_loader callback for session management 
-# which Flask-Login uses to reload the user object from the user ID stored in the session
-@login_manager.user_loader
-def load_user(user_id):
-    # return Users.query.filter(Users.id == user_id)
-    return Users.query.get(int(user_id))
+
+
 

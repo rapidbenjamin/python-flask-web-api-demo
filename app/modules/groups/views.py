@@ -6,6 +6,7 @@ import sendgrid
 from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for
 from forms import *
 from time import time
+from flask_login import login_required, current_user
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from app import app, logger
@@ -16,7 +17,7 @@ from models import Groups
 # -------  ROUTINGS AND METHODS  ------- 
 
 
-def check_admin():
+def check_is_admin():
     """
     Prevent non-admins from accessing the page
     """
@@ -49,7 +50,7 @@ def groups(page=1):
 def show(id=1):
     try:
         m_groups = Groups()
-        m_group = m_groups.get_id(id)
+        m_group = m_groups.get_group(id)
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = m_group)
@@ -64,9 +65,7 @@ def show(id=1):
 # New group
 @groups_page.route('/new', methods=['GET', 'POST'])
 def new():
-    try : 
-
-        # check_admin()
+    try :
 
         form = Form_Record_Add(request.form)
 
@@ -88,12 +87,12 @@ def new():
                     flash("Record added successfully.", category="success")
                     return redirect("/groups")
 
-        
+        form.action = url_for('groups_page.new')
          # html or Json response
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("groups/new.html", form=form, app = app)
+            return render_template("groups/edit.html", form=form, app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         abort(404)
@@ -128,13 +127,14 @@ def edit(id=1):
                     flash("Record updated successfully.", category="success")
                     return redirect("/groups")
 
+        form.action = url_for('groups_page.edit', id = group.id)
         form.title.data = group.title
         form.description.data = group.description
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("groups/new.html", form=form, app = app)
+            return render_template("groups/edit.html", form=form, app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         abort(404)

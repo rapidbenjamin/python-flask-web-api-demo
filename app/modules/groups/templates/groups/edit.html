@@ -4,16 +4,18 @@
     <div class="row">
         <div class="col-lg-6">
             <div class="well bs-component">
-                <form class="form-horizontal" method="post" action="">
+                <form method="POST" action="{{ form.action }}" role="form" class="form-horizontal">
+                    {{ form.csrf_token }}
+                    <!-- <input id="csrf_token" name="csrf_token" value="" type="hidden"> -->
                     <fieldset>
-                        <legend>Add new user</legend>
+                        <legend>Add new group</legend>
                         <div class="form-group">
-                            <label for="user_ip" class="col-lg-4 control-label">email</label>
+                            <label for="group_title" class="col-lg-4 control-label">{{ form.title.label }}</label>
 
                             <div class="col-lg-6">
-                                {{ form.email (class="form-control") }}
-
-                                {% for error in form.errors.email %} <br/>
+                                {{ form.title (class="form-control") }}
+                                <!-- <input class="form-control" id="group_title" name="group_title" required="" value="" type="text"> -->
+                                {% for error in form.errors.title %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
@@ -23,12 +25,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="user_agent" class="col-lg-4 control-label">username</label>
+                            <label for="group_description" class="col-lg-4 control-label">{{ form.description.label }}</label>
 
                             <div class="col-lg-6">
-                                {{ form.username (class="form-control") }}
-
-                                {% for error in form.errors.username %} <br/>
+                                {{ form.description (class="form-control") }}
+                                <!-- <textarea class="form-control" id="group_description" name="group_description">form.description.data</textarea> -->
+                                {% for error in form.errors.description %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
@@ -36,10 +38,11 @@
                                 {% endfor %}
                             </div>
                         </div>
+
                         <div class="form-group">
                             <div class="col-lg-4  col-lg-offset-4">
 
-                                <button type="submit" class="btn btn-primary">add new user</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
                     </fieldset>

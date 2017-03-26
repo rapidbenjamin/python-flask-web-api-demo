@@ -3,7 +3,7 @@
 
 # ------- IMPORT DEPENDENCIES ------- 
 import sendgrid
-from flask import request, render_template, flash, current_app, jsonify, abort
+from flask import request, render_template, flash, current_app, jsonify, abort, g
 from time import time
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
@@ -11,16 +11,18 @@ from app import app, logger
 from . import db
 
 
-
 # ----- UTILS. Delete them if you don't plan to use them -----
 
 @app.before_first_request
 def before_first_request():
     logger.info("-------------------- initializing everything ---------------------\n")
-    db.create_all()
+    with app.app_context():
+        # Extensions like Flask-SQLAlchemy now know what the "current" app
+        # is while within this block. Therefore, you can now run........
+        db.create_all()
 
 
-
+# ----- BASIC REQUESTS -----
 @app.errorhandler(403)
 def page_forbidden(e):
     return render_template('403.html', post = {'title' : 'Error 403' , 'description' : 'Forbidden' }, app = app ), 403
@@ -37,4 +39,8 @@ def server_error(e):
 
 @app.route('/500')
 def error():
-    abort(403)
+    abort(500)
+
+
+
+

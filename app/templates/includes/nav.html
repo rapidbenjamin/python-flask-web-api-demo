@@ -7,7 +7,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Flask Web Api demo</a>
+            <a class="navbar-brand" href="/">
+            <img class="img-responsive" src="{{ url_for('static', filename='images/systemaker_icon.png') }}" alt="logo-icon"  src="img/systemaker_icon.png" align="left">
+               Flask Web Api demo
+            </a>
         </div>
         <div class="navbar-collapse collapse">
 
@@ -17,7 +20,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('home_page.dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('auth_page.dashboard') }}">Dashboard</a></li>
                     <li><a href="{{ url_for('auth_page.logout') }}">Logout</a></li>
                     <li><a><i class="fa fa-user"></i>  Hi, {{ current_user.username }}!</a></li>
                 {% else %}

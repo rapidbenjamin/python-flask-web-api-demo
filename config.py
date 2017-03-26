@@ -34,6 +34,12 @@ class BaseConfig(object):
     SECURITY_CONFIRMABLE = True
 
 
+    # session
+    SESSION_TYPE = 'filesystem'
+    SESSION_FILE_DIR =  'sessions'
+    # SESSION_FILE_THRESHOLD = '500'
+    # SESSION_FILE_MODE = '600'
+
     # SendGrid example.
     MAIL_SERVER = 'smtp.sendgrid.net'
     MAIL_PORT = 587

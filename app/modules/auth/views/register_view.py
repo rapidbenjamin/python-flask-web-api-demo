@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # ------- IMPORT DEPENDENCIES ------- 
-from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for
-from flask_login import login_required, login_user, logout_user
+from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for, session
+from flask_login import login_required, login_user, logout_user, current_user
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from app.modules.auth import auth_page
@@ -22,16 +22,44 @@ def register():
     Add an User to the database through the registration form
     """
     try:
+        # Check if user session already exist
+        if session.get('email') and request.is_xhr == False :
+                flash('Your are already logged in.', 'info')
+                return redirect(url_for('home_page.index'))
 
         form = RegistrationForm()
-        if form.validate_on_submit():
-            user = Users(email=form.email.data,
-                                username=form.username.data,
-                                first_name=form.first_name.data,
-                                last_name=form.last_name.data,
-                                password=form.password.data)
+        # Check  if form is submited
+        if request.method == 'POST' and form.validate_on_submit():
+            
+            # Check if username already exist     
+            existing_username = Users.query.filter_by(username=form.username.data).first()
+            # Check if email already exist
+            existing_email = Users.query.filter_by(email=form.email.data).first()
 
-            # add user to the database
+            # Check validations
+            if existing_username and existing_email :                
+                # redirect to the login page or Json response
+                if request.is_xhr == True :
+                    return jsonify(data = {message : "This username or email has been already taken. Try another one.", form : form}), 422, {'Content-Type': 'application/json'}
+                else:
+                    flash('This username has been already taken. Try another one.', 'warning')
+                    return render_template('auth/register.html', form=form, title='Register', app = app)
+
+            # Check form errors
+            if form.errors :                
+                # redirect to the login page or Json response
+                if request.is_xhr == True :
+                    return jsonify(data = {message : form.errors, form : form}), 422, {'Content-Type': 'application/json'}
+                else:
+                    flash(form.errors, 'danger')
+                    return render_template('auth/register.html', form=form, title='Register', app = app)
+
+            # create user
+            user = Users(email=form.email.data,
+                        username=form.username.data,
+                        password=form.password.data)
+
+            # Save new user to the database
             db.session.add(user)
             db.session.commit()
 
@@ -39,7 +67,7 @@ def register():
             if request.is_xhr == True :
                 return jsonify(data = {message : "You have successfully registered! You may now login", user : user}), 200, {'Content-Type': 'application/json'}
             else:
-                flash('You have successfully registered! You may now login.')
+                flash('You have successfully registered! You may now login.', 'success')
                 return redirect(url_for('auth_page.login'))
         # load registration template
         if request.is_xhr == True :

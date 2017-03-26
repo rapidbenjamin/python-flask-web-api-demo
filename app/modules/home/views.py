@@ -28,12 +28,3 @@ def index():
         print("------------ ERROR  ------------\n" + str(ex.message))
         return render_template('404.html', post = {'title' : 'Error' , 'description' : str(ex.message) }, app = app )
         #abort(404)
-
-@home_page.route('/dashboard')
-@login_required
-def dashboard():
-    post = { 'title' : 'Dashboard' , 'description' : 'dashboard ' }
-    # prevent non-admins from accessing the page
-    if not current_user.is_admin:
-        abort(403)
-    return render_template('home/dashboard.html', post = post, app = app )

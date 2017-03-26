@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # ------- IMPORT DEPENDENCIES ------- 
-from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for
-from flask_login import login_required, login_user, logout_user
+from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for, session
+from flask_login import login_required, login_user, logout_user, current_user
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from app.modules.auth import auth_page
@@ -23,13 +23,18 @@ def logout():
     Log an user out through the logout link
     """
     try:
-        logout_user()
+        
 
         # redirect to the login page
         if request.is_xhr == True :
+            # Remove classic session
+            if 'email' in session:
+                session.pop('email')
             return jsonify(data = {message:"You have successfully been logged out"}), 200, {'Content-Type': 'application/json'}
         else:
-            flash('You have successfully been logged out')
+            # Remove flask login session
+            logout_user()
+            flash('You have successfully been logged out', 'info')
             return redirect(url_for('auth_page.login'))
 
 

@@ -4,17 +4,18 @@
     <div class="row">
         <div class="col-lg-6">
             <div class="well bs-component">
-                <form class="form-horizontal" method="post" action="">
+                <form method="POST" action="{{ form.action }}" role="form" class="form-horizontal" >
+                    {{ form.csrf_token }}
+                    <!-- <input id="csrf_token" name="csrf_token" value="" type="hidden"> -->
                     <fieldset>
-                        <legend>Add new group</legend>
+                        <legend>Add new user</legend>
                         <div class="form-group">
-                            <label for="user_ip" class="col-lg-4 control-label">Title</label>
+                            <label for="user_email" class="col-lg-4 control-label">{{ form.email.label }}</label>
 
                             <div class="col-lg-6">
-                                {{ form.title (class="form-control") }}
-
-                                {% for error in form.errors.title %} <br/>
-
+                                {{ form.email (class="form-control") }}
+                                <!-- <input class="form-control" id="user_email" name="user_email" required="" value="" type="text"> -->
+                                {% for error in form.errors.email %} <br/>
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
                                     </div>
@@ -23,24 +24,21 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="user_agent" class="col-lg-4 control-label">Description</label>
+                            <label for="user_username" class="col-lg-4 control-label">{{ form.username.label }}</label>
 
                             <div class="col-lg-6">
-                                {{ form.description (class="form-control") }}
-
-                                {% for error in form.errors.description %} <br/>
-
+                                {{ form.username (class="form-control") }}
+                                <!-- <input class="form-control" id="user_username" name="user_username" required="" value="" type="text"> -->
+                                {% for error in form.errors.username %} <br/>
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
                                     </div>
                                 {% endfor %}
                             </div>
                         </div>
-
                         <div class="form-group">
                             <div class="col-lg-4  col-lg-offset-4">
-
-                                <button type="submit" class="btn btn-primary">add new record</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
                     </fieldset>

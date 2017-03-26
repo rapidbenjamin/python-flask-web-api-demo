@@ -8,3 +8,5 @@ auth_page = Blueprint('auth_page', __name__, template_folder='templates', static
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from . import views, forms
+
+

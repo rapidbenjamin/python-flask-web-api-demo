@@ -25,7 +25,7 @@ class Groups(db.Model):
     def list_all(self, page, LISTINGS_PER_PAGE):
         return Groups.query.order_by(desc(Groups.added_time)).paginate(page, LISTINGS_PER_PAGE, False)
 
-    def get_id(self, some_id):
+    def get_group(self, some_id):
         group = Groups.query.filter(Groups.id == some_id).first_or_404()
         return group
 
