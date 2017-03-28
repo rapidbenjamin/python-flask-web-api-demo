@@ -1,0 +1,9 @@
+{
+	"LANGUAGE": "en-us",
+	"HOME": "Home",
+	"HELP": "Help",
+	"TITLE": "Single-page Application",
+	"DESCRIPTION": "<b>Features:</b> internationalization, pagination, filters, bootstrap ui and partial templates, flash message notifications, Authentication, Authorization, CRUD features and RestFull API services",
+	"BUTTON_LANG_EN": "english",
+	"BUTTON_LANG_FR": "french"
+}

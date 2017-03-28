@@ -14,6 +14,7 @@ from . import users_page
 from models import Users
 from app.modules.groups.models import Groups
 from app.helpers import *
+from app.localization import get_locale, get_timezone
 
 # -------  ROUTINGS AND METHODS  ------- 
 

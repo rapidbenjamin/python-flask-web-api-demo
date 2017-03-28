@@ -28,7 +28,11 @@ Flask WEB API DEMO
 - SQLite or MySQL database configuration option
 - custom theme, layout and templates
 - Logger setting service
-- Helpers (include decorators like SSL required, threaded function, Datetime and timezone utils, random data generation sample)
+- internationalization functions like get_locale() and get_timezone() (flask-babel optional) based on :
+                    current_user locale and current_user timezone 
+                    or global current_language  and global timezone
+                    or browser language  and locale timezone
+- Helpers (include decorators like SSL required, threaded function, Datetime and timezone utils, datetime format filter, random data generation sample)
 
 
 #### Security :
@@ -102,6 +106,8 @@ You may have some sensitive variables that should not be publicly shared, such a
 - after you go into production, uncomment the settings from run.py for the best performance
 
 Your Feedback is appreciated :)
+
+
 
 ##### TROUBLESHOOTS FOR BEGINNERS :
 

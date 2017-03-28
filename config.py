@@ -33,6 +33,15 @@ class BaseConfig(object):
     SECURITY_PASSWORD_SALT = 'add_salt_123_hard_one'
     SECURITY_CONFIRMABLE = True
 
+    # Localization I18N and l10n
+    BABEL_DEFAULT_LOCALE = "fr_FR2"
+    BABEL_DEFAULT_TIMEZONE = "UTC2"
+    # change path of messages.mo file
+    BABEL_TRANSLATION_DIRECTORIES = "app;static;localization"
+    ALLOWED_LANGUAGES = {
+        'en_US': 'English',
+        'fr_FR': 'French',
+    }
 
     # session
     SESSION_TYPE = 'filesystem'

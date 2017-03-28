@@ -1,0 +1,9 @@
+{
+	"LANGUAGE": "fr-fr",
+	"HOME": "Accueil",
+	"HELP": "Aide",
+	"TITLE": "Application single-page Angular",
+	"DESCRIPTION": "<b>Fonctionnalités :</b> internationalization, pagination, filtres, bootstrap ui et templates, flash message notifications, Authentification, Autorisation, operations CRUD et services RestFull API ",
+	"BUTTON_LANG_EN": "anglais",
+	"BUTTON_LANG_FR": "français"
+}

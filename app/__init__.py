@@ -9,6 +9,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask.ext.session import Session
+from flask.ext.babel import Babel
 
 # ------- IMPORT LOCAL DEPENDENCIES ------- 
 import os
@@ -52,6 +53,9 @@ login_manager.login_view = "auth_page.login"
 
 # REGISTER BOOTSTRAP
 Bootstrap(app)
+
+# REGISTER LOCALIZATION
+babel = Babel(app)
 
 # ------- IMPORT LOCAL DEPENDENCIES AFTER REGISTERING -------  
 #To solve the problem from circular import, place the other imports which are dependent on 'db' and app below app== and db=SQLAlchemy(app).

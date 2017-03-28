@@ -7,9 +7,9 @@ from flask import request, render_template, flash, current_app, jsonify, abort, 
 from time import time
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
-from app import app, logger
+from app import app, logger, config_name
 from . import db
-
+from config import app_config
 
 
 
@@ -18,6 +18,11 @@ from . import db
 @app.before_first_request
 def before_first_request():
     logger.info("-------------------- initializing everything ---------------------\n")
+
+    # create global current language
+    g.current_lang = app_config[config_name].BABEL_DEFAULT_LOCALE
+    g.current_timezone = app_config[config_name].BABEL_DEFAULT_TIMEZONE
+
     with app.app_context():
         # Extensions like Flask-SQLAlchemy now know what the "current" app
         # is while within this block. Therefore, you can now run........

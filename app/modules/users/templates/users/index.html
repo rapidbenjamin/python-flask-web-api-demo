@@ -13,6 +13,8 @@
             <th>Email</th>
             <th>User name</th>
             <th>Group name</th>
+            <th>Locale</th>
+            <th>Timezone</th>
             <th>Active</th>
             <th>Updated Date</th>
             <th>Created Date</th>
@@ -33,6 +35,8 @@
                             None
                         {% endif %}
                     </td>
+                    <td>{{ user.locale }}</td>
+                    <td>{{ user.timezone }}</td>
                     <td>{{ user.is_active }}</td>
                     <td>{{ user.updated_at | datetimeformat }}</td>
                     <td>{{ user.created_at | datetimeformat }}</td>
@@ -43,7 +47,7 @@
             {% endfor %}
          {% else %}
           <tr style="text-align: center">
-              <td colspan="6">
+              <td colspan="8">
             <h4> No users have been added. </h4>
             </td>
          </tr>

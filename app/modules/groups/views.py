@@ -14,6 +14,7 @@ from app import app, logger
 from . import groups_page
 from models import Groups
 from app.helpers import *
+from app.localization import get_locale, get_timezone
 
 # -------  ROUTINGS AND METHODS  ------- 
 

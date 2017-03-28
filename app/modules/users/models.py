@@ -13,6 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from ... import db
 from app.helpers import *
+from app.localization import get_locale, get_timezone
 from app.modules.groups.models import Groups
 
 
@@ -55,11 +56,12 @@ class Users(UserMixin, db.Model):
     is_active = db.Column(db.Boolean, index=True, default=True)
 
     updated_at = db.Column(db.Integer, default=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()), onupdate=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()))
-
     created_at = db.Column(db.Integer, default=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()))
-
     # updated_at = db.Column(db.Integer, default=time.mktime(datetime.utcnow().timetuple()), onupdate=time.mktime(datetime.utcnow().timetuple())) 
     # created_at = db.Column(db.Integer, default=time.mktime(datetime.utcnow().timetuple())) 
+
+    locale = db.Column(db.String(30), index=True, default='en-US')
+    timezone = db.Column(db.String(60), index=True, default='UTC')
 
     @property
     def password(self):

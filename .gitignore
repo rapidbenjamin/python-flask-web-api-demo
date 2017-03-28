@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 
 # Database maybe
-# *.sqlite
+*.sqlite
 
 #log file maybe
 *.log
@@ -14,6 +14,10 @@ __pycache__/
 
 # secrets instance variables
 .instance/*.*
+
+# sessions instance objects
+.sessions/*.*
+
 
 local_config.py
 .idea/

@@ -3,13 +3,13 @@
 
 # ------- IMPORT DEPENDENCIES ------- 
 from flask import request, render_template, flash, current_app, redirect, abort, jsonify
+
 import sendgrid
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from . import contact_page
 from app import app
 from app.helpers import threaded_async
-
 
 
 # SERVICE EMAIL
@@ -30,6 +30,7 @@ def send_email(app, to, subject, body):
         except Exception, ex:
             print("------------ ERROR SENDING EMAIL ------------" + str(ex.message))
     return False
+
 
 # CONTACT PAGE
 @contact_page.route('/', methods=['GET', 'POST'])
