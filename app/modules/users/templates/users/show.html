@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %} {{ user.id }} - {{ user.username }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block title_en_US %} {{ user.id }} - {{ user.username }} - {{ app.config['APP_NAME'] }}{% endblock %}
 {% block content %}
     <h3>{{ user.id }} - {{ user.email }}</h3>
     <hr/>
 
     <p>{{ user.username }}</p>
-    <p>{{ user.group.title }}</p>
+    <p>{{ user.unit.title_en_US }}</p>
     <p>{{ user.is_active }}</p>
     <p>{{ user.updated_at }}</p>
     <p>{{ user.created_at }}</p>

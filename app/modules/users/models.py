@@ -14,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from ... import db
 from app.helpers import *
 from app.localization import get_locale, get_timezone
-from app.modules.groups.models import Groups
+from app.modules.units.models import Units
 
 
 class Users(UserMixin, db.Model):
@@ -31,11 +31,11 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String(60), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     
-    # one-to-many relationship with the Group model
-    # the backref argument in the group field allows us to access users from the Groups model 
-    # as simple as group.users in our views.
-    group_id = db.Column(db.Integer, db.ForeignKey('Groups.id'))
-    # group = db.relationship('Groups', backref=db.backref('users', lazy='dynamic'))
+    # one-to-many relationship with the Unit model
+    # the backref argument in the unit field allows us to access users from the Units model 
+    # as simple as unit.users in our views.
+    unit_id = db.Column(db.Integer, db.ForeignKey('Units.id'))
+    # unit = db.relationship('Units', backref=db.backref('users', lazy='dynamic'))
 
     # Flask_login requirements
 
@@ -110,7 +110,7 @@ class Users(UserMixin, db.Model):
         user = Users(
                         email=form['email'], 
                         username=form['username'], 
-                        group = form['group'], 
+                        unit = form['unit'], 
                         is_active = form['is_active'],
                         # convert string to integer format
                         created_at = int(timestamp_created_at)
@@ -124,7 +124,7 @@ class Users(UserMixin, db.Model):
 
         user.email = form['email']
         user.username = form['username']
-        user.group = form['group']
+        user.unit = form['unit']
         user.is_active = form['is_active']
 
         # dateTime conversion to timestamp

@@ -11,26 +11,26 @@ from flask_login import login_required, current_user
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from app import app, logger
-from . import groups_page
-from models import Groups
+from . import units_page
+from models import Units
 from app.helpers import *
 from app.localization import get_locale, get_timezone
 
 # -------  ROUTINGS AND METHODS  ------- 
 
 
-# All groups
-@groups_page.route('/')
-@groups_page.route('/<int:page>')
-def groups(page=1):
+# All units
+@units_page.route('/')
+@units_page.route('/<int:page>')
+def units(page=1):
     try:
-        m_groups = Groups()
-        list_groups = m_groups.all_data(page, app.config['LISTINGS_PER_PAGE'])
+        m_units = Units()
+        list_units = m_units.all_data(page, app.config['LISTINGS_PER_PAGE'])
         # html or Json response
         if request.is_xhr == True:
-            return jsonify(data = [{'id' : d.id, 'title' : d.title, 'description' : d.description} for d in list_groups.items])
+            return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_units.items])
         else:
-            return render_template("groups/index.html", list_groups=list_groups, app = app)
+            return render_template("units/index.html", list_units=list_units, app = app)
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
@@ -40,17 +40,17 @@ def groups(page=1):
 
     
 
-# Show group
-@groups_page.route('/show/<int:id>')
+# Show unit
+@units_page.route('/show/<int:id>')
 def show(id=1):
     try:
-        m_groups = Groups()
-        m_group = m_groups.read_data(id)
+        m_units = Units()
+        m_unit = m_units.read_data(id)
         # html or Json response
         if request.is_xhr == True:
-            return jsonify(data = m_group)
+            return jsonify(data = m_unit)
         else:
-            return render_template("groups/show.html", group=m_group, app = app)
+            return render_template("units/show.html", unit=m_unit, app = app)
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
@@ -58,8 +58,8 @@ def show(id=1):
         abort(404)
 
 
-# New group
-@groups_page.route('/new', methods=['GET', 'POST'])
+# New unit
+@units_page.route('/new', methods=['GET', 'POST'])
 def new():
     try :
 
@@ -67,47 +67,51 @@ def new():
 
         if request.method == 'POST':
             if form.validate():
-                groups = Groups()
+                units = Units()
 
                 sanitize_form = {
-                    'title' : form.title.data,
-                    'description' : form.description.data,
+                    'title_en_US' : form.title_en_US.data,
+                    'description_en_US' : form.description_en_US.data,
+
+                    'title_fr_FR' : form.title_fr_FR.data,
+                    'description_fr_FR' : form.description_fr_FR.data,
+
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
                 }
 
-                groups.create_data(sanitize_form)
+                units.create_data(sanitize_form)
                 logger.info("Adding a new record.")
                 
                 if request.is_xhr == True:
                     return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record added successfully.", category="success")
-                    return redirect("/groups")
+                    return redirect("/units")
 
-        form.action = url_for('groups_page.new')
+        form.action = url_for('units_page.new')
         form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
          # html or Json response
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("groups/edit.html", form=form,  title='New', app = app)
+            return render_template("units/edit.html", form=form,  title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
         abort(404)
 
 
-# Edit group
-@groups_page.route('/edit/<int:id>', methods=['GET', 'POST'])
+# Edit unit
+@units_page.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id=1):
     try : 
 
         # check_admin()
 
-        groups = Groups()
-        group = groups.query.get_or_404(id)
+        units = Units()
+        unit = units.query.get_or_404(id)
 
         form = Form_Record_Add(request.form)
 
@@ -115,32 +119,40 @@ def edit(id=1):
             if form.validate():
 
                 sanitize_form = {
-                    'title' : form.title.data,
-                    'description' : form.description.data,
+                    'title_en_US' : form.title_en_US.data,
+                    'description_en_US' : form.description_en_US.data,
+
+                    'title_fr_FR' : form.title_fr_FR.data,
+                    'description_fr_FR' : form.description_fr_FR.data,
+
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
                 }
 
-                groups.update_data(group.id, sanitize_form)
+                units.update_data(unit.id, sanitize_form)
                 logger.info("Editing a new record.")
                 
                 if request.is_xhr == True:
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record updated successfully.", category="success")
-                    return redirect("/groups")
+                    return redirect("/units")
 
-        form.action = url_for('groups_page.edit', id = group.id)
-        form.title.data = group.title
-        form.description.data = group.description
-        form.is_active.data = group.is_active
-        form.created_at.data = string_timestamp_utc_to_string_datetime_utc(group.created_at, '%Y-%m-%d')
+        form.action = url_for('units_page.edit', id = unit.id)
+        form.title_en_US.data = unit.title_en_US
+        form.description_en_US.data = unit.description_en_US
+
+        form.title_fr_FR.data = unit.title_fr_FR
+        form.description_fr_FR.data = unit.description_fr_FR
+
+        form.is_active.data = unit.is_active
+        form.created_at.data = string_timestamp_utc_to_string_datetime_utc(unit.created_at, '%Y-%m-%d')
 
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("groups/edit.html", form=form, title='Edit', app = app)
+            return render_template("units/edit.html", form=form, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -148,19 +160,19 @@ def edit(id=1):
 
 
 
-# Delete group
-@groups_page.route('/delete/<int:id>')
+# Delete unit
+@units_page.route('/delete/<int:id>')
 def delete(id=1):
     try:
-        groups = Groups()
-        group = groups.query.get_or_404(id)
-        groups.delete_data(group.id)
+        units = Units()
+        unit = units.query.get_or_404(id)
+        units.delete_data(unit.id)
         # html or Json response
         if request.is_xhr == True:
-            return jsonify(data = {message:"Record deleted successfully.", group : m_group})
+            return jsonify(data = {message:"Record deleted successfully.", unit : m_unit})
         else:
             flash("Record deleted successfully.", category="success")
-            return redirect(url_for('groups_page.groups'))
+            return redirect(url_for('units_page.units'))
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))

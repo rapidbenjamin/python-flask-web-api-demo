@@ -32,12 +32,12 @@ def before_first_request():
 # ----- BASIC REQUESTS -----
 @app.errorhandler(403)
 def page_forbidden(e):
-    return render_template('403.html', post = {'title' : 'Error 403' , 'description' : 'Forbidden' }, app = app ), 403
+    return render_template('403.html', post = {'title_en_US' : 'Error 403' , 'description_en_US' : 'Forbidden' }, app = app ), 403
 
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html', post = {'title' : 'Error 404' , 'description' : str(e.message) }, app = app ), 404
+    return render_template('404.html', post = {'title_en_US' : 'Error 404' , 'description_en_US' : str(e.message) }, app = app ), 404
 
 
 @app.errorhandler(500)

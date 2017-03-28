@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title_en_US %} {{ unit.id }} - {{ unit.title_en_US }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+    <h3>{{ unit.id }} - {{ unit.title_en_US }}</h3>
+    <hr/>
+
+    <p>{{ unit.description_en_US }}</p>
+    <p> Users : 
+        {% if unit.users %}
+            {{ unit.users.count() }}
+        {% else %}
+            0
+        {% endif %}
+    </p>
+    <p>{{ unit.is_active }}</p>
+    <p>{{ unit.updated_at }}</p>
+    <p>{{ unit.created_at }}</p>
+{% endblock content %}
+

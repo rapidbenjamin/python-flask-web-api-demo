@@ -40,5 +40,5 @@ def logout():
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
-        return render_template('404.html', post = {'title' : 'Error' , 'description' : str(ex.message) }, app = app )
+        return render_template('404.html', post = {'title_en_US' : 'Error' , 'description_en_US' : str(ex.message) }, app = app )
         #abort(404)

@@ -16,7 +16,7 @@ from app import app
 @home_page.route('/')
 def index():
     try:
-        post = { 'title' : 'Flask api demo' , 'description' : 'Web api ' }
+        post = { 'title_en_US' : 'Flask api demo' , 'description_en_US' : 'Web api ' }
 
         # html or Json response
         if request.is_xhr == True :
@@ -26,5 +26,5 @@ def index():
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
-        return render_template('404.html', post = {'title' : 'Error' , 'description' : str(ex.message) }, app = app )
+        return render_template('404.html', post = {'title_en_US' : 'Error' , 'description_en_US' : str(ex.message) }, app = app )
         #abort(404)

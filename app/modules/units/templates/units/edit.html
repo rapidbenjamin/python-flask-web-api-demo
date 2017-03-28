@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <h3>{{ title }}</h3>
+    <h3>{{ title_en_US }}</h3>
     <hr/>
     <div class="row">
         <div class="col-lg-6">
@@ -9,14 +9,14 @@
                     {{ form.csrf_token }}
                     <!-- <input id="csrf_token" name="csrf_token" value="" type="hidden"> -->
                     <fieldset>
-                        <legend>Add new group</legend>
+                        <legend>Add new unit</legend>
                         <div class="form-group">
-                            <label for="group_title" class="col-lg-4 control-label">{{ form.title.label }}</label>
+                            <label for="unit_title_en_US" class="col-lg-4 control-label">{{ form.title_en_US.label }}</label>
 
                             <div class="col-lg-6">
-                                {{ form.title (class="form-control") }}
-                                <!-- <input class="form-control" id="group_title" name="group_title" required="" value="" type="text"> -->
-                                {% for error in form.errors.title %} <br/>
+                                {{ form.title_en_US (class="form-control") }}
+                                <!-- <input class="form-control" id="unit_title_en_US" name="unit_title_en_US" required="" value="" type="text"> -->
+                                {% for error in form.errors.title_en_US %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
@@ -26,12 +26,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="group_description" class="col-lg-4 control-label">{{ form.description.label }}</label>
+                            <label for="unit_title_fr_FR" class="col-lg-4 control-label">{{ form.title_fr_FR.label }}</label>
 
                             <div class="col-lg-6">
-                                {{ form.description (cols="35", rows="5", class="form-control") }}
-                                <!-- <textarea class="form-control" id="group_description" name="group_description">form.description.data</textarea> -->
-                                {% for error in form.errors.description %} <br/>
+                                {{ form.title_fr_FR (class="form-control") }}
+                                <!-- <input class="form-control" id="unit_title_fr_FR" name="unit_title_fr_FR" required="" value="" type="text"> -->
+                                {% for error in form.errors.title_fr_FR %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
@@ -41,7 +41,37 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="group_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>
+                            <label for="unit_description_en_US" class="col-lg-4 control-label">{{ form.description_en_US.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.description_en_US (cols="35", rows="5", class="form-control") }}
+                                <!-- <textarea class="form-control" id="unit_description_en_US" name="unit_description_en_US">form.description_en_US.data</textarea> -->
+                                {% for error in form.errors.description_en_US %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unit_description_fr_FR" class="col-lg-4 control-label">{{ form.description_fr_FR.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.description_fr_FR (cols="35", rows="5", class="form-control") }}
+                                <!-- <textarea class="form-control" id="unit_description_fr_FR" name="unit_description_fr_FR">form.description_fr_FR.data</textarea> -->
+                                {% for error in form.errors.description_en_US %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unit_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>
                             <div class="col-lg-6">
                                 {{ form.is_active (class="form-control") }}
                                 <!-- <input type="checkbox" name="check" value="{{ form.is_active.data }}"> -->
@@ -54,12 +84,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="group_created_at" class="col-lg-4 control-label">{{ form.created_at.label }}</label>
+                            <label for="unit_created_at" class="col-lg-4 control-label">{{ form.created_at.label }}</label>
 
-                            <div class="col-lg-6 input-group date" >
+                            <div class="col-lg-6 input-unit date" >
         
                                 <input value="{{ form.created_at.data }}" class="form-control datepicker"  data-provide="datepicker" data-date-format="yyyy-mm-dd" id="created_at" name="created_at" required="" type="text">
-                                <div class="input-group-addon">
+                                <div class="input-unit-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </div>
                                 {% for error in form.errors.created_at %} <br/>

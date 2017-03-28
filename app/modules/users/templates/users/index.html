@@ -12,7 +12,7 @@
             <th>Id</th>
             <th>Email</th>
             <th>User name</th>
-            <th>Group name</th>
+            <th>Unit name</th>
             <th>Locale</th>
             <th>Timezone</th>
             <th>Active</th>
@@ -29,8 +29,8 @@
                     <td><a href="{{ url_for('users_page.show', id = user.id) }}" >{{ user.email }}</a></td>
                     <td>{{ user.username }}</td>
                     <td>
-                        {% if user.group %}
-                            {{ user.group.title }}
+                        {% if user.unit %}
+                            {{ user.unit.title_en_US }}
                         {% else %}
                             None
                         {% endif %}

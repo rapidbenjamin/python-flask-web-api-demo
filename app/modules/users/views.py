@@ -12,7 +12,7 @@ from time import time
 from app import app, logger
 from . import users_page
 from models import Users
-from app.modules.groups.models import Groups
+from app.modules.units.models import Units
 from app.helpers import *
 from app.localization import get_locale, get_timezone
 
@@ -62,7 +62,7 @@ def show(id=1):
 def new():
     try : 
         form = Form_Record_Add(request.form)
-        groups = Groups.query.all()
+        units = Units.query.all()
 
         if request.method == 'POST':
             if form.validate():
@@ -71,7 +71,7 @@ def new():
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
-                    'group' : form.group.data,
+                    'unit' : form.unit.data,
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
                 }                
@@ -91,7 +91,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form, groups = groups, title='New', app = app)
+            return render_template("users/edit.html", form=form, units = units, title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -104,8 +104,8 @@ def edit(id=1):
 
         # check_admin()
 
-        # groups = Groups.query.all()
-        groups = Groups.query.filter(Groups.is_active == True).all()
+        # units = Units.query.all()
+        units = Units.query.filter(Units.is_active == True).all()
         user = Users.query.get_or_404(id)
         
         form = Form_Record_Add(request.form)
@@ -113,12 +113,12 @@ def edit(id=1):
         if request.method == 'POST':
             if form.validate():
 
-                group = form.group.data
+                unit = form.unit.data
 
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
-                    'group' : form.group.data,
+                    'unit' : form.unit.data,
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
                 }
@@ -143,7 +143,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form,  groups = groups, title='Edit', app = app)
+            return render_template("users/edit.html", form=form,  units = units, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

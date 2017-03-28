@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <h3>{{ title }}</h3>
+    <h3>{{ title_en_US }}</h3>
     <hr/>
     <div class="row">
         <div class="col-lg-6">
@@ -39,17 +39,17 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="user_group" class="col-lg-4 control-label">{{ form.group.label }}</label>
+                            <label for="user_unit" class="col-lg-4 control-label">{{ form.unit.label }}</label>
                             <div class="col-lg-6">
-                                {{ form.group (class="form-control") }}
+                                {{ form.unit (class="form-control") }}
                                 <!--
-                                <select id="user_group" name="user_group" >
-                                    {% for group in groups %}
-                                        <option value="{{group.id}}">{{group.title}}</option>
+                                <select id="user_unit" name="user_unit" >
+                                    {% for unit in units %}
+                                        <option value="{{unit.id}}">{{unit.title_en_US}}</option>
                                     {% endfor %}
                                 </select>
                                 -->
-                                {% for error in form.errors.group %} <br/>
+                                {% for error in form.errors.unit %} <br/>
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
                                     </div>
@@ -73,10 +73,10 @@
                         <div class="form-group">
                             <label for="user_created_at" class="col-lg-4 control-label">{{ form.created_at.label }}</label>
 
-                            <div class="col-lg-6 input-group date" >
+                            <div class="col-lg-6 input-unit date" >
         
                                 <input value="{{ form.created_at.data }}" class="form-control datepicker"  data-provide="datepicker" data-date-format="yyyy-mm-dd" id="created_at" name="created_at" required="" type="text">
-                                <div class="input-group-addon">
+                                <div class="input-unit-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </div>
                                 {% for error in form.errors.created_at %} <br/>

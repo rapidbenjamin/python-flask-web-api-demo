@@ -63,7 +63,7 @@ babel = Babel(app)
 # ------- LAST REGISTER MODULES WITH BLUEPRINTS -------  
 from . import modules
 from . import views
-from modules.groups.models import Groups
+from modules.units.models import Units
 from modules.users.models  import Users
 
 # REGISTER BLUEPRINTS
@@ -74,8 +74,8 @@ app.register_blueprint(home_page, url_prefix='/home')
 from modules.auth import auth_page
 app.register_blueprint(auth_page, url_prefix='/auth')
 
-from modules.groups import groups_page
-app.register_blueprint(groups_page, url_prefix='/groups')
+from modules.units import units_page
+app.register_blueprint(units_page, url_prefix='/units')
 
 from modules.users import users_page
 app.register_blueprint(users_page, url_prefix='/users')
