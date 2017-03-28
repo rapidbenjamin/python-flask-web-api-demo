@@ -5,6 +5,15 @@
     <hr/>
 
     <p>{{ group.description }}</p>
-    <p>{{ group.added_time }}</p>
+    <p> Users : 
+        {% if group.users %}
+            {{ group.users.count() }}
+        {% else %}
+            0
+        {% endif %}
+    </p>
+    <p>{{ group.is_active }}</p>
+    <p>{{ group.updated_at }}</p>
+    <p>{{ group.created_at }}</p>
 {% endblock content %}
 

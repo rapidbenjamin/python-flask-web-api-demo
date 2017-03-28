@@ -70,12 +70,6 @@ app.register_blueprint(home_page, url_prefix='/home')
 from modules.auth import auth_page
 app.register_blueprint(auth_page, url_prefix='/auth')
 
-from modules.admin import admin_page
-app.register_blueprint(admin_page, url_prefix='/admin')
-
-from modules.articles import articles_page
-app.register_blueprint(articles_page, url_prefix='/articles')
-
 from modules.groups import groups_page
 app.register_blueprint(groups_page, url_prefix='/groups')
 

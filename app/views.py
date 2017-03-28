@@ -11,6 +11,8 @@ from app import app, logger
 from . import db
 
 
+
+
 # ----- UTILS. Delete them if you don't plan to use them -----
 
 @app.before_first_request

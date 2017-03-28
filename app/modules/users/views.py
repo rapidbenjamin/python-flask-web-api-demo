@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # ------- IMPORT DEPENDENCIES ------- 
+import datetime
 import sendgrid
 from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for
 from forms import *
@@ -12,7 +13,7 @@ from app import app, logger
 from . import users_page
 from models import Users
 from app.modules.groups.models import Groups
-
+from app.helpers import *
 
 # -------  ROUTINGS AND METHODS  ------- 
 
@@ -22,7 +23,7 @@ from app.modules.groups.models import Groups
 def users(page=1):
     try:
         m_users = Users()
-        list_users = m_users.list_all(page, app.config['LISTINGS_PER_PAGE'])
+        list_users = m_users.all_data(page, app.config['LISTINGS_PER_PAGE'])
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = [{'id' : d.id, 'email' : d.email, 'username' : d.username} for d in list_users.items])
@@ -42,7 +43,7 @@ def users(page=1):
 def show(id=1):
     try:
         m_users = Users()
-        m_user = m_users.get_user(id)
+        m_user = m_users.read_data(id)
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = m_user)
@@ -69,10 +70,12 @@ def new():
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
-                    'group' : form.group.data
+                    'group' : form.group.data,
+                    'is_active' : form.is_active.data,
+                    'created_at' : form.created_at.data
                 }                
 
-                users.add_data(sanitize_form)
+                users.create_data(sanitize_form)
                 logger.info("Adding a new record.")
                 if request.is_xhr == True:
                     return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
@@ -81,6 +84,8 @@ def new():
                     return redirect("/users")
 
         form.action = url_for('users_page.new')
+        form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
@@ -98,7 +103,8 @@ def edit(id=1):
 
         # check_admin()
 
-        groups = Groups.query.all()
+        # groups = Groups.query.all()
+        groups = Groups.query.filter(Groups.is_active == True).all()
         user = Users.query.get_or_404(id)
         
         form = Form_Record_Add(request.form)
@@ -111,7 +117,9 @@ def edit(id=1):
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
-                    'group' : form.group.data
+                    'group' : form.group.data,
+                    'is_active' : form.is_active.data,
+                    'created_at' : form.created_at.data
                 }
 
                 user.update_data(user.id, sanitize_form)
@@ -127,6 +135,9 @@ def edit(id=1):
         form.action = url_for('users_page.edit', id = user.id)
         form.email.data = user.email
         form.username.data = user.username
+        form.is_active.data = user.is_active
+        form.created_at.data = string_timestamp_utc_to_string_datetime_utc(user.created_at, '%Y-%m-%d')
+
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}

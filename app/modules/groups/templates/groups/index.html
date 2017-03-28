@@ -14,6 +14,8 @@
             <th>Title</th>
             <th>Description</th>
             <th>Users count</th>
+            <th>Active</th>
+            <th>Updated Date</th>
             <th>Created Date</th>
             <th colspan="2">Actions</th>
         </tr>
@@ -31,7 +33,9 @@
                             0
                         {% endif %}
                     </td>
-                    <td>{{ group.added_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ group.is_active }}</td>
+                    <td>{{ group.updated_at | datetimeformat }}</td>
+                    <td>{{ group.created_at | datetimeformat }}</td>
                     <td><a href="{{ url_for('groups_page.edit', id = group.id) }}" ><i class="glyphicon glyphicon-pencil"></i> edit</a></td>
                     <td><a href="{{ url_for('groups_page.delete', id = group.id) }}" ><i class="glyphicon glyphicon-trash"></i> delete</a></td>
 

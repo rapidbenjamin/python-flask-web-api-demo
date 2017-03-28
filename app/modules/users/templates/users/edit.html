@@ -49,7 +49,7 @@
                                     {% endfor %}
                                 </select>
                                 -->
-                                {% for error in form.errors.group_id %} <br/>
+                                {% for error in form.errors.group %} <br/>
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
                                     </div>
@@ -57,7 +57,35 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="user_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>
+                            <div class="col-lg-6">
+                                {{ form.is_active (class="form-control") }}
+                                <!-- <input type="checkbox" name="check" value="{{ form.is_active.data }}"> -->
+                                {% for error in form.errors.is_active %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="user_created_at" class="col-lg-4 control-label">{{ form.created_at.label }}</label>
+
+                            <div class="col-lg-6 input-group date" >
+        
+                                <input value="{{ form.created_at.data }}" class="form-control datepicker"  data-provide="datepicker" data-date-format="yyyy-mm-dd" id="created_at" name="created_at" required="" type="text">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                                {% for error in form.errors.created_at %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <div class="col-lg-4  col-lg-offset-4">
@@ -75,5 +103,15 @@
 
     </div>
 
+<script>
 
+    $('#created_at')
+        .datepicker({
+            setDate: new Date(),
+            autoclose: true,
+             language: 'fr-FR',
+             dateFormat: "yyyy-mm-dd"
+        });
+
+</script>
 {% endblock content %}

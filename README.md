@@ -4,26 +4,32 @@ Flask WEB API DEMO
 
 #### This is an advanced demo app forked from AndreiD/Flask-Easy-Template : https://github.com/AndreiD/Flask-Easy-Template
 
+### added references with : https://github.com/mbithenzomo/project-dream-team-three
+
+
 ### Features:
 
-- configuration files, environment variables and sensitive variables
+- configuration files, environment variables and sensitive variables (in private folder)
 - Utils for server production setups
-- Latest bootstrap template, bootswatch, modernizer, jquery, moment.js, etc. served from content delivery networks.
-- Module Sample home with Blueprint
-- Module Sample articles/posts with Blueprints
-- Module Sample users database with SQLALchemy and Pagination
-- Module Sample groups 
-- Module Sample contact form page with recaptcha and Email service by SendGrid
-- SQLite or MySQL database option
-- User Registry, Login, Logout,  & Forgot Password, etc.
+- Latest bootstrap, bootswatch, modernizer, jquery, moment.js, etc. served from content delivery networks.
+- Module Sample page HOME
+- Module Sample page CONTACT with form, recaptcha and Email service by SendGrid
+- Module Sample database USERS with SQLALchemy, relational models and Pagination
+- Module Sample database GROUPS with SQLALchemy, relational models and Pagination
+
+- Module sample authentication  and authorization with Flask-login plugin :
+        - User Registry, Login & Logout
+        - Basic HTTP authentication or Token based authentication (with active SSL recommended in production environement)
+        - Password encryption and password-check with werkzeug.security (bcrypt-like approach) (with active SSL recommended in production environment)
+        - password base64 encoding for remote ajax-based app client (optional)
+        - Session based authentication
+        - Role management (is_admin, is_editor, is_member), control access and Dashboard sample page
 - Flash messages notification
+- SQLite or MySQL database configuration option
+- custom theme, layout and templates
 - Logger setting service
-- Helpers (include decorators like SSL required, threaded function, random data generation sample)
-- Session based authentication
-- Basic HTTP authentication or Token based authentication (with active SSL recommended in production environement)
-- Password encryption and check with werkzeug.security (bcrypt approach) (with active SSL recommended in production environment)
-- password base64 encoding for remote app client (optional)
-- Role management (admin, editor, member)
+- Helpers (include decorators like SSL required, threaded function, Datetime and timezone utils, random data generation sample)
+
 
 #### Security :
 You may have some sensitive variables that should not be publicly shared, such as passwords and secret keys. These can be put in an secrets/config.py file, which will not be pushed to version control.
@@ -59,8 +65,10 @@ You may have some sensitive variables that should not be publicly shared, such a
 - For DB migration use Flask-migrate
     type in console :
                     # create a migrations directory
-                        - `export FLASK_CONFIG=development` or in windows shell script `set FLASK_CONFIG=development`
-                        - `export FLASK_APP=run.py` or in windows `set FLASK_APP=run.py`
+                        - `export FLASK_CONFIG=development` 
+                            or in windows shell script `set FLASK_CONFIG=development`
+                        - `export FLASK_APP=run.py` 
+                            or in windows `set FLASK_APP=run.py`
                         - `flask db init`
                     # create the first migration
                         - `flask db migrate`
@@ -84,7 +92,7 @@ You may have some sensitive variables that should not be publicly shared, such a
 
 
 - To remove all pyc files :
-                         -  `find . -name \*.pyc -delete` or for windows users  `del /S *.pyc`
+      `find . -name \*.pyc -delete` or for windows users  `del /S *.pyc`
 
 
 ##### Extra configs for your server production environment : ./utils
