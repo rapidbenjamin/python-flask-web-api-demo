@@ -15,23 +15,26 @@ from app.localization import get_locale, get_timezone
 # from app.modules.users.models import Users
 
 
-class Units(db.Model):
-    __tablename__ = "Units"
+class Assets(db.Model):
+    __tablename__ = "Assets"
     id = db.Column(db.Integer, primary_key=True)
 
-    slug = db.Column(db.String(255), index=True, unique=True)
+    assetable_id = db.Column(db.Integer,  index=True)
+    assetable_type = db.Column(db.String(30),  index=True)
 
-    title_en_US = db.Column(db.String(255),  index=True, unique=True)
-    title_fr_FR = db.Column(db.String(255),  index=True, unique=True)
+    data_file_name = db.Column(db.String(255))
+    data_content_type = db.Column(db.String(255))
+    data_file_size = db.Column(db.Integer)
 
-    description_en_US = db.Column(db.Text(),  index=True)
-    description_fr_FR = db.Column(db.Text(),  index=True)
+    asset_type = db.Column(db.String(30), index=True)
+    width = db.Column(db.Integer)
+    height = db.Column(db.Integer)
 
-    # one-to-many relationship with the User model
-    users = db.relationship('Users', backref='unit', lazy='dynamic')
+    description_en_US = db.Column(db.Text())
+    description_fr_FR = db.Column(db.Text())
 
     # is_active usually returns True. 
-    # This should return False only in cases where we have disabled unit. 
+    # This should return False only in cases where we have disabled asset. 
     is_active = db.Column(db.Boolean, index=True, default=True)
 
     updated_at = db.Column(db.Integer, default=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()), onupdate=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()))
@@ -42,22 +45,28 @@ class Units(db.Model):
 
 
     def all_data(self, page, LISTINGS_PER_PAGE):
-        return Units.query.order_by(desc(Units.created_at)).paginate(page, LISTINGS_PER_PAGE, False)
+        return Assets.query.order_by(desc(Assets.created_at)).paginate(page, LISTINGS_PER_PAGE, False)
 
     def read_data(self, some_id):
-        unit = Units.query.filter(Units.id == some_id).first_or_404()
-        return unit
+        asset = Assets.query.filter(Assets.id == some_id).first_or_404()
+        return asset
 
 
     def create_data(self, form):
         # dateTime conversion to timestamp
         timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
 
-        new_record = Units(
-                                slug=form['slug'],
+        new_record = Assets(    
+                                assetable_id=form['assetable_id'], 
+                                assetable_type=form['assetable_type'], 
 
-                                title_en_US=form['title_en_US'], 
-                                title_fr_FR=form['title_fr_FR'], 
+                                data_file_name=form['data_file_name'], 
+                                data_content_type=form['data_content_type'], 
+                                data_file_size=form['data_file_size'], 
+
+                                asset_type =form['asset_type'],
+                                width=form['width'],
+                                height=form['height'],
 
                                 description_en_US=form['description_en_US'],
                                 description_fr_FR=form['description_fr_FR'],
@@ -70,32 +79,38 @@ class Units(db.Model):
         db.session.commit()
     
     def update_data(self, some_id, form ):
-        unit = Units.query.get_or_404(some_id)
+        asset = Assets.query.get_or_404(some_id)
 
-        unit.slug = form['slug']
+        asset.assetable_id=form['assetable_id'] 
+        asset.assetable_type=form['assetable_type'] 
 
-        unit.title_en_US = form['title_en_US']
-        unit.title_fr_FR = form['title_fr_FR']
+        asset.data_file_name=form['data_file_name'] 
+        asset.data_content_type=form['data_content_type'] 
+        asset.data_file_size=form['data_file_size'] 
 
-        unit.description_en_US = form['description_en_US']
-        unit.description_fr_FR = form['description_fr_FR']
+        asset.asset_type =form['asset_type']
+        asset.width=form['width']
+        asset.height=form['height']
 
-        unit.is_active = form['is_active']
+        asset.description_en_US = form['description_en_US']
+        asset.description_fr_FR = form['description_fr_FR']
+
+        asset.is_active = form['is_active']
 
         # dateTime conversion to timestamp
         timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
         # convert string to integer format
-        unit.created_at = int(timestamp_created_at)
+        asset.created_at = int(timestamp_created_at)
 
 
         db.session.commit()
 
     def delete_data(self, some_id ):
-        unit = Units.query.get_or_404(some_id)
-        db.session.delete(unit)
+        asset = Assets.query.get_or_404(some_id)
+        db.session.delete(asset)
         db.session.commit()
 
 
     def __repr__(self):
         # return '<Users: {}>'.format(self.id)
-        return '<Units %r>' % self.id
+        return '<Assets %r>' % self.id

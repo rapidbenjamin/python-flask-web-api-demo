@@ -37,6 +37,11 @@ class Users(UserMixin, db.Model):
     unit_id = db.Column(db.Integer, db.ForeignKey('Units.id'))
     # unit = db.relationship('Units', backref=db.backref('users', lazy='dynamic'))
 
+
+    is_admin = db.Column(db.Boolean, default=True)
+    is_owner = db.Column(db.Boolean, default=False)
+    is_member = db.Column(db.Boolean, default=True)
+
     # Flask_login requirements
 
     # is_authenticated usually returns True. 
@@ -46,10 +51,6 @@ class Users(UserMixin, db.Model):
     # is_anonymous is used to indicate a user who is not supposed to be logged in to the system and should access the application as anonymous. 
     # This should usually return False for regular logged-in users.
     is_anonymous = db.Column(db.Boolean, default=False) 
-
-    is_admin = db.Column(db.Boolean, default=True)
-    is_editor = db.Column(db.Boolean, default=False)
-    is_member = db.Column(db.Boolean, default=False)
 
     # is_active usually returns True. 
     # This should return False only in cases where we have blocked or banned a user. 

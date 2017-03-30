@@ -15,17 +15,18 @@
         <div class="navbar-collapse collapse">
 
             <ul class="nav navbar-nav">
-                <li><a href="/users">Users</a></li>
-                <li><a href="/units">Units</a></li>
+                <li><a href="/users"><span class="glyphicon glyphicon-user"></span> Users</a></li>
+                <li><a href="/units"><span class="glyphicon glyphicon-list-alt"></span> Units</a></li>
+                <li><a href="/assets"><span class="glyphicon glyphicon-picture"></span> Assets</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('auth_page.dashboard') }}">Dashboard</a></li>
-                    <li><a href="{{ url_for('auth_page.logout') }}">Logout</a></li>
+                    <li><a href="{{ url_for('auth_page.dashboard') }}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+                    <li><a href="{{ url_for('auth_page.logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                     <li><a><i class="fa fa-user"></i>  Hi, {{ current_user.username }}!</a></li>
                 {% else %}
-                    <li><a href="{{ url_for('auth_page.register') }}">Register</a></li>
-                    <li><a href="{{ url_for('auth_page.login') }}">Login</a></li>
+                    <li><a href="{{ url_for('auth_page.register') }}"><span class="glyphicon glyphicon-lock"></span> Register</a></li>
+                    <li><a href="{{ url_for('auth_page.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 {% endif %}
                 <li><a href="/contact"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
             </ul>

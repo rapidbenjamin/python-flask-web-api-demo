@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title_en_US %} {{ asset.id }} - {{ asset.data_file_name }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+    <h3>{{ asset.id }} - {{ asset.data_file_name }}</h3>
+    <hr/>
+    <p><img src=" {{url_for('static', filename='images/' + asset.data_file_name)}}" width="100" class="img-thumbnail"><br/>{{ asset.data_file_name }}</p>
+    <p>{{ asset.data_content_type }}</p>
+    <p>{{ asset.data_file_size }}</p>
+
+    <p>{{ asset.asset_type }}</p>
+    <p>{{ asset.width }}</p>
+    <p>{{ asset.height }}</p>
+
+    <p>{{ asset.description_en_US }}</p>
+    <p>{{ asset.is_active }}</p>
+    <p>{{ asset.updated_at }}</p>
+    <p>{{ asset.created_at }}</p>
+{% endblock content %}
+

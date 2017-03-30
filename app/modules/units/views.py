@@ -70,10 +70,13 @@ def new():
                 units = Units()
 
                 sanitize_form = {
-                    'title_en_US' : form.title_en_US.data,
-                    'description_en_US' : form.description_en_US.data,
 
+                    'slug' : form.slug.data,
+
+                    'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
+
+                    'description_en_US' : form.description_en_US.data,
                     'description_fr_FR' : form.description_fr_FR.data,
 
                     'is_active' : form.is_active.data,
@@ -96,7 +99,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("units/edit.html", form=form,  title_en_US='New', app = app)
+            return render_template("units/edit.html", form=form,  title='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -119,10 +122,12 @@ def edit(id=1):
             if form.validate():
 
                 sanitize_form = {
-                    'title_en_US' : form.title_en_US.data,
-                    'description_en_US' : form.description_en_US.data,
+                    'slug' : form.slug.data,
 
+                    'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
+
+                    'description_en_US' : form.description_en_US.data,
                     'description_fr_FR' : form.description_fr_FR.data,
 
                     'is_active' : form.is_active.data,
@@ -139,10 +144,13 @@ def edit(id=1):
                     return redirect("/units")
 
         form.action = url_for('units_page.edit', id = unit.id)
-        form.title_en_US.data = unit.title_en_US
-        form.description_en_US.data = unit.description_en_US
 
+        form.slug.data = unit.slug
+
+        form.title_en_US.data = unit.title_en_US
         form.title_fr_FR.data = unit.title_fr_FR
+
+        form.description_en_US.data = unit.description_en_US
         form.description_fr_FR.data = unit.description_fr_FR
 
         form.is_active.data = unit.is_active
@@ -152,7 +160,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("units/edit.html", form=form, title_en_US='Edit', app = app)
+            return render_template("units/edit.html", form=form, title='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

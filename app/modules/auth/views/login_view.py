@@ -72,7 +72,7 @@ def login():
     if request.is_xhr == True :
         return jsonify(data = form), 200, {'Content-Type': 'application/json'}
     else:
-        return render_template('auth/login.html', form=form, title_en_US='Login', app = app)
+        return render_template('auth/login.html', form=form, title='Login', app = app)
 
 
 

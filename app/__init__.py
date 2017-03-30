@@ -77,6 +77,9 @@ app.register_blueprint(auth_page, url_prefix='/auth')
 from modules.units import units_page
 app.register_blueprint(units_page, url_prefix='/units')
 
+from modules.assets import assets_page
+app.register_blueprint(assets_page, url_prefix='/assets')
+
 from modules.users import users_page
 app.register_blueprint(users_page, url_prefix='/users')
 

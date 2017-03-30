@@ -3,7 +3,7 @@
 {% block content %}
     <h3>{{ unit.id }} - {{ unit.title_en_US }}</h3>
     <hr/>
-
+    <p>{{ unit.slug }}</p>
     <p>{{ unit.description_en_US }}</p>
     <p> Users : 
         {% if unit.users %}

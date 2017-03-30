@@ -16,14 +16,14 @@ Flask WEB API DEMO
 - Module Sample page CONTACT with form, recaptcha and Email service by SendGrid
 - Module Sample database USERS with SQLALchemy, relational models and Pagination
 - Module Sample database GROUPS with SQLALchemy, relational models and Pagination
-
+- Module Sample database ASSETS files with Pillow image processing
 - Module sample authentication  and authorization with Flask-login plugin :
         - User Registry, Login & Logout
         - Basic HTTP authentication or Token based authentication (with active SSL recommended in production environement)
         - Password encryption and password-check with werkzeug.security (bcrypt-like approach) (with active SSL recommended in production environment)
         - password base64 encoding for remote ajax-based app client (optional)
         - Session based authentication
-        - Role management (is_admin, is_editor, is_member), control access and Dashboard sample page
+        - Role management (is_admin, is_owner, is_member), control access and Dashboard sample page
 - Flash messages notification
 - SQLite or MySQL database configuration option
 - custom theme, layout and templates

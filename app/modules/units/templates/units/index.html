@@ -24,6 +24,7 @@
             {% for unit in list_units.items %}
                 <tr>
                     <td><a href="{{ url_for('units_page.show', id = unit.id) }}" >{{ unit.id }}</a></td>
+                    <td><a href="{{ url_for('units_page.show', id = unit.id) }}" >{{ unit.slug }}</a></td>
                     <td><a href="{{ url_for('units_page.show', id = unit.id) }}" >{{ unit.title_en_US }}</a></td>
                     <td>{{ unit.description_en_US }}</td>
                     <td>

@@ -91,7 +91,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form, units = units, title_en_US='New', app = app)
+            return render_template("users/edit.html", form=form, units = units, title='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -143,7 +143,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form,  units = units, title_en_US='Edit', app = app)
+            return render_template("users/edit.html", form=form,  units = units, title='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
