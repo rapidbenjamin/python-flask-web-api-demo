@@ -40,7 +40,7 @@ class BaseConfig(object):
     # If a larger file is transmitted, Flask will raise an RequestEntityTooLarge exception.
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
     THUMBNAIL_SIZE = 128, 128
-    MAX_SIZE = 80
+    MAX_SIZE = 1600
 
     # Localization I18N and l10n
     BABEL_DEFAULT_LOCALE = "fr_FR"
