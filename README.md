@@ -4,7 +4,7 @@ Flask WEB API DEMO
 
 #### This is an advanced demo app forked from AndreiD/Flask-Easy-Template : https://github.com/AndreiD/Flask-Easy-Template
 
-### added references with : https://github.com/mbithenzomo/project-dream-team-three
+### added reference sources : https://github.com/mbithenzomo/project-dream-team-three
 
 
 ### Features:
@@ -15,7 +15,7 @@ Flask WEB API DEMO
 - Module Sample page HOME
 - Module Sample page CONTACT with form, recaptcha and Email service by SendGrid
 - Module Sample database USERS with SQLALchemy, relational models and Pagination
-- Module Sample database GROUPS with SQLALchemy, relational models and Pagination
+- Module Sample database SECTIONS with SQLALchemy, relational models and Pagination
 - Module Sample database ASSETS files and image processing with Pillow
 - Module sample authentication  and authorization with Flask-login plugin :
         - User Registry, Login & Logout

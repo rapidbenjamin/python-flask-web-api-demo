@@ -19,7 +19,7 @@ enable_pretty_logging()
 
 # ------- PRODUCTION CONFIG -------
 # http_server = HTTPServer(WSGIContainer(app))
-# http_server.bind(app_config[config_name].PORT)
+# http_server.bind(app.config['PORT'])
 # http_server.start(0)
 # ioloop = tornado.ioloop.IOLoop().instance()
 # autoreload.start(ioloop)

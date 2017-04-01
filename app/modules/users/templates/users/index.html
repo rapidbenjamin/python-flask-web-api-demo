@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-
+<div class="container">
     <h3>Users</h3>
     <h4 class="text-right"><a href="/users/new"><span class="glyphicon glyphicon-plus"></span> New</a></h4>
     <hr/>
@@ -12,25 +12,25 @@
             <th>Id</th>
             <th>Email</th>
             <th>User name</th>
-            <th>Unit name</th>
+            <th>Section name</th>
             <th>Locale</th>
             <th>Timezone</th>
             <th>Active</th>
             <th>Updated Date</th>
             <th>Created Date</th>
-            <th colspan="2">Actions</th>
+            <th colspan="3">Actions</th>
             
         </tr>
         </thead>
         {% if list_users.items %}
             {% for user in list_users.items %}
                 <tr>
-                    <td><a href="{{ url_for('users_page.show', id = user.id) }}" >{{ user.id }}</a></td>
+                    <td>{{ user.id }}</td>
                     <td><a href="{{ url_for('users_page.show', id = user.id) }}" >{{ user.email }}</a></td>
                     <td>{{ user.username }}</td>
                     <td>
-                        {% if user.unit %}
-                            {{ user.unit.title_en_US }}
+                        {% if user.section %}
+                            {{ user.section.title_en_US }}
                         {% else %}
                             None
                         {% endif %}
@@ -40,8 +40,9 @@
                     <td>{{ user.is_active }}</td>
                     <td>{{ user.updated_at | datetimeformat }}</td>
                     <td>{{ user.created_at | datetimeformat }}</td>
-                    <td><a href="{{ url_for('users_page.edit', id = user.id) }}" ><i class="glyphicon glyphicon-pencil"></i> edit</a></td>
-                    <td><a href="{{ url_for('users_page.delete', id = user.id) }}" ><i class="glyphicon glyphicon-trash"></i> delete</a></td>
+                    <td><a href="{{ url_for('users_page.show', id = user.id) }}" ><i class="glyphicon glyphicon-file"></i> </a></td>
+                    <td><a href="{{ url_for('users_page.edit', id = user.id) }}" ><i class="glyphicon glyphicon-pencil"></i> </a></td>
+                    <td><a href="{{ url_for('users_page.delete', id = user.id) }}" ><i class="glyphicon glyphicon-trash"></i> </a></td>
 
                 </tr>
             {% endfor %}
@@ -67,6 +68,5 @@
             {% endif %}
         {%- endfor %}
     </ul>
-
-
+</div>
 {% endblock content %}

@@ -13,8 +13,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from ... import db
 from app.helpers import *
-from app.localization import get_locale, get_timezone
-from app.modules.units.models import Units
+from app.modules.localization.views import get_locale, get_timezone
+from app.modules.sections.models import Sections
 
 
 class Users(UserMixin, db.Model):
@@ -31,11 +31,11 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String(60), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     
-    # one-to-many relationship with the Unit model
-    # the backref argument in the unit field allows us to access users from the Units model 
-    # as simple as unit.users in our views.
-    unit_id = db.Column(db.Integer, db.ForeignKey('Units.id'))
-    # unit = db.relationship('Units', backref=db.backref('users', lazy='dynamic'))
+    # one-to-many relationship with the Section model
+    # the backref argument in the section field allows us to access users from the Sections model 
+    # as simple as section.users in our views.
+    section_id = db.Column(db.Integer, db.ForeignKey('Sections.id'))
+    # section = db.relationship('Sections', backref=db.backref('users', lazy='dynamic'))
 
 
     is_admin = db.Column(db.Boolean, default=True)
@@ -111,7 +111,7 @@ class Users(UserMixin, db.Model):
         user = Users(
                         email=form['email'], 
                         username=form['username'], 
-                        unit = form['unit'], 
+                        section = form['section'], 
                         is_active = form['is_active'],
                         # convert string to integer format
                         created_at = int(timestamp_created_at)
@@ -125,7 +125,7 @@ class Users(UserMixin, db.Model):
 
         user.email = form['email']
         user.username = form['username']
-        user.unit = form['unit']
+        user.section = form['section']
         user.is_active = form['is_active']
 
         # dateTime conversion to timestamp

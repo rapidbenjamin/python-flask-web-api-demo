@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-
+<div class="container">
     <h3>Assets</h3>
     <h4 class="text-right"><a href="/assets/new"><span class="glyphicon glyphicon-plus"></span> New</a></h4>
     <hr/>
@@ -11,6 +11,7 @@
         <thead>
         <tr>
             <th>Id</th>
+            <th>Thumbnail</th>
             <th>File name</th>
             <th>Content type</th>
             <th>File size</th>
@@ -21,16 +22,17 @@
             <th>Active</th>
             <th>Updated Date</th>
             <th>Created Date</th>
-            <th colspan="2">Actions</th>
+            <th colspan="3">Actions</th>
         </tr>
         </thead>
         {% if list_assets.items %}
             {% for asset in list_assets.items %}
                 <tr>
-                    <td><a href="{{ url_for('assets_page.show', id = asset.id) }}" >{{ asset.id }}</a></td>
+                    <td>{{ asset.id }}</td>
                     <td><a href="{{ url_for('assets_page.show', id = asset.id) }}" >
-                        <img src=" {{url_for('static', filename='images/' + asset.data_file_name) }}"  width="100" class="img-thumbnail">
-                        <br/>{{ asset.data_file_name }}</a></td>
+                        <img src=" {{url_for('static', filename='images/' + asset.data_file_name) }}"  width="60" class="img-thumbnail">
+                    </a></td>
+                    <td>{{ asset.data_file_name }}</td>
                     <td>{{ asset.data_content_type }}</td>
                     <td>{{ asset.data_file_size }}</td>
                     <td>{{ asset.asset_type }}</td>
@@ -40,8 +42,9 @@
                     <td>{{ asset.is_active }}</td>
                     <td>{{ asset.updated_at | datetimeformat }}</td>
                     <td>{{ asset.created_at | datetimeformat }}</td>
-                    <td><a href="{{ url_for('assets_page.edit', id = asset.id) }}" ><i class="glyphicon glyphicon-pencil"></i> edit</a></td>
-                    <td><a href="{{ url_for('assets_page.delete', id = asset.id) }}" ><i class="glyphicon glyphicon-trash"></i> delete</a></td>
+                    <td><a href="{{ url_for('assets_page.show', id = asset.id) }}" ><i class="glyphicon glyphicon-file"></i> </a></td>
+                    <td><a href="{{ url_for('assets_page.edit', id = asset.id) }}" ><i class="glyphicon glyphicon-pencil"></i> </a></td>
+                    <td><a href="{{ url_for('assets_page.delete', id = asset.id) }}" ><i class="glyphicon glyphicon-trash"></i> </a></td>
 
                 </tr>
             {% endfor %}
@@ -67,6 +70,6 @@
             {% endif %}
         {%- endfor %}
     </ul>
-
+</div>
 
 {% endblock content %}

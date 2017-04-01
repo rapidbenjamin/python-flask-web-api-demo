@@ -1,19 +1,17 @@
 {% extends "base.html" %}
 {% block title_en_US %}{{ post.title_en_US }} - {{ app.config['APP_NAME'] }}{% endblock %}
-{% block style_block %}<link href="{{url_for('home_page.static', filename='styles/home.css')}}" rel="stylesheet">{% endblock %} 
+{% block head_style %}<link href="{{url_for('home_page.static', filename='styles/home.css')}}" rel="stylesheet">{% endblock %} 
 {% block content %}
-<div class="intro-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="intro-message">
-                    <h1>{{ post.title_en_US }}</h1>
-                    <h3>{{ post.description_en_US }}</h3>
-                    <hr class="intro-divider">
-                    </ul>
-                </div>
-            </div>
+<div class="container-fluid intro-header">
+    <div class="row">
+        <div class="col-lg-12 intro-message">
+            <h1>{{ post.title_en_US }}</h1>
+            <h3>{{ post.description_en_US }}</h3>
+            <hr class="intro-divider">
+            </ul>
         </div>
     </div>
 </div>
 {% endblock content %}
+
+{% block taiil_script %}<script src="{{url_for('home_page.static', filename='scripts/home.js')}}"></script>{% endblock %} 

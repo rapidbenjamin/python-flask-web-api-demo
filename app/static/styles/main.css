@@ -49,4 +49,12 @@ body {
 }
 
 
+.active {
+  color: #FFF !important;
+  background-color: #1e1e1e !important;
+}
+
+
+
+
 /* Your customizations here */

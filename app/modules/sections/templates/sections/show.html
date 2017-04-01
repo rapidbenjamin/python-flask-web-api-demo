@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title_en_US %} {{ section.id }} - {{ section['title_%s' %(g.current_lang)] }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>{{ section.id }} - {{ section['title_%s' %(g.current_lang)] }}</h3>
+    <h4 class="text-right"><a href="/sections"><span class="glyphicon glyphicon-home"></span> Back</a></h4>
+    <hr/>
+
+    <p>{{ section.slug }}</p>
+    <p>{{ section['description_%s' %(g.current_lang)] }}</p>
+    <p> Users : 
+        {% if section.users %}
+            {{ section.users.count() }}
+        {% else %}
+            0
+        {% endif %}
+    </p>
+    <p>{{ section.is_active }}</p>
+    <p>{{ section.updated_at }}</p>
+    <p>{{ section.created_at }}</p>
+</div>
+{% endblock content %}
+

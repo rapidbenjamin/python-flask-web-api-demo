@@ -11,12 +11,12 @@ from ... import db
 
 import time
 from app.helpers import *
-from app.localization import get_locale, get_timezone
+from app.modules.localization.views import get_locale, get_timezone
 # from app.modules.users.models import Users
 
 
-class Units(db.Model):
-    __tablename__ = "Units"
+class Sections(db.Model):
+    __tablename__ = "Sections"
     id = db.Column(db.Integer, primary_key=True)
 
     slug = db.Column(db.String(255), index=True, unique=True)
@@ -28,10 +28,10 @@ class Units(db.Model):
     description_fr_FR = db.Column(db.Text(),  index=True)
 
     # one-to-many relationship with the User model
-    users = db.relationship('Users', backref='unit', lazy='dynamic')
+    users = db.relationship('Users', backref='section', lazy='dynamic')
 
     # is_active usually returns True. 
-    # This should return False only in cases where we have disabled unit. 
+    # This should return False only in cases where we have disabled section. 
     is_active = db.Column(db.Boolean, index=True, default=True)
 
     updated_at = db.Column(db.Integer, default=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()), onupdate=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()))
@@ -42,18 +42,18 @@ class Units(db.Model):
 
 
     def all_data(self, page, LISTINGS_PER_PAGE):
-        return Units.query.order_by(desc(Units.created_at)).paginate(page, LISTINGS_PER_PAGE, False)
+        return Sections.query.order_by(desc(Sections.created_at)).paginate(page, LISTINGS_PER_PAGE, False)
 
     def read_data(self, some_id):
-        unit = Units.query.filter(Units.id == some_id).first_or_404()
-        return unit
+        section = Sections.query.filter(Sections.id == some_id).first_or_404()
+        return section
 
 
     def create_data(self, form):
         # dateTime conversion to timestamp
         timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
 
-        new_record = Units(
+        new_record = Sections(
                                 slug=form['slug'],
 
                                 title_en_US=form['title_en_US'], 
@@ -70,32 +70,32 @@ class Units(db.Model):
         db.session.commit()
     
     def update_data(self, some_id, form ):
-        unit = Units.query.get_or_404(some_id)
+        section = Sections.query.get_or_404(some_id)
 
-        unit.slug = form['slug']
+        section.slug = form['slug']
 
-        unit.title_en_US = form['title_en_US']
-        unit.title_fr_FR = form['title_fr_FR']
+        section.title_en_US = form['title_en_US']
+        section.title_fr_FR = form['title_fr_FR']
 
-        unit.description_en_US = form['description_en_US']
-        unit.description_fr_FR = form['description_fr_FR']
+        section.description_en_US = form['description_en_US']
+        section.description_fr_FR = form['description_fr_FR']
 
-        unit.is_active = form['is_active']
+        section.is_active = form['is_active']
 
         # dateTime conversion to timestamp
         timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
         # convert string to integer format
-        unit.created_at = int(timestamp_created_at)
+        section.created_at = int(timestamp_created_at)
 
 
         db.session.commit()
 
     def delete_data(self, some_id ):
-        unit = Units.query.get_or_404(some_id)
-        db.session.delete(unit)
+        section = Sections.query.get_or_404(some_id)
+        db.session.delete(section)
         db.session.commit()
 
 
     def __repr__(self):
         # return '<Users: {}>'.format(self.id)
-        return '<Units %r>' % self.id
+        return '<Sections %r>' % self.id

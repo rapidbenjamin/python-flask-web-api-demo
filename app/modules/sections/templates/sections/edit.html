@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="container">
     <h3>{{ title_en_US }}</h3>
     <hr/>
     <div class="row">
@@ -9,14 +10,14 @@
                     {{ form.csrf_token }}
                     <!-- <input id="csrf_token" name="csrf_token" value="" type="hidden"> -->
                     <fieldset>
-                        <legend>Add new unit</legend>
+                        <legend>Add new section</legend>
 
                         <div class="form-group">
-                            <label for="unit_slug" class="col-lg-4 control-label">{{ form.slug.label }}</label>
+                            <label for="section_slug" class="col-lg-4 control-label">{{ form.slug.label }}</label>
 
                             <div class="col-lg-6">
                                 {{ form.slug (class="form-control") }}
-                                <!-- <input class="form-control" id="unit_slug" name="unit_slug" required="" value="" type="text"> -->
+                                <!-- <input class="form-control" id="section_slug" name="section_slug" required="" value="" type="text"> -->
                                 {% for error in form.errors.slug %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
@@ -27,11 +28,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="unit_title_en_US" class="col-lg-4 control-label">{{ form.title_en_US.label }}</label>
+                            <label for="section_title_en_US" class="col-lg-4 control-label">{{ form.title_en_US.label }}</label>
 
                             <div class="col-lg-6">
                                 {{ form.title_en_US (class="form-control") }}
-                                <!-- <input class="form-control" id="unit_title_en_US" name="unit_title_en_US" required="" value="" type="text"> -->
+                                <!-- <input class="form-control" id="section_title_en_US" name="section_title_en_US" required="" value="" type="text"> -->
                                 {% for error in form.errors.title_en_US %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
@@ -42,11 +43,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="unit_title_fr_FR" class="col-lg-4 control-label">{{ form.title_fr_FR.label }}</label>
+                            <label for="section_title_fr_FR" class="col-lg-4 control-label">{{ form.title_fr_FR.label }}</label>
 
                             <div class="col-lg-6">
                                 {{ form.title_fr_FR (class="form-control") }}
-                                <!-- <input class="form-control" id="unit_title_fr_FR" name="unit_title_fr_FR" required="" value="" type="text"> -->
+                                <!-- <input class="form-control" id="section_title_fr_FR" name="section_title_fr_FR" required="" value="" type="text"> -->
                                 {% for error in form.errors.title_fr_FR %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
@@ -57,11 +58,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="unit_description_en_US" class="col-lg-4 control-label">{{ form.description_en_US.label }}</label>
+                            <label for="section_description_en_US" class="col-lg-4 control-label">{{ form.description_en_US.label }}</label>
 
                             <div class="col-lg-6">
                                 {{ form.description_en_US (cols="35", rows="5", class="form-control") }}
-                                <!-- <textarea class="form-control" id="unit_description_en_US" name="unit_description_en_US">form.description_en_US.data</textarea> -->
+                                <!-- <textarea class="form-control" id="section_description_en_US" name="section_description_en_US">form.description_en_US.data</textarea> -->
                                 {% for error in form.errors.description_en_US %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
@@ -72,11 +73,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="unit_description_fr_FR" class="col-lg-4 control-label">{{ form.description_fr_FR.label }}</label>
+                            <label for="section_description_fr_FR" class="col-lg-4 control-label">{{ form.description_fr_FR.label }}</label>
 
                             <div class="col-lg-6">
                                 {{ form.description_fr_FR (cols="35", rows="5", class="form-control") }}
-                                <!-- <textarea class="form-control" id="unit_description_fr_FR" name="unit_description_fr_FR">form.description_fr_FR.data</textarea> -->
+                                <!-- <textarea class="form-control" id="section_description_fr_FR" name="section_description_fr_FR">form.description_fr_FR.data</textarea> -->
                                 {% for error in form.errors.description_en_US %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
@@ -87,7 +88,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="unit_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>
+                            <label for="section_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>
                             <div class="col-lg-6">
                                 {{ form.is_active (class="form-control") }}
                                 <!-- <input type="checkbox" name="check" value="{{ form.is_active.data }}"> -->
@@ -100,12 +101,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="unit_created_at" class="col-lg-4 control-label">{{ form.created_at.label }}</label>
+                            <label for="section_created_at" class="col-lg-4 control-label">{{ form.created_at.label }}</label>
 
-                            <div class="col-lg-6 input-unit date" >
+                            <div class="col-lg-6 input-group date" >
         
                                 <input value="{{ form.created_at.data }}" class="form-control datepicker"  data-provide="datepicker" data-date-format="yyyy-mm-dd" id="created_at" name="created_at" required="" type="text">
-                                <div class="input-unit-addon">
+                                <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </div>
                                 {% for error in form.errors.created_at %} <br/>
@@ -133,7 +134,7 @@
 
 
     </div>
-
+</div>
 <script>    
 
     $('#created_at')

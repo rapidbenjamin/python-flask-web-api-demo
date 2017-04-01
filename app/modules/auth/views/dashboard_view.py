@@ -27,7 +27,7 @@ def check_is_admin():
 @auth_page.route('/dashboard')
 @login_required
 def dashboard():
-    post = { 'title_en_US' : 'Admin Dashboard' , 'description_en_US' : 'dashboard ' }
+    post = { 'title_en_US' : 'Dashboard' , 'description_en_US' : 'you can customize your stuffs here' }
     # prevent non-admins from accessing the page
     check_is_admin()
     return render_template('auth/dashboard.html', post = post, app = app )

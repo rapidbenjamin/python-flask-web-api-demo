@@ -1,5 +1,5 @@
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -15,23 +15,42 @@
         <div class="navbar-collapse collapse">
 
             <ul class="nav navbar-nav">
-                <li><a href="/users"><span class="glyphicon glyphicon-user"></span> Users</a></li>
-                <li><a href="/units"><span class="glyphicon glyphicon-list-alt"></span> Units</a></li>
-                <li><a href="/assets"><span class="glyphicon glyphicon-picture"></span> Assets</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('auth_page.dashboard') }}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
-                    <li><a href="{{ url_for('auth_page.logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-                    <li><a><i class="fa fa-user"></i>  Hi, {{ current_user.username }}!</a></li>
-                {% else %}
-                    <li><a href="{{ url_for('auth_page.register') }}"><span class="glyphicon glyphicon-lock"></span> Register</a></li>
-                    <li><a href="{{ url_for('auth_page.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a class="{{ 'active' if 'dashboard' in request.endpoint else '' }}" href="{{ url_for('auth_page.dashboard') }}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
                 {% endif %}
-                <li><a href="/contact"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
+                <li><a class="{{ 'active' if 'users_page.index' in request.endpoint else '' }}" href="/users"><span class="glyphicon glyphicon-user"></span> Users</a></li>
+                <li><a class="{{ 'active' if 'sections_page.index' in request.endpoint else '' }}" href="/sections"><span class="glyphicon glyphicon-list-alt"></span> Sections</a></li>
+                <li><a class="{{ 'active' if 'assets_page.index' in request.endpoint else '' }}" href="/assets"><span class="glyphicon glyphicon-picture"></span> Assets</a></li>
+                <li><a class="{{ 'active' if 'contact_page.index' in request.endpoint else '' }}" href="/contact"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">                
+                {% if current_user.is_authenticated %}
+                    <li></li>
+                    <li class="btn-group dropdown" >
+                        <a class="dropdown-toggle {{ 'active' if ('users_page.show' or 'users_page.settings' or 'auth_page.logout') in request.endpoint else '' }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                            <span class="glyphicon glyphicon-user"></span> Account {{ current_user.username }} <b class="caret"></b>
+                        </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <li><a class="{{ 'active' if 'users_page.show' in request.endpoint else '' }}" href="{{ url_for('users_page.show', id=current_user.id) }}"><span class="glyphicon glyphicon-user"></span> My profile</a></li>
+                        <li><a class="{{ 'active' if 'users_page.settings' in request.endpoint else '' }}" href="{{ url_for('users_page.settings', id=current_user.id) }}"><span class="glyphicon glyphicon-cog"></span> My settings</a></li>
+                        <li><a class="{{ 'active' if 'users_page.logout' in request.endpoint else '' }}" href="{{ url_for('auth_page.logout') }}"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
+                    </ul>
+                    </li>
+                {% else %}
+                    <li><a  href="{{ url_for('auth_page.register') }}"><span class="glyphicon glyphicon-lock"></span> Register</a></li>
+                    <li><a  href="{{ url_for('auth_page.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                {% endif %}
+                <li class="btn-group dropdown" >
+                  <a class="dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                      <img height="24px" width="24px" src="{{ url_for('static', filename='images/flags/' + g.current_lang + '.png') }}" alt="icon" > {{ g.current_lang[-2:] }} <b class="caret"></b>
+                    </a>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <li><a href="?lang=en_US"  class="btn dropdown-item"><img height="32px" width="32px" src="{{ url_for('static', filename='images/flags/en_US.png') }}" alt="icon"> English</a></li>
+                    <li><a href="?lang=fr_FR"  class="btn dropdown-item"><img height="32px" width="32px" src="{{ url_for('static', filename='images/flags/fr_FR.png') }}" alt="icon"> French</a></li>
+                  </ul>
+                </li>
             </ul>
         </div>
     </div>
 </div>
-
 

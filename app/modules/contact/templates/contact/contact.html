@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title_en_US %}{{ post.title_en_US }} - {{ app.config['APP_NAME'] }}{% endblock %}
 {% block content %}
-
+<div class="container">
     <h3>{{ post.title_en_US }}</h3>
     <hr/>
     <p>{{ post.description_en_US }}</p>
@@ -53,5 +53,5 @@
         <h5>We have received your mail and will get back to you as soon as possible.</h5>
 
         {% endif %}
-
+</div>
 {% endblock content %}

@@ -12,9 +12,9 @@ from time import time
 from app import app, logger
 from . import users_page
 from models import Users
-from app.modules.units.models import Units
+from app.modules.sections.models import Sections
 from app.helpers import *
-from app.localization import get_locale, get_timezone
+from app.modules.localization.views import get_locale, get_timezone
 
 # -------  ROUTINGS AND METHODS  ------- 
 
@@ -37,7 +37,6 @@ def users(page=1):
 
 
 
-    
 
 # Show user
 @users_page.route('/show/<int:id>')
@@ -62,7 +61,7 @@ def show(id=1):
 def new():
     try : 
         form = Form_Record_Add(request.form)
-        units = Units.query.all()
+        sections = Sections.query.all()
 
         if request.method == 'POST':
             if form.validate():
@@ -71,7 +70,7 @@ def new():
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
-                    'unit' : form.unit.data,
+                    'section' : form.section.data,
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
                 }                
@@ -91,7 +90,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form, units = units, title='New', app = app)
+            return render_template("users/edit.html", form=form, sections = sections, title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -104,8 +103,8 @@ def edit(id=1):
 
         # check_admin()
 
-        # units = Units.query.all()
-        units = Units.query.filter(Units.is_active == True).all()
+        # sections = Sections.query.all()
+        sections = Sections.query.filter(Sections.is_active == True).all()
         user = Users.query.get_or_404(id)
         
         form = Form_Record_Add(request.form)
@@ -113,12 +112,12 @@ def edit(id=1):
         if request.method == 'POST':
             if form.validate():
 
-                unit = form.unit.data
+                section = form.section.data
 
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
-                    'unit' : form.unit.data,
+                    'section' : form.section.data,
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
                 }
@@ -143,7 +142,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form,  units = units, title='Edit', app = app)
+            return render_template("users/edit.html", form=form,  sections = sections, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -173,3 +172,54 @@ def delete(id=1):
 
 
 
+# Edit user settings
+@users_page.route('/<int:id>/settings', methods=['GET', 'POST'])
+def settings(id=1):
+    try : 
+
+        # check_admin()
+
+        # sections = Sections.query.all()
+        sections = Sections.query.filter(Sections.is_active == True).all()
+        user = Users.query.get_or_404(id)
+        
+        form = Form_Record_Add(request.form)
+
+        if request.method == 'POST':
+            if form.validate():
+
+                section = form.section.data
+
+                sanitize_form = {
+                    'email' : form.email.data,
+                    'username' : form.username.data,
+                    'section' : form.section.data,
+                    'is_active' : form.is_active.data,
+                    'created_at' : form.created_at.data
+                }
+
+                user.update_data(user.id, sanitize_form)
+                logger.info("Editing a new record.")
+                
+                if request.is_xhr == True:
+                    return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
+                else : 
+                    flash("Record updated successfully.", category="success")
+                    return redirect(url_for('users_page.show', id = user.id))
+
+        
+        form.action = url_for('users_page.settings', id = user.id)
+        form.email.data = user.email
+        form.username.data = user.username
+        form.is_active.data = user.is_active
+        form.created_at.data = string_timestamp_utc_to_string_datetime_utc(user.created_at, '%Y-%m-%d')
+
+        # html or Json response
+        if request.is_xhr == True:
+            return jsonify(data = form), 200, {'Content-Type': 'application/json'}
+        else:
+            return render_template("users/settings.html", form=form,  sections = sections, title_en_US='Edit', app = app)
+    except Exception, ex:
+        print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
+        abort(404)

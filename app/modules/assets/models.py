@@ -11,7 +11,7 @@ from ... import db
 
 import time
 from app.helpers import *
-from app.localization import get_locale, get_timezone
+from app.modules.localization.views import get_locale, get_timezone
 # from app.modules.users.models import Users
 
 

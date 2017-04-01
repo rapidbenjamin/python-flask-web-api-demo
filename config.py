@@ -15,6 +15,11 @@ class BaseConfig(object):
     Common configurations
     Put any configurations here that are common across all environments
     """
+
+    APPLICATION_ROOT = "/api/v1.0.0"
+
+    BOOTSWATCH_THEME = "slate"
+
     ADMIN_EMAIL = "your_email@gmail.com"
 
     DEBUG = False
@@ -42,15 +47,6 @@ class BaseConfig(object):
     THUMBNAIL_SIZE = 128, 128
     MAX_SIZE = 1600
 
-    # Localization I18N and l10n
-    BABEL_DEFAULT_LOCALE = "fr_FR"
-    BABEL_DEFAULT_TIMEZONE = "UTC"
-    # change path of messages.mo file
-    BABEL_TRANSLATION_DIRECTORIES = "app;static;localization"
-    ALLOWED_LANGUAGES = {
-        'en_US': 'English',
-        'fr_FR': 'French',
-    }
 
     # session
     SESSION_TYPE = 'filesystem'
@@ -76,7 +72,7 @@ class BaseConfig(object):
 class ProductionConfig(BaseConfig):
     """
     Production configurations
-    """
+    """    
 
     SECRET_CONFIG = 'prod-config.py'
 
@@ -90,7 +86,7 @@ class DevelopmentConfig(BaseConfig):
     """
     Development configurations
     """
-    
+
     SECRET_CONFIG = 'dev-config.py'
 
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data/db.sqlite')

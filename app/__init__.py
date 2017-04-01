@@ -9,7 +9,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask.ext.session import Session
-from flask.ext.babel import Babel
+
 
 # ------- IMPORT LOCAL DEPENDENCIES ------- 
 import os
@@ -54,8 +54,7 @@ login_manager.login_view = "auth_page.login"
 # REGISTER BOOTSTRAP
 Bootstrap(app)
 
-# REGISTER LOCALIZATION
-babel = Babel(app)
+
 
 # ------- IMPORT LOCAL DEPENDENCIES AFTER REGISTERING -------  
 #To solve the problem from circular import, place the other imports which are dependent on 'db' and app below app== and db=SQLAlchemy(app).
@@ -63,10 +62,13 @@ babel = Babel(app)
 # ------- LAST REGISTER MODULES WITH BLUEPRINTS -------  
 from . import modules
 from . import views
-from modules.units.models import Units
+from modules.sections.models import Sections
 from modules.users.models  import Users
 
 # REGISTER BLUEPRINTS
+
+from modules.localization import localization_service
+app.register_blueprint(localization_service, url_prefix='/localization')
 
 from modules.home import home_page
 app.register_blueprint(home_page, url_prefix='/home')
@@ -74,8 +76,8 @@ app.register_blueprint(home_page, url_prefix='/home')
 from modules.auth import auth_page
 app.register_blueprint(auth_page, url_prefix='/auth')
 
-from modules.units import units_page
-app.register_blueprint(units_page, url_prefix='/units')
+from modules.sections import sections_page
+app.register_blueprint(sections_page, url_prefix='/sections')
 
 from modules.assets import assets_page
 app.register_blueprint(assets_page, url_prefix='/assets')

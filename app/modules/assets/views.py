@@ -19,15 +19,14 @@ from app import app, logger
 from . import assets_page
 from models import Assets
 from app.helpers import *
-from app.localization import get_locale, get_timezone
+from app.modules.localization.views import get_locale, get_timezone
 from app import config_name
-from config import app_config
 from constants import *
 
 
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app_config[config_name].ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 
 def resize_image_to_max(image_path, max_size):
@@ -129,7 +128,7 @@ def new():
                     filename = secure_filename(file.filename)
                     filename = filename.encode('utf-8')
 
-                    target_dir = os.path.abspath(app_config[config_name].UPLOAD_FOLDER)
+                    target_dir = os.path.abspath(app.config['UPLOAD_FOLDER'])
                     target = target_dir + '/' + filename
                     
                     print("------------ FILE  ------------\n" + str(target))
@@ -140,7 +139,7 @@ def new():
                     file.save(target)
 
                     # resize if too high
-                    resize_image_to_max(target, app_config[config_name].MAX_SIZE)
+                    resize_image_to_max(target, app.config['MAX_SIZE'])
 
                     filesize = os.stat(target).st_size
                     filetype = file.content_type
@@ -152,7 +151,7 @@ def new():
 
                     filewidth, fileheight = im.size
 
-                    im.thumbnail(app_config[config_name].THUMBNAIL_SIZE)
+                    im.thumbnail(app.config['THUMBNAIL_SIZE'])
                     im.save(infilename + ".thumbnail" + ext)
 
 
@@ -243,7 +242,7 @@ def edit(id=1):
                     filename = secure_filename(file.filename)
                     filename = filename.encode('utf-8')
 
-                    target_dir = os.path.abspath(app_config[config_name].UPLOAD_FOLDER)
+                    target_dir = os.path.abspath(app.config['UPLOAD_FOLDER'])
                     target = target_dir + '/' + filename
                     
                     # Remove previous image
@@ -265,7 +264,7 @@ def edit(id=1):
                     file.save(target)
 
                     # resize if too high
-                    resize_image_to_max(target, app_config[config_name].MAX_SIZE)
+                    resize_image_to_max(target, app.config['MAX_SIZE'])
 
                     filesize = os.stat(target).st_size
                     filetype = file.content_type
@@ -277,7 +276,7 @@ def edit(id=1):
                     filewidth, fileheight = im.size
 
 
-                    im.thumbnail(app_config[config_name].THUMBNAIL_SIZE)
+                    im.thumbnail(app.config['THUMBNAIL_SIZE'])
                     im.save(infilename + ".thumbnail" + ext)
 
                     sanitize_form = {
@@ -346,7 +345,7 @@ def delete(id=1):
         assets = Assets()
         asset = assets.query.get_or_404(id)
 
-        target_dir = os.path.abspath(app_config[config_name].UPLOAD_FOLDER)
+        target_dir = os.path.abspath(app.config['UPLOAD_FOLDER'])
         target = target_dir + '/' + asset.data_file_name
 
         # remove thumbnail first

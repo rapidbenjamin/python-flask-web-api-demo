@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 
-
-{% set bootstrap_version = '3.3.4' %}
-{% set jquery_version = '2.1.3' %}
-{% set moment_version = '2.17.1' %}
-{% set modernizer_version = '2.8.3' %}
-{% set bootswatch_version = '3.3.2' %}
-{% set bootswatch_theme = 'slate' %}
-
-
+    {% set bootstrap_version = '3.3.4' %}
+    {% set jquery_version = '2.1.3' %}
+    {% set moment_version = '2.17.1' %}
+    {% set modernizer_version = '2.8.3' %}
+    {% set bootswatch_version = '3.3.2' %}
+    {% set bootswatch_theme = app.config['BOOTSWATCH_THEME'] %}
 
 <head>
     <meta charset="utf-8">
@@ -22,7 +19,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
     <link href="/static/styles/main.css" rel="stylesheet" />
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
-    {% block style_block %}{# page-specific CSS #}{% endblock %}   
+    {% block head_style %}{# page-specific CSS #}{% endblock %}   
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/{{ modernizer_version }}/modernizr.min.js"></script>{# Modernizr must be here, above body tag. #}
@@ -30,17 +27,20 @@
     {% block head_script %}{# defer-incapable JS block #}{% endblock %}
 </head>
 <body>
+        <!-- pull in navbar -->
+        {% include 'includes/nav.html' %}
 
-        {% include 'includes/nav.html' %} {# pull in navbar #}
-
-    <div class="container" id="maincontent">
-        {% include 'includes/flash_message.html' %} {# page-level feedback notices #}
-        <div id="body_content">
-            {% block content %}{# main content area #}{% endblock %}
+    <div class="container-fluid" id="maincontent">
+        <!-- page-level feedback notices -->
+        {% include 'includes/flash_message.html' %}
+        <div id="body_content" class="row">            
+            {% block content %}
+                <!-- main content area -->
+            {% endblock %}
         </div>
     </div><!-- /container -->
     <footer class="sticky-footer navbar navbar-default">
-        <div id="footer" class="container">
+        <div id="footer" class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     {% block footer %}{% endblock %}
@@ -50,10 +50,22 @@
                 <div class="col-lg-12">
                     <ul class="list-inline text-right">
                         <li><a href="/home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                        <li class="footer-menu-divider">⋅</li>
-                        <li><a href="/auth/register"><span class="glyphicon glyphicon-lock"></span> Register</a></li>
-                        <li class="footer-menu-divider">⋅</li>
-                        <li><a href="/auth/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        <li class="footer-menu-divider">|</li>
+                        {% if current_user.is_authenticated %}
+                            <li class="btn-group dropdown" >
+                                <a class="{{ 'active' if ('users_page.show' or 'users_page.settings' or 'auth_page.logout') in request.endpoint else '' }}" >
+                                    <span class="glyphicon glyphicon-user"></span> {{ current_user.username }}
+                                </a>
+                            </li>
+                            <li class="footer-menu-divider">|</li>
+                            <li><a class="{{ 'active' if 'users_page.settings' in request.endpoint else '' }}" href="{{ url_for('users_page.settings', id=current_user.id) }}"><span class="glyphicon glyphicon-cog"></span> My settings</a></li>
+                            <li class="footer-menu-divider">|</li>
+                            <li><a class="{{ 'active' if 'users_page.logout' in request.endpoint else '' }}" href="{{ url_for('auth_page.logout') }}"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
+                        {% else %}
+                            <li><a  href="{{ url_for('auth_page.register') }}"><span class="glyphicon glyphicon-lock"></span> Register</a></li>
+                            <li class="footer-menu-divider">|</li>
+                            <li><a  href="{{ url_for('auth_page.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        {% endif %}
                     </ul>
                     <p class="text-center text-muted small">Copyright © 2017. All Rights Reserved</p>
                 </div>
@@ -65,7 +77,9 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/{{ bootstrap_version }}/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/{{ moment_version }}/moment.min.js"></script>
     <script src="/static/scripts/main.js"></script>
-    {% block tail_script %}{# defer-capable JS block #}{% endblock %}
+    {% block tail_script %}
+        <!-- defer-capable JS block -->
+    {% endblock %}
     {{ profiler_includes|safe }}
 </body>
 </html>
