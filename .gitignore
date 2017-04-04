@@ -13,14 +13,14 @@ __pycache__/
 *.bak
 
 # secrets instance variables
-.instance/*.*
+instance/
 
 # sessions instance objects
-sessions/*.*
+sessions/
 
 
 # virtual environment and vendors library
-envs/*.*
+envs/
 
 
 local_config.py
