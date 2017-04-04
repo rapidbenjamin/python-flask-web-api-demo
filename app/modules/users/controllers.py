@@ -135,8 +135,12 @@ def edit(id=1):
         form.action = url_for('users_page.edit', id = user.id)
         form.email.data = user.email
         form.username.data = user.username
+        if  user.asset :
+            form.asset.data = user.asset.id
         form.is_active.data = user.is_active
         form.created_at.data = string_timestamp_utc_to_string_datetime_utc(user.created_at, '%Y-%m-%d')
+
+
 
         # html or Json response
         if request.is_xhr == True:

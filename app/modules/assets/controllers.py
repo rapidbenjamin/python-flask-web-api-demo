@@ -216,28 +216,12 @@ def edit(id=1):
         if request.method == 'POST':
             if form.validate():
                 
-
-                # check if the post request has the file part
-                if 'data_file_name' not in request.files :
-                    # redirect to the form page or Json response
-                    if request.is_xhr == True :
-                        return jsonify(data = {message : "No file part", form : form}), 422, {'Content-Type': 'application/json'}
-                    else:
-                        flash("No file part", category="danger")
-                        return redirect(request.url)
-                
                 # file = request.files['data_file_name']
                 file = form.data_file_name.data
-
+               
                 # if user does not select file, browser also submit a empty part without filename
-                if file.filename == '' :
-                    # redirect to the form page or Json response
-                    if request.is_xhr == True :
-                        return jsonify(data = {message : "No selected file", form : form}), 422, {'Content-Type': 'application/json'}
-                    else:
-                        flash("No selected file", category="danger")
-                        return redirect(request.url)
-
+                
+                # value not required in edit mode
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
                     filename = filename.encode('utf-8')
@@ -278,34 +262,43 @@ def edit(id=1):
 
                     im.thumbnail(app.config['THUMBNAIL_SIZE'])
                     im.save(infilename + ".thumbnail" + ext)
-
-                    sanitize_form = {
-                        'assetable_id': form.assetable_id.data, 
-                        'assetable_type': form.assetable_type.data, 
-
-                        'data_file_name': filename, 
-                        'data_content_type': filetype, 
-                        'data_file_size': filesize, 
-
-                        'asset_type' : form.asset_type.data,
-                        'width': filewidth,
-                        'height': fileheight,
-
-                        'description_en_US' : form.description_en_US.data,
-                        'description_fr_FR' : form.description_fr_FR.data,
-
-                        'is_active' : form.is_active.data,
-                        'created_at' : form.created_at.data
-                    }
-
-                    assets.update_data(asset.id, sanitize_form)
-                    logger.info("Editing a new record.")
                     
-                    if request.is_xhr == True:
-                        return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
-                    else : 
-                        flash("Record updated successfully.", category="success")
-                        return redirect("/assets")
+
+                if not file :
+                    filename =  asset.data_file_name
+                    filetype = asset.data_content_type
+                    filesize = asset.data_file_size
+                    filewidth = asset.width
+                    fileheight = asset.height
+
+
+                sanitize_form = {
+                    'assetable_id': form.assetable_id.data, 
+                    'assetable_type': form.assetable_type.data, 
+
+                    'data_file_name': filename, 
+                    'data_content_type': filetype, 
+                    'data_file_size': filesize, 
+
+                    'asset_type' : form.asset_type.data,
+                    'width': filewidth,
+                    'height': fileheight,
+
+                    'description_en_US' : form.description_en_US.data,
+                    'description_fr_FR' : form.description_fr_FR.data,
+
+                    'is_active' : form.is_active.data,
+                    'created_at' : form.created_at.data
+                }
+
+                assets.update_data(asset.id, sanitize_form)
+                logger.info("Editing a new record.")
+                
+                if request.is_xhr == True:
+                    return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
+                else : 
+                    flash("Record updated successfully.", category="success")
+                    return redirect("/assets")
 
         form.action = url_for('assets_page.edit', id = asset.id)
 

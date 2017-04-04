@@ -56,7 +56,6 @@ Flask WEB API DEMO
 
 #### About python virtual environment : how to manage it in local project directory:
 
-
 	# INSTALL VIRTUAL ENV : In Python 3.3, virtualenv is already included  !!! But his name is now pyvenv
 		`pip install virtualenv`
 		# optional switcher/wrapper helper `pip install virtualenvwrapper`
@@ -90,13 +89,13 @@ Flask WEB API DEMO
 		`rmvirtualenv [<name>]`
 
 
-##### Things to do after:
+##### Customize config:
 
 	- check the `config.py`
 	- in **run.py** edit the port of the app (Default: 5000)
 
 
-	- For templates edit `/app/templates/base.html`
+##### Customize templates edit `/app/templates/base.html`:
 
 		> <!DOCTYPE html>
 		> {% set bootstrap_version = '3.3.4' %}
@@ -107,7 +106,7 @@ Flask WEB API DEMO
 
 		In case you don't like the "slate" theme, you can chose a nice theme from http://bootswatch.com/ and just replace the theme name
 
-	- For DB migration use Flask-migrate
+#####  For DB migration use Flask-migrate :
 		type in console :
 						# create a migrations directory
 							- `export FLASK_CONFIG=development` 
@@ -123,7 +122,7 @@ Flask WEB API DEMO
 							- `flask db migrate`
 							- `flask db upgrade`
 
-	- For authorization condition with Flask-login 
+##### authorization control acces with Flask-login : 
 			- in template, use current_user  : {% if current_user.is_authenticated %} ... {% else %} ... {% endif %}
 			- in controllers route, use `@login_required` to check if user is already login then  `current_user` to check his role
 								from flask_login import login_required, current_user
@@ -135,7 +134,7 @@ Flask WEB API DEMO
 										abort(403)
 									return render_template('auth/dashboard.html')
 
-	- To install a new package and save it on requirement file:
+##### To install a new package and save it on requirement file:
 		`python -m pip install <new_package> && pip list > requirements.txt && pip list --format=freeze > requirements-pip2.txt`
 
 
@@ -176,7 +175,7 @@ Flask WEB API DEMO
         "python -m pip install ..." or "pip install ..."
     To call only python 3 scripts choose  this  instead :
         "py -m pip install ..." or "pip3 install ..."
-
+	-----------------------------------------------------------------------------------------
 
     - Error parsing in requirements.txt ?
         Run instead this compatible formatted file :
@@ -184,19 +183,19 @@ Flask WEB API DEMO
         or convert first your requirements.txt to a python 2 pip2 compatible format with this command :
             python -m pip list --format=freeze > requirements.txt
 
-
+	-----------------------------------------------------------------------------------------
     - Error install on Proxytype : SyntaxError like Missing parentheses in call to 'print' ?
         the print function requires parentheses in Python 3 but not in Python 2 which means that the extension that you are trying to install is not yet compatible with python 3
         This is why it is recommended to install python 3 and python 2 by default.
         So run instead this compatible command for python 2 extensions (after installing python 2 if not got it yet) :
             python -m pip install -r requirements-pip2.txt
             or python -m pip install ...
-
+	-----------------------------------------------------------------------------------------
 
     - Error install module Pycrypto : microsoft visual c++ compiler for python 2.7  is required ?
         download and install microsoft visual c++ compiler for python 2.7 here : https://www.microsoft.com/en-us/download/details.aspx?id=44266
 
-
+	-----------------------------------------------------------------------------------------
     - Error Tornado module not found ? 
         it is a problem when installing modules like tornado in a multiple python interpreters environment 
         So run instead this common command python which precize by default  the python 2 version 

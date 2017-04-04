@@ -42,14 +42,11 @@
                         <div class="form-group">
                             <label for="user_asset" class="col-lg-4 control-label">{{ form.asset.label }}</label>
                             <div class="col-lg-6">
-                                {{ form.asset (class="form-control") }}
-                                <!--
-                                <select id="user_asset" name="user_asset" >
+                                <select class="form-control" id="asset" name="asset" >
                                     {% for asset in assets %}
-                                        <option value="{{asset.id}}">{{asset.data_file_name}}</option>
+                                        <option value="{{ asset.id }}" {% if form.asset.data == asset.id %} selected="selected"{% endif %} >{{asset.data_file_name}}</option>
                                     {% endfor %}
                                 </select>
-                                -->
                                 {% for error in form.errors.asset %} <br/>
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
+    <h4 class="pull-right"><a href="/users/new"><span class="glyphicon glyphicon-plus"></span> New</a></h4>
     <h3>Users</h3>
-    <h4 class="text-right"><a href="/users/new"><span class="glyphicon glyphicon-plus"></span> New</a></h4>
     <hr/>
 
     
@@ -48,7 +48,7 @@
             {% endfor %}
          {% else %}
           <tr style="text-align: center">
-              <td colspan="8">
+              <td colspan="10">
             <h4> No users have been added. </h4>
             </td>
          </tr>

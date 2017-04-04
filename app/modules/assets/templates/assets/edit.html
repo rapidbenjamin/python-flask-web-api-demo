@@ -160,10 +160,10 @@
                         <div class="form-group">
                             <label for="asset_created_at" class="col-lg-4 control-label">{{ form.created_at.label }}</label>
 
-                            <div class="col-lg-6 input-asset date" >
+                            <div class="col-lg-6 input-group date" >
         
                                 <input value="{{ form.created_at.data }}" class="form-control datepicker"  data-provide="datepicker" data-date-format="yyyy-mm-dd" id="created_at" name="created_at" required="" type="text">
-                                <div class="input-asset-addon">
+                                <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </div>
                                 {% for error in form.errors.created_at %} <br/>

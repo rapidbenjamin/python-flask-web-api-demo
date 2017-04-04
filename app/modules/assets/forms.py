@@ -11,7 +11,7 @@ class Form_Record_Add(Form):
     assetable_id = StringField('assetable_id', validators=[validators.Length(max=255, message='max 255 characters')])
     assetable_type = StringField('assetable_type', validators=[validators.Length(max=255, message='max 255 characters')])
 
-    data_file_name = FileField('data_file_name')
+    data_file_name = FileField('data_file_name', validators=(validators.Optional(),))
     data_content_type = StringField('data_content_type', validators=[validators.Length(max=255, message='max 255 characters')])
     data_file_size = StringField('data_file_size', validators=[validators.Length(max=255, message='max 255 characters')])
 
