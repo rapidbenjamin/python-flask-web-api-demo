@@ -12,7 +12,7 @@
             <th>Id</th>
             <th>Email</th>
             <th>User name</th>
-            <th>Section name</th>
+            <th>Thumbnail</th>
             <th>Locale</th>
             <th>Timezone</th>
             <th>Active</th>
@@ -29,8 +29,8 @@
                     <td><a href="{{ url_for('users_page.show', id = user.id) }}" >{{ user.email }}</a></td>
                     <td>{{ user.username }}</td>
                     <td>
-                        {% if user.section %}
-                            {{ user.section.title_en_US }}
+                        {% if user.asset %}
+                            <img src=" {{url_for('static', filename='images/' + user.asset.data_file_name)}}" width="100" class="img-thumbnail"><br/>{{ user.asset.data_file_name }}
                         {% else %}
                             None
                         {% endif %}

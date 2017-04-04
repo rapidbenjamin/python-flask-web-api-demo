@@ -33,6 +33,9 @@ class Assets(db.Model):
     description_en_US = db.Column(db.Text())
     description_fr_FR = db.Column(db.Text())
 
+    # one-to-many relationship with the User model
+    users = db.relationship('Users', backref='asset', lazy='dynamic')
+
     # is_active usually returns True. 
     # This should return False only in cases where we have disabled asset. 
     is_active = db.Column(db.Boolean, index=True, default=True)

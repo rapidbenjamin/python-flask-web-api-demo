@@ -12,7 +12,7 @@ from time import time
 from app import app, logger
 from . import users_page
 from models import Users
-from app.modules.sections.models import Sections
+from app.modules.assets.models import Assets
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 
@@ -61,7 +61,7 @@ def show(id=1):
 def new():
     try : 
         form = Form_Record_Add(request.form)
-        sections = Sections.query.all()
+        assets = Assets.query.all()
 
         if request.method == 'POST':
             if form.validate():
@@ -70,7 +70,7 @@ def new():
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
-                    'section' : form.section.data,
+                    'asset' : form.asset.data,
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
                 }                
@@ -90,7 +90,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form, sections = sections, title_en_US='New', app = app)
+            return render_template("users/edit.html", form=form, assets = assets, title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -103,8 +103,8 @@ def edit(id=1):
 
         # check_admin()
 
-        # sections = Sections.query.all()
-        sections = Sections.query.filter(Sections.is_active == True).all()
+        # assets = Assets.query.all()
+        assets = Assets.query.filter(Assets.is_active == True).all()
         user = Users.query.get_or_404(id)
         
         form = Form_Record_Add(request.form)
@@ -112,12 +112,12 @@ def edit(id=1):
         if request.method == 'POST':
             if form.validate():
 
-                section = form.section.data
+                asset = form.asset.data
 
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
-                    'section' : form.section.data,
+                    'asset' : form.asset.data,
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
                 }
@@ -142,7 +142,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form,  sections = sections, title_en_US='Edit', app = app)
+            return render_template("users/edit.html", form=form,  assets = assets, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

@@ -14,7 +14,6 @@
             <th>Slug</th>
             <th>Title</th>
             <th>Description</th>
-            <th>Users count</th>
             <th>Active</th>
             <th>Updated Date</th>
             <th>Created Date</th>
@@ -28,13 +27,6 @@
                     <td><a href="{{ url_for('sections_page.show', id = section.id) }}" >{{ section.slug }}</a></td>
                     <td><a href="{{ url_for('sections_page.show', id = section.id) }}" >{{ section['title_%s' %(g.current_lang)] }}</a></td>
                     <td>{{ section['description_%s' %(g.current_lang)] }}</td>
-                    <td>
-                        {% if section.users %}
-                            {{ section.users.count() }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    </td>
                     <td>{{ section.is_active }}</td>
                     <td>{{ section.updated_at | datetimeformat }}</td>
                     <td>{{ section.created_at | datetimeformat }}</td>

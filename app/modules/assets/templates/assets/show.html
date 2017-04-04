@@ -11,9 +11,15 @@
     <p>{{ asset.data_file_size }}</p>
 
     <p>{{ asset.asset_type }}</p>
+    <p> Users : 
+        {% if asset.users %}
+            {{ asset.users.count() }}
+        {% else %}
+            0
+        {% endif %}
+    </p>
     <p>{{ asset.width }}</p>
     <p>{{ asset.height }}</p>
-
     <p>{{ asset.description_en_US }}</p>
     <p>{{ asset.is_active }}</p>
     <p>{{ asset.updated_at }}</p>

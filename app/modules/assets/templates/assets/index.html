@@ -16,6 +16,7 @@
             <th>Content type</th>
             <th>File size</th>
             <th>Asset type</th>
+            <th>Users count</th>
             <th>Width</th>
             <th>Height</th>
             <th>Description</th>
@@ -36,6 +37,13 @@
                     <td>{{ asset.data_content_type }}</td>
                     <td>{{ asset.data_file_size }}</td>
                     <td>{{ asset.asset_type }}</td>
+                    <td>
+                        {% if asset.users %}
+                            {{ asset.users.count() }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </td>
                     <td>{{ asset.width }}</td>
                     <td>{{ asset.height }}</td>
                     <td>{{ asset.description_en_US }}</td>

@@ -27,9 +27,6 @@ class Sections(db.Model):
     description_en_US = db.Column(db.Text(),  index=True)
     description_fr_FR = db.Column(db.Text(),  index=True)
 
-    # one-to-many relationship with the User model
-    users = db.relationship('Users', backref='section', lazy='dynamic')
-
     # is_active usually returns True. 
     # This should return False only in cases where we have disabled section. 
     is_active = db.Column(db.Boolean, index=True, default=True)
@@ -97,5 +94,5 @@ class Sections(db.Model):
 
 
     def __repr__(self):
-        # return '<Users: {}>'.format(self.id)
+        # return '<Sections: {}>'.format(self.id)
         return '<Sections %r>' % self.id

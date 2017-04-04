@@ -15,7 +15,7 @@ from ... import db
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 from app.modules.sections.models import Sections
-
+from app.modules.assets.models import Assets
 
 class Users(UserMixin, db.Model):
     """
@@ -31,11 +31,11 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String(60), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     
-    # one-to-many relationship with the Section model
-    # the backref argument in the section field allows us to access users from the Sections model 
-    # as simple as section.users in our controllers.
-    section_id = db.Column(db.Integer, db.ForeignKey('Sections.id'))
-    # section = db.relationship('Sections', backref=db.backref('users', lazy='dynamic'))
+    # one-to-many relationship with the Asset model
+    # the backref argument in the asset field allows us to access users from the Assets model 
+    # as simple as asset.users in our controllers.
+    asset_id = db.Column(db.Integer, db.ForeignKey('Assets.id'))
+    # asset = db.relationship('Assets', backref=db.backref('users', lazy='dynamic'))
 
 
     is_admin = db.Column(db.Boolean, default=True)
@@ -111,7 +111,7 @@ class Users(UserMixin, db.Model):
         user = Users(
                         email=form['email'], 
                         username=form['username'], 
-                        section = form['section'], 
+                        asset = form['asset'], 
                         is_active = form['is_active'],
                         # convert string to integer format
                         created_at = int(timestamp_created_at)
@@ -125,7 +125,7 @@ class Users(UserMixin, db.Model):
 
         user.email = form['email']
         user.username = form['username']
-        user.section = form['section']
+        user.asset = form['asset']
         user.is_active = form['is_active']
 
         # dateTime conversion to timestamp
