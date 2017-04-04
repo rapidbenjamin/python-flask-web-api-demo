@@ -2,4 +2,4 @@
 # -*- coding: utf-8 -*-
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
-from . import login_form, registration_form
+from . import login_form, registration_form, settings_form

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title_en_US %} {{ user.id }} - {{ user.username }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>{{ user.id }} - {{ user.email }}</h3>
+    <h4 class="text-right"><a href="/users"><span class="glyphicon glyphicon-home"></span> Back</a></h4>
+    <hr/>
+
+    <p>{{ user.username }}</p>
+    <p>{{ user.section.title_en_US }}</p>
+    <p>{{ user.is_active }}</p>
+    <p>{{ user.updated_at }}</p>
+    <p>{{ user.created_at }}</p>
+</div>
+{% endblock content %}
+

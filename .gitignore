@@ -16,7 +16,11 @@ __pycache__/
 .instance/*.*
 
 # sessions instance objects
-.sessions/*.*
+sessions/*.*
+
+
+# virtual environment and vendors library
+envs/*.*
 
 
 local_config.py

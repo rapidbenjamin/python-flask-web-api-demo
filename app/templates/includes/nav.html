@@ -23,16 +23,16 @@
                 <li><a class="{{ 'active' if 'assets_page.index' in request.endpoint else '' }}" href="/assets"><span class="glyphicon glyphicon-picture"></span> Assets</a></li>
                 <li><a class="{{ 'active' if 'contact_page.index' in request.endpoint else '' }}" href="/contact"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">                
+            <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
                     <li></li>
                     <li class="btn-group dropdown" >
-                        <a class="dropdown-toggle {{ 'active' if ('users_page.show' or 'users_page.settings' or 'auth_page.logout') in request.endpoint else '' }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                        <a class="dropdown-toggle {{ 'active' if ('auth_page.profile' or 'auth_page.settings' or 'auth_page.logout') in request.endpoint else '' }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                             <span class="glyphicon glyphicon-user"></span> Account {{ current_user.username }} <b class="caret"></b>
                         </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <li><a class="{{ 'active' if 'users_page.show' in request.endpoint else '' }}" href="{{ url_for('users_page.show', id=current_user.id) }}"><span class="glyphicon glyphicon-user"></span> My profile</a></li>
-                        <li><a class="{{ 'active' if 'users_page.settings' in request.endpoint else '' }}" href="{{ url_for('users_page.settings', id=current_user.id) }}"><span class="glyphicon glyphicon-cog"></span> My settings</a></li>
+                        <li><a class="{{ 'active' if 'auth_page.profile' in request.endpoint else '' }}" href="{{ url_for('auth_page.profile') }}"><span class="glyphicon glyphicon-user"></span> My profile</a></li>
+                        <li><a class="{{ 'active' if 'auth_page.settings' in request.endpoint else '' }}" href="{{ url_for('auth_page.settings') }}"><span class="glyphicon glyphicon-cog"></span> My settings</a></li>
                         <li><a class="{{ 'active' if 'users_page.logout' in request.endpoint else '' }}" href="{{ url_for('auth_page.logout') }}"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
                     </ul>
                     </li>

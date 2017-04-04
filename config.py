@@ -16,7 +16,8 @@ class BaseConfig(object):
     Put any configurations here that are common across all environments
     """
 
-    APPLICATION_ROOT = "/api/v1.0.0"
+    # APPLICATION_ROOT = "/api/v1.0.0"
+    # URL_PREFIX = '/api/v1.0.0'
 
     BOOTSWATCH_THEME = "slate"
 
@@ -28,14 +29,14 @@ class BaseConfig(object):
 
     SQLALCHEMY_DATABASE_URI = ''
     APP_NAME = 'Flask WEB API DEMO'
-    SECRET_KEY = 'write-a-secret-string-here'
+    SECRET_KEY = 'write-a-secret-string-here-or-in-the-instance-secret-folder'
     LISTINGS_PER_PAGE = 5
 
     SECURITY_REGISTERABLE = True
     SECURITY_RECOVERABLE = True
     SECURITY_TRACKABLE = True
-    SECURITY_PASSWORD_HASH = 'sha512_crypt'
-    SECURITY_PASSWORD_SALT = 'add_salt_123_hard_one'
+    SECURITY_PASSWORD_HASH = 'sha512_crypt-here-or-in-the-instance-secret-config-folder'
+    SECURITY_PASSWORD_SALT = 'add_salt_123_hard_one-or-in-the-instance-secret-config-folder'
     SECURITY_CONFIRMABLE = True
 
     # asset files
@@ -51,8 +52,9 @@ class BaseConfig(object):
     # session
     SESSION_TYPE = 'filesystem'
     SESSION_FILE_DIR =  'sessions'
-    # SESSION_FILE_THRESHOLD = '500'
-    # SESSION_FILE_MODE = '600'
+    SESSION_PERMANENT = False
+    # SESSION_FILE_THRESHOLD = 500
+    # SESSION_FILE_MODE = 600
 
     # SendGrid example.
     MAIL_SERVER = 'smtp.sendgrid.net'
@@ -77,6 +79,9 @@ class ProductionConfig(BaseConfig):
     SECRET_CONFIG = 'prod-config.py'
 
     SQLALCHEMY_DATABASE_URI = 'mysql://user:pass@server_ip:server_port/db_name'
+
+    CSRF_ENABLED = True
+    WTF_CSRF_ENABLED = True
 
     PORT = 5000
     DEBUG = False

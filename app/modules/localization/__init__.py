@@ -26,7 +26,7 @@ localization_service = Blueprint('localization_service', __name__, template_fold
 # ------- IMPORT LOCAL DEPENDENCIES AFTER REGISTERING -------  
 #To solve the problem from circular import, place the other imports which are dependent on 'babel' and app below app== and babel=Babel(app).
 
-from . import views
+from . import controllers
 
 
 

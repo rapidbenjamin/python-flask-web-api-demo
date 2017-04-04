@@ -13,7 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from ... import db
 from app.helpers import *
-from app.modules.localization.views import get_locale, get_timezone
+from app.modules.localization.controllers import get_locale, get_timezone
 from app.modules.sections.models import Sections
 
 
@@ -33,7 +33,7 @@ class Users(UserMixin, db.Model):
     
     # one-to-many relationship with the Section model
     # the backref argument in the section field allows us to access users from the Sections model 
-    # as simple as section.users in our views.
+    # as simple as section.users in our controllers.
     section_id = db.Column(db.Integer, db.ForeignKey('Sections.id'))
     # section = db.relationship('Sections', backref=db.backref('users', lazy='dynamic'))
 
@@ -61,7 +61,7 @@ class Users(UserMixin, db.Model):
     # updated_at = db.Column(db.Integer, default=time.mktime(datetime.utcnow().timetuple()), onupdate=time.mktime(datetime.utcnow().timetuple())) 
     # created_at = db.Column(db.Integer, default=time.mktime(datetime.utcnow().timetuple())) 
 
-    locale = db.Column(db.String(30), index=True, default='en-US')
+    locale = db.Column(db.String(30), index=True, default='en_US')
     timezone = db.Column(db.String(60), index=True, default='UTC')
 
     @property

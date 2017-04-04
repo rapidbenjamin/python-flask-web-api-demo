@@ -9,7 +9,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask.ext.session import Session
-
+from flask_wtf.csrf import CSRFProtect
 
 # ------- IMPORT LOCAL DEPENDENCIES ------- 
 import os
@@ -30,9 +30,13 @@ app.config.from_object(app_config[config_name])
 # REGISTER SENSITIVE CONFIG KEYS from the secret instance folder
 app.config.from_pyfile(app_config[config_name].SECRET_CONFIG)
 
-
 # REGISTER DATABASE
 db = SQLAlchemy(app)
+
+# REGISTER CSRF FORM PROTECTION
+# CSRF protection requires a secret key to securely sign the token. 
+# By default this will use the Flask app's SECRET_KEY. If you'd like to use a separate token you can set WTF_CSRF_SECRET_KEY.
+csrf = CSRFProtect(app)
 
 # REGISTER SESSION
 sess = Session(app)
@@ -44,13 +48,6 @@ logger.setLevel(logging.INFO)
 # REGISTER Migrate
 migrate = Migrate(app, db)
 
-# REGISTER LOGIN MANAGER
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_message = "You must be logged in to access this page."
-login_manager.login_message_category = "info"
-login_manager.login_view = "auth_page.login"
-
 # REGISTER BOOTSTRAP
 Bootstrap(app)
 
@@ -61,7 +58,7 @@ Bootstrap(app)
 
 # ------- LAST REGISTER MODULES WITH BLUEPRINTS -------  
 from . import modules
-from . import views
+from . import controllers
 from modules.sections.models import Sections
 from modules.users.models  import Users
 

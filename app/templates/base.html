@@ -33,7 +33,8 @@
     <div class="container-fluid" id="maincontent">
         <!-- page-level feedback notices -->
         {% include 'includes/flash_message.html' %}
-        <div id="body_content" class="row">            
+        <div id="body_content" class="row">
+            {% block sidebar %}{% endblock %}
             {% block content %}
                 <!-- main content area -->
             {% endblock %}
@@ -53,12 +54,12 @@
                         <li class="footer-menu-divider">|</li>
                         {% if current_user.is_authenticated %}
                             <li class="btn-group dropdown" >
-                                <a class="{{ 'active' if ('users_page.show' or 'users_page.settings' or 'auth_page.logout') in request.endpoint else '' }}" >
+                                <a class="{{ 'active' if ('users_page.show' or 'auth_page.settings' or 'auth_page.logout') in request.endpoint else '' }}" >
                                     <span class="glyphicon glyphicon-user"></span> {{ current_user.username }}
                                 </a>
                             </li>
                             <li class="footer-menu-divider">|</li>
-                            <li><a class="{{ 'active' if 'users_page.settings' in request.endpoint else '' }}" href="{{ url_for('users_page.settings', id=current_user.id) }}"><span class="glyphicon glyphicon-cog"></span> My settings</a></li>
+                            <li><a class="{{ 'active' if 'auth_page.settings' in request.endpoint else '' }}" href="{{ url_for('auth_page.settings', id=current_user.id) }}"><span class="glyphicon glyphicon-cog"></span> My settings</a></li>
                             <li class="footer-menu-divider">|</li>
                             <li><a class="{{ 'active' if 'users_page.logout' in request.endpoint else '' }}" href="{{ url_for('auth_page.logout') }}"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
                         {% else %}
@@ -80,6 +81,5 @@
     {% block tail_script %}
         <!-- defer-capable JS block -->
     {% endblock %}
-    {{ profiler_includes|safe }}
 </body>
 </html>

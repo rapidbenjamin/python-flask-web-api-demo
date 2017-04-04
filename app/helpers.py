@@ -1,14 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
+# ------- IMPORT DEPENDENCIES -------
 from datetime import *
 from dateutil import *
 from dateutil import tz
 import time
 from jinja2 import Environment
+import os
+import binascii
 
-# ------- IMPORT DEPENDENCIES -------
+# ------- IMPORT LOCAL DEPENDENCIES -------
 from threading import Thread
 from functools import wraps
 from flask import request, redirect, current_app
@@ -29,7 +31,7 @@ def threaded_async(f):
 
 def ssl_required(fn):
     @wraps(fn)
-    def decorated_view(*args, **kwargs):
+    def decorated_controller(*args, **kwargs):
         if current_app.config.get("SSL"):
             if request.is_secure:
                 return fn(*args, **kwargs)
@@ -38,10 +40,38 @@ def ssl_required(fn):
 
         return fn(*args, **kwargs)
 
-    return decorated_view
+    return decorated_controller
 
 
+# ------- RANDOM TOKEN GENERATOR -------
+def generate_token():
+    # a secret key should be as random as possible.
+    token = binascii.hexlify(os.urandom(24))
+    return token
 
+# ------- RANDOM POPULATE DATABASE -------
+def populate_db_with_random_data(db_model):
+    # ---- example here with a db model ----
+    # ---- it might take some time ----
+
+    from random import choice
+    from string import printable
+    import humanize
+    import os
+    start = time()
+    lis = list(printable)
+    for i in range(0, 50000):
+        for k,v in db_model():
+            short_value_list = ['title', 'name', 'password']
+            long_value_list = ['description']
+            if short_value_list in k :
+                k = ''.join(choice(lis) for _ in xrange(5))
+            if long_value_list in k :
+                k = ''.join(choice(lis) for _ in xrange(200))
+            db_model().add_data(k)
+        
+
+    return "done in %.3f  | database size: %s" % (time() - start, humanize.naturalsize(os.path.getsize("data/db.sqlite")))
 
 
 # ------- DATETIME UTILS -------

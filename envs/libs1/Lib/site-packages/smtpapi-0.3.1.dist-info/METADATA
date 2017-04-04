@@ -1,0 +1,13 @@
+Metadata-Version: 2.0
+Name: smtpapi
+Version: 0.3.1
+Summary: Simple wrapper to use SendGrid SMTP API
+Home-page: UNKNOWN
+Author: Yamil Asusta, Kane Kim
+Author-email: yamil@sendgrid.com, kane.isturm@sendgrid.com
+License: MIT License
+Platform: UNKNOWN
+
+Simple wrapper to use SendGrid SMTP API
+
+

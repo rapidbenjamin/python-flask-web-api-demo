@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title_en_US %}Not found - {{ post.title_en_US }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+
+<style>
+body { text-align: center;}
+h1 { font-size: 50px; }
+details { display:block; }
+span[frown] { display:inline-block; color: #bbb; }
+</style>
+
+    <summary><h1>ERROR 422</h1></summary>
+    <p><span>:(</span></p>
+    <h2>{{ post.title_en_US }}</h2>
+    <h3>{{ post.description_en_US }}</h3>
+
+
+{% endblock content %}
