@@ -5,10 +5,10 @@
     <hr/>
     <div class="row">
         <div class="col-lg-6">
-            <div class="well">
+            <div class="well">{{ csrf_token() }}
                 <form method="POST" action="{{ form.action }}" role="form" class="form-horizontal" accept-charset="utf-8">
-                    {{ form.csrf_token }}
-                    <!-- <input id="csrf_token" name="csrf_token" value="" type="hidden"> -->
+ 
+                    <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
                     <fieldset>
                         <legend>Add new section</legend>
 

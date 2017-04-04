@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # ------- IMPORT DEPENDENCIES ------- 
-from flask import g, request, session, redirect, url_for, session
+from flask import g, request, redirect, url_for, session
 from dateutil import *
 from dateutil import tz
 import json
@@ -77,7 +77,7 @@ def get_timezone():
     return app.config['BABEL_DEFAULT_TIMEZONE']
 
 @app.before_request
-def before_request2():
+def before_request():
     if '/static/' not in request.path:
         if 'current_lang' in session :
             print("********************** \n\n SESSION LANG : " + session['current_lang'] + "\n\n ***************************\n\n")

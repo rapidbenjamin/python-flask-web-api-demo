@@ -7,6 +7,7 @@ from wtforms.fields.html5 import DateField
 
 
 class Form_Record_Add(Form):
+
     slug = StringField('slug', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
 

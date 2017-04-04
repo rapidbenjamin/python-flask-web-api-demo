@@ -29,7 +29,11 @@ class BaseConfig(object):
 
     SQLALCHEMY_DATABASE_URI = ''
     APP_NAME = 'Flask WEB API DEMO'
+    
+    # secret key used also for csrf_token
     SECRET_KEY = 'write-a-secret-string-here-or-in-the-instance-secret-folder'
+
+    
     LISTINGS_PER_PAGE = 5
 
     SECURITY_REGISTERABLE = True

@@ -2,7 +2,7 @@
 {% block title_en_US %} {{ post.title_en_US }} - {{ app.config['APP_NAME'] }}{% endblock %}
 {% block head_style %}<link href="{{url_for('auth_page.static', filename='styles/dashboard.css')}}" rel="stylesheet">{% endblock %} 
 
-{% block sidebar %}
+{% block content %}
 <div class="container">
         <div class="row text-center" >
             <h1>{{ post.title_en_US }}</h1>
@@ -11,32 +11,8 @@
             {% endif %}
 			<hr/>
         </div>
-
-        <div class="row col-lg-offset-2 col-md-offset-2" >
-            <a class="col-lg-2 col-md-2 col-sm-4 col-xs-6 btn btn-default filter-button {{ 'active' if 'auth_page.dashboard' in request.endpoint else '' }}" href="/auth/dashboard">
-                <span class="glyphicon glyphicon-dashboard"></span> Dashboard
-            </a>
-            <a class="col-lg-2 col-md-2 col-sm-4 col-xs-6 btn btn-default filter-button {{ 'active' if 'users_page.index' in request.endpoint else '' }}" href="/users">
-                <span class="glyphicon glyphicon-user"></span> Users
-            </a>
-            <a class="col-lg-2 col-md-2 col-sm-4 col-xs-6 btn btn-default filter-button {{ 'active' if 'sections_page.index' in request.endpoint else '' }}" href="/sections">
-                <span class="glyphicon glyphicon-list-alt"></span> Sections
-            </a>
-            <a class="col-lg-2 col-md-2 col-sm-4 col-xs-6 btn btn-default filter-button {{ 'active' if 'assets_page.index' in request.endpoint else '' }}" href="/assets">
-                <span class="glyphicon glyphicon-picture"></span> Assets
-            </a>
-            <a class="col-lg-2 col-md-2 col-sm-4 col-xs-6 btn btn-default filter-button {{ 'active' if 'contact_page.index' in request.endpoint else '' }}" href="/contact">
-                <span class="glyphicon glyphicon-envelope"></span> Contact
-            </a>
-        </div>
-
-        <hr/>
     </div>
-</div>
-{% endblock %}
-{% block content %}
 
-<div class="container">
         <div class="row text-center" >
         <div class="row ">
             

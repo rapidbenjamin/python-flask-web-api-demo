@@ -42,7 +42,7 @@
                     <td>{{ user.created_at | datetimeformat }}</td>
                     <td><a href="{{ url_for('users_page.show', id = user.id) }}" ><i class="glyphicon glyphicon-file"></i> </a></td>
                     <td><a href="{{ url_for('users_page.edit', id = user.id) }}" ><i class="glyphicon glyphicon-pencil"></i> </a></td>
-                    <td><a href="{{ url_for('users_page.delete', id = user.id) }}" ><i class="glyphicon glyphicon-trash"></i> </a></td>
+                    <td><a href="{{ url_for('users_page.destroy', id = user.id) }}" ><i class="glyphicon glyphicon-trash"></i> </a></td>
 
                 </tr>
             {% endfor %}

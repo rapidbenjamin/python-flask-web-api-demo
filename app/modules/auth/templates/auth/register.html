@@ -9,12 +9,13 @@
   <div class="center">
     <h1>Register for an account</h1>
     <br/>
+    {{ form.hidden_tag() }}
     {{ wtf.quick_form(form) }}
 
     <hr/>
       <form method="POST" action="{{ url_for('auth_page.register') }}" role="form" class="form-horizontal well" >
-        {{ form.csrf_token }}
-        <!-- <input id="csrf_token" name="csrf_token" value="" type="hidden"> -->
+        
+        <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
         <fieldset>
             <legend>Register</legend>
 

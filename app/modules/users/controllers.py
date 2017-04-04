@@ -21,7 +21,7 @@ from app.modules.localization.controllers import get_locale, get_timezone
 # All users
 @users_page.route('/')
 @users_page.route('/<int:page>')
-def users(page=1):
+def index(page=1):
     try:
         m_users = Users()
         list_users = m_users.all_data(page, app.config['LISTINGS_PER_PAGE'])
@@ -39,7 +39,7 @@ def users(page=1):
 
 
 # Show user
-@users_page.route('/show/<int:id>')
+@users_page.route('/<int:id>/show')
 def show(id=1):
     try:
         m_users = Users()
@@ -97,7 +97,7 @@ def new():
         abort(404)
 
 # Edit user
-@users_page.route('/edit/<int:id>', methods=['GET', 'POST'])
+@users_page.route('/<int:id>/edit', methods=['GET', 'POST'])
 def edit(id=1):
     try : 
 
@@ -151,12 +151,12 @@ def edit(id=1):
 
 
 # Delete user
-@users_page.route('/delete/<int:id>')
-def delete(id=1):
+@users_page.route('/<int:id>/destroy')
+def destroy(id=1):
     try:
         users = Users()
         user = users.query.get_or_404(id)
-        users.delete_data(user.id)
+        users.destroy_data(user.id)
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = {message:"Record deleted successfully.", user : m_user})

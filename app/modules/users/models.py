@@ -135,7 +135,7 @@ class Users(UserMixin, db.Model):
 
         db.session.commit()
 
-    def delete_data(self, some_id ):
+    def destroy_data(self, some_id ):
         user = Users.query.get_or_404(some_id)
         db.session.delete(user)
         db.session.commit()

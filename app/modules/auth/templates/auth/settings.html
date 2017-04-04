@@ -7,8 +7,8 @@
         <div class="col-lg-6">
             <div class="well">
                 <form method="POST" action="{{ form.action }}" role="form" class="form-horizontal" accept-charset="utf-8" >
-                    {{ form.csrf_token }}
-                    <!-- <input id="csrf_token" name="csrf_token" value="" type="hidden"> -->
+                   
+                    <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
                     <fieldset>
                         <legend>Settings</legend>
                         <div class="form-group">

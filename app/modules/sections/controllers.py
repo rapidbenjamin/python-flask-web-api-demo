@@ -22,7 +22,7 @@ from app.modules.localization.controllers import get_locale, get_timezone
 # All sections
 @sections_page.route('/')
 @sections_page.route('/<int:page>')
-def sections(page=1):
+def index(page=1):
     try:
         m_sections = Sections()
         list_sections = m_sections.all_data(page, app.config['LISTINGS_PER_PAGE'])
@@ -38,7 +38,7 @@ def sections(page=1):
 
 
 # Show section
-@sections_page.route('/show/<int:id>', methods=['GET','POST'])
+@sections_page.route('/<int:id>/show', methods=['GET','POST'])
 def show(id=1):
     try:
         m_sections = Sections()
@@ -104,7 +104,7 @@ def new():
 
 
 # Edit section
-@sections_page.route('/edit/<int:id>', methods=['GET', 'POST'])
+@sections_page.route('/<int:id>/edit', methods=['GET', 'POST'])
 def edit(id=1):
     try : 
 
@@ -166,12 +166,12 @@ def edit(id=1):
 
 
 # Delete section
-@sections_page.route('/delete/<int:id>')
-def delete(id=1):
+@sections_page.route('/<int:id>/destroy')
+def destroy(id=1):
     try:
         sections = Sections()
         section = sections.query.get_or_404(id)
-        sections.delete_data(section.id)
+        sections.destroy_data(section.id)
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = {message:"Record deleted successfully.", section : m_section})

@@ -54,7 +54,7 @@ def resize_image_to_max(image_path, max_size):
 # All assets
 @assets_page.route('/')
 @assets_page.route('/<int:page>')
-def assets(page=1):
+def index(page=1):
     try:
         m_assets = Assets()
         list_assets = m_assets.all_data(page, app.config['LISTINGS_PER_PAGE'])
@@ -74,7 +74,7 @@ def assets(page=1):
 
 
 # Show asset
-@assets_page.route('/show/<int:id>')
+@assets_page.route('/<int:id>/show')
 def show(id=1):
     try:
         m_assets = Assets()
@@ -200,7 +200,7 @@ def new():
 
 
 # Edit asset
-@assets_page.route('/edit/<int:id>', methods=['GET', 'POST'])
+@assets_page.route('/<int:id>/edit', methods=['GET', 'POST'])
 def edit(id=1):
     try : 
 
@@ -339,8 +339,8 @@ def edit(id=1):
 
 
 # Delete asset
-@assets_page.route('/delete/<int:id>')
-def delete(id=1):
+@assets_page.route('/<int:id>/destroy')
+def destroy(id=1):
     try:
         assets = Assets()
         asset = assets.query.get_or_404(id)
@@ -357,7 +357,7 @@ def delete(id=1):
 
         
 
-        assets.delete_data(asset.id)
+        assets.destroy_data(asset.id)
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = {message:"Record deleted successfully.", asset : m_asset})
