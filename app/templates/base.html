@@ -31,11 +31,11 @@
         {% include 'includes/nav.html' %}
 
     <div class="container-fluid" id="maincontent">
-        <!-- page-level feedback notices -->
-        {% include 'includes/flash_message.html' %}
+        {% include 'includes/aside.html' %}
         <div id="body_content" class="row">
-                {% include 'includes/sidebar.html' %}
-
+            <!-- page-level feedback notices -->
+            {% include 'includes/flash_message.html' %}
+                
             {% block content %}
                 <!-- main content area -->
             {% endblock %}

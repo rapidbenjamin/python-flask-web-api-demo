@@ -15,5 +15,17 @@ var Utils = {
     }
 };
 
+
+/* SIDENAV */
+
+/* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+function toggleNav() {
+    $('#maincontent').toggleClass('show_aside');
+
+      $('.text_sidebar').toggle(300);
+}
+
+
+
 /* Your custom JavaScript here */
 

@@ -1,0 +1,47 @@
+{% block aside %}    
+    {% if current_user.is_authenticated %}
+        <div id="body_aside" class="navbar navbar-default sidenav">
+            <a class="btn navbar-brand" onclick="toggleNav()" href="javascript:void(0)">
+                <span class="glyphicon glyphicon-th-large"></span><span class="text_sidebar"> Sidebar</span>
+            </a>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a class="btn  {{ 'active' if 'auth_page.dashboard' in request.endpoint else '' }}" href="/auth/dashboard">
+                        <span class="glyphicon glyphicon-dashboard"></span><span class="text_sidebar">  Dashboard</span>
+                    </a>
+                </li>
+                <li class="btn-group dropdown"><a href="#" class="dropdown-toggle text-center" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><span class="text_sidebar">  Users</span> <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="{{ 'active' if 'users_page.index' in request.endpoint else '' }}" href="/users">
+                                <span class="glyphicon glyphicon-user"></span> Users
+                            </a>
+                        </li>
+                        <li><a href="#">Sub Menu1</a></li>
+                        <li><a href="#">Sub Menu2</a></li>
+                        <li><a href="#">Sub Menu3</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Sub Menu4</a></li>
+                        <li><a href="#">Sub Menu5</a></li>
+                    </ul>
+                </li>
+                
+                <li>
+                    <a class="btn  {{ 'active' if 'sections_page.index' in request.endpoint else '' }}" href="/sections">
+                        <span class="glyphicon glyphicon-list-alt"></span><span class="text_sidebar"> Sections</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="btn  {{ 'active' if 'assets_page.index' in request.endpoint else '' }}" href="/assets">
+                        <span class="glyphicon glyphicon-picture"></span><span class="text_sidebar">  Assets</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="btn  {{ 'active' if 'contact_page.index' in request.endpoint else '' }}" href="/contact">
+                        <span class="glyphicon glyphicon-envelope"></span><span class="text_sidebar">  Contact</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}
