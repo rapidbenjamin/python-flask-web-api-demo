@@ -56,7 +56,7 @@ body {
 
 
 
-
+/* --------------------------------------------- */
 /* make sidebar nav vertical */ 
 /* --------------------------------------------- */
 
@@ -64,31 +64,35 @@ body {
 .sidenav {
     height: 100%; /* 100% Full-height */
     position: fixed; /* Stay in place */
-    z-index: 2; /* Stay on top */
+    z-index: 2001; /* Stay on top */
     left: 0;
     padding-top: 0px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
 
-#body_aside {
+#body_sidebar {
     width: 60px;    /* 0 width - change this with JavaScript */
 }
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #body_content {
     transition: margin-left .5s;
-    /* padding: 20px; */
 }
 
+
+#body_sidebar + #body_content {
+  margin-left: 50px;
+}
 
 .text_sidebar {
   display : none;
   margin-left : 10px;
 }
 
+
 /* On using dropdown menu (To right shift popuped) */
-.sidenav .navbar-nav > li > .dropdown-menu {
+.sidenav .nav > li > .dropdown-menu {
   position : absolute;
   z-index: 3;
   margin-top: -50px;
@@ -96,41 +100,49 @@ body {
 }
 
 
-.show_aside > .sidenav .navbar-nav > li > .dropdown-menu {
-  margin-left: 160px;
-}
+/* --------------------------------------------- */
 
-.show_aside > .sidenav .navbar-nav > li {
-  width: 160px;
-}
-
-.show_aside > #body_aside {
+.show_aside > #body_sidebar {
   width: 160px; /* 0 width - change this with JavaScript */
 }
 
-.show_aside > #body_content {
-  margin-left : 160px;
+.show_aside > #body_sidebar + #body_content {
+  margin-left: 160px;
+}
+
+
+.show_aside > .sidenav .glyphicon-triangle-right::before {
+    content: "\e251" ;
+}
+
+.show_aside > .sidenav .nav > li > .dropdown-menu {
+  margin-left: 160px;
+}
+
+.show_aside > .sidenav .nav > li {
+  width: 160px;
 }
 
 
 
-
+/* --------------------------------------------- */
 
 /* The navigation menu links */
 .sidenav .navbar-brand {
   width: 100%;
 }
 
-.sidenav .navbar-nav > li {
+.sidenav .nav > li {
   float: none;  /* Cancel default li float: left */
 }
 
-.sidenav .navbar-nav > li > span:first-child {
-  float: left;
+/*
+.sidenav .nav > li > a > span:first-child {
+  text-align: left;
   margin-right: 5px;
 }
 
-/*
+
 .sidenav + .container {
   padding-left: 160px;
 }
