@@ -11,7 +11,7 @@ from app.modules.auth import auth_page
 from app import app
 from app.modules.auth.forms.login_form import LoginForm
 from app import db
-from app.modules.users.models import Users
+from app.modules.users.models import User
 
 
 
@@ -35,7 +35,7 @@ def login():
     if request.method == 'POST' and form.validate_on_submit():
         # check whether user exists in the database and whether
         # the password entered matches the password in the database
-        user = Users.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
 
         # password decoding  when remote app client
         if request.is_xhr == True :

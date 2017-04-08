@@ -6,9 +6,8 @@ from flask import Flask
 import logging
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
-from flask.ext.session import Session
+from flask_session import Session
 from flask_wtf.csrf import CSRFProtect
 
 # ------- IMPORT LOCAL DEPENDENCIES ------- 
@@ -45,9 +44,6 @@ sess = Session(app)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-# REGISTER Migrate
-migrate = Migrate(app, db)
-
 # REGISTER BOOTSTRAP
 Bootstrap(app)
 
@@ -59,16 +55,11 @@ Bootstrap(app)
 # ------- LAST REGISTER MODULES WITH BLUEPRINTS -------  
 from . import modules
 from . import controllers
-from modules.sections.models import Sections
-from modules.users.models  import Users
+
 
 # REGISTER BLUEPRINTS
-
-from modules.localization import localization_service
-app.register_blueprint(localization_service, url_prefix='/localization')
-
-from modules.home import home_page
-app.register_blueprint(home_page, url_prefix='/home')
+from modules.users import users_page
+app.register_blueprint(users_page, url_prefix='/users')
 
 from modules.auth import auth_page
 app.register_blueprint(auth_page, url_prefix='/auth')
@@ -79,8 +70,11 @@ app.register_blueprint(sections_page, url_prefix='/sections')
 from modules.assets import assets_page
 app.register_blueprint(assets_page, url_prefix='/assets')
 
-from modules.users import users_page
-app.register_blueprint(users_page, url_prefix='/users')
+from modules.localization import localization_service
+app.register_blueprint(localization_service, url_prefix='/localization')
+
+from modules.home import home_page
+app.register_blueprint(home_page, url_prefix='/home')
 
 from modules.contact import contact_page
 app.register_blueprint(contact_page, url_prefix='/contact')

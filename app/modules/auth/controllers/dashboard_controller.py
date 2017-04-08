@@ -10,7 +10,7 @@ from app.modules.auth import auth_page
 from app import app
 from app.modules.auth.forms.login_form import LoginForm
 from app import db
-from app.modules.users.models import Users
+from app.modules.users.models import User
 
 
 

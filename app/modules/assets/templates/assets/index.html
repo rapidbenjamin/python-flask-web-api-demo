@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
     <h4 class="pull-right"><a href="/assets/new"><span class="glyphicon glyphicon-plus"></span> New</a></h4>
-    <h3>Assets</h3>
+    <h3>Asset</h3>
     <hr/>
 
 
@@ -16,7 +16,7 @@
             <th>Content type</th>
             <th>File size</th>
             <th>Asset type</th>
-            <th>Users count</th>
+            <th>User count</th>
             <th>Width</th>
             <th>Height</th>
             <th>Description</th>
@@ -37,9 +37,11 @@
                     <td>{{ asset.data_content_type }}</td>
                     <td>{{ asset.data_file_size }}</td>
                     <td>{{ asset.asset_type }}</td>
+
+                    <!-- ONE-TO-MANY -->
                     <td>
                         {% if asset.users %}
-                            {{ asset.users.count() }}
+                            {{ asset.users }}
                         {% else %}
                             0
                         {% endif %}

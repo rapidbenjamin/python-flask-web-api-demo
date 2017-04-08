@@ -12,11 +12,11 @@ from ... import db
 import time
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
-# from app.modules.users.models import Users
+# from app.modules.users.models import User
 
 
-class Assets(db.Model):
-    __tablename__ = "Assets"
+class Asset(db.Model):
+    __tablename__ = "Asset"
     id = db.Column(db.Integer, primary_key=True)
 
     assetable_id = db.Column(db.Integer,  index=True)
@@ -34,7 +34,7 @@ class Assets(db.Model):
     description_fr_FR = db.Column(db.Text())
 
     # one-to-many relationship with the User model
-    users = db.relationship('Users', backref='asset', lazy='dynamic')
+    users = db.relationship('User', back_populates='asset')
 
     # is_active usually returns True. 
     # This should return False only in cases where we have disabled asset. 
@@ -48,10 +48,10 @@ class Assets(db.Model):
 
 
     def all_data(self, page, LISTINGS_PER_PAGE):
-        return Assets.query.order_by(desc(Assets.created_at)).paginate(page, LISTINGS_PER_PAGE, False)
+        return Asset.query.order_by(desc(Asset.created_at)).paginate(page, LISTINGS_PER_PAGE, False)
 
     def read_data(self, some_id):
-        asset = Assets.query.filter(Assets.id == some_id).first_or_404()
+        asset = Asset.query.filter(Asset.id == some_id).first_or_404()
         return asset
 
 
@@ -59,7 +59,7 @@ class Assets(db.Model):
         # dateTime conversion to timestamp
         timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
 
-        new_record = Assets(    
+        new_record = Asset(    
                                 assetable_id=form['assetable_id'], 
                                 assetable_type=form['assetable_type'], 
 
@@ -82,7 +82,7 @@ class Assets(db.Model):
         db.session.commit()
     
     def update_data(self, some_id, form ):
-        asset = Assets.query.get_or_404(some_id)
+        asset = Asset.query.get_or_404(some_id)
 
         asset.assetable_id=form['assetable_id'] 
         asset.assetable_type=form['assetable_type'] 
@@ -109,11 +109,11 @@ class Assets(db.Model):
         db.session.commit()
 
     def destroy_data(self, some_id ):
-        asset = Assets.query.get_or_404(some_id)
+        asset = Asset.query.get_or_404(some_id)
         db.session.delete(asset)
         db.session.commit()
 
 
     def __repr__(self):
-        # return '<Users: {}>'.format(self.id)
-        return '<Assets %r>' % self.id
+        # return '<User: {}>'.format(self.id)
+        return '<Asset %r>' % self.id

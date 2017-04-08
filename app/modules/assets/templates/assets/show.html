@@ -11,7 +11,9 @@
     <p>{{ asset.data_file_size }}</p>
 
     <p>{{ asset.asset_type }}</p>
-    <p> Users : 
+    
+    <!-- ONE-TO-MANY -->
+    <p> User : 
         {% if asset.users %}
             {{ asset.users.count() }}
         {% else %}

@@ -69,7 +69,6 @@ def populate_db_with_random_data(db_model):
             if long_value_list in k :
                 k = ''.join(choice(lis) for _ in xrange(200))
             db_model().add_data(k)
-        
 
     return "done in %.3f  | database size: %s" % (time() - start, humanize.naturalsize(os.path.getsize("data/db.sqlite")))
 

@@ -11,7 +11,7 @@ import base64
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from . import login_controller, register_controller, logout_controller, dashboard_controller, profile_controller, settings_controller
-from app.modules.users.models import Users
+from app.modules.users.models import User
 from app.modules.auth import auth_page, login_manager
 
 
@@ -26,8 +26,8 @@ def get_current_user():
 # which Flask-Login uses to reload the user object from the user ID stored in the session
 @login_manager.user_loader
 def load_user(user_id):
-    # return Users.query.filter(Users.id == user_id)
-    return Users.query.get(int(user_id))
+    # return User.query.filter(User.id == user_id)
+    return User.query.get(int(user_id))
 
 
 
@@ -54,7 +54,7 @@ def load_user_from_request(request):
         if request.is_xhr == True :
             form.password.data = base64.b64decode(form.password.data).decode('UTF-8')
             
-        user = Users.query.filter_by(username=username).first()
+        user = User.query.filter_by(username=username).first()
         if (user is not None):            
             if (user.check_password(password)):
                 return user

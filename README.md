@@ -50,8 +50,10 @@ Flask WEB API DEMO
 	- `python run.py` -> http://server_ip:5000
 
 #### Use it with configuration environment variable :
-	- `export FLASK_CONFIG=development` or on Windows systems shell script `set FLASK_CONFIG=development`
-	- `export FLASK_APP=run.py` or on Windows systems `set FLASK_APP=run.py`
+	- `export FLASK_CONFIG=development` 
+		or on Windows systems shell script `set FLASK_CONFIG=development`
+	- `export FLASK_APP=run.py` 
+		or on Windows systems `set FLASK_APP=run.py`
 	- `flask run`
 
 #### About python virtual environment : how to manage it in local project directory:
@@ -71,12 +73,13 @@ Flask WEB API DEMO
 		`virtualenv /path/to/your_projet/envs/libs1`
 			or 'mkvirtualenv' ?
 		# optional for no system libraries : --no-site-packages
-		# optional for pythn version choice --python=your_python_path : -p /usr/bin/python2.6
+		# optional for python version choice --python=your_python_path : -p /usr/bin/python2.6
 				- to get python path : which python3
 	# Activate this environment for your current shell session
 		`workon [<name>]`
 		or `source my_project/bin/activate`
 		or on Windows go in the Scripts path folder `cd my_project/env/env1/Scripts` then  `activate`
+
 		- WARNING ON WINDOWS SYSTEMS : Some paths within the virtualenv are slightly different on Windows: scripts and executables on Windows go in ENV\Scripts\ instead of ENV/bin/ and libraries go in ENV\Lib\ rather than ENV/lib/.
 			on Windows systems, the equivalent activate script is by opening active shell in the Scripts folder (Based on your active shell (CMD.exe or Powershell.exe), Windows will use either activate.bat or activate.ps1)
 
@@ -106,21 +109,9 @@ Flask WEB API DEMO
 
 		In case you don't like the "slate" theme, you can chose a nice theme from http://bootswatch.com/ and just replace the theme name
 
-#####  For DB migration use Flask-migrate :
-		type in console :
-						# create a migrations directory
-							- `export FLASK_CONFIG=development` 
-								or on Windows systems shell script `set FLASK_CONFIG=development`
-							- `export FLASK_APP=run.py` 
-								or on Windows systems `set FLASK_APP=run.py`
-							- `flask db init`
-							
-						# create the first migration
-							- `flask db migrate`
-							
-						# then create new migration and apply new migrations
-							- `flask db migrate`
-							- `flask db upgrade`
+#####  Customize database :
+		# Edit sql file in data folder
+
 
 ##### authorization control acces with Flask-login : 
 			- in template, use current_user  : {% if current_user.is_authenticated %} ... {% else %} ... {% endif %}
@@ -137,9 +128,12 @@ Flask WEB API DEMO
 ##### To install a new package and save it on requirement file:
 		`python -m pip install <new_package> && pip list > requirements.txt && pip list --format=freeze > requirements-pip2.txt`
 
+##### To install all packages:
+		 `pip install -r requirements.txt` or `python -m pip install -r requirements-pip2.txt`
 
-	- To remove all pyc files :
-		  `find . -name \*.pyc -delete` or for windows users  `del /S *.pyc`
+##### To remove all pyc files :
+		  `find . -name \*.pyc -delete` 
+		  or for windows users  `del /S *.pyc`
 
 
 ##### Extra configs for your server production environment : ./utils

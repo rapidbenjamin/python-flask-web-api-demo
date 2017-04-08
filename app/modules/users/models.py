@@ -11,31 +11,67 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
-from ... import db
+from app import db
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
-from app.modules.sections.models import Sections
-from app.modules.assets.models import Assets
+from app.modules.assets.models import Asset
 
-class Users(UserMixin, db.Model):
+
+# from app.modules.sections.models import Section
+# from app.modules.sections.models import UserSection
+
+#######################
+# WARNING FIXED ISSUE : Look at the end of page  for registering UserSection : global name 'User' is not defined
+#######################
+
+class User(UserMixin, db.Model):
     """
-    Create a Users table
+    Create a User table
     """
 
     # Ensures table will be named in plural and not in singular
     # as is the name of the model
-    __tablename__ = 'Users'
+    __tablename__ = 'User'
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(60), index=True, unique=True)
     username = db.Column(db.String(60), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    
-    # one-to-many relationship with the Asset model
-    # the backref argument in the asset field allows us to access users from the Assets model 
+
+    # MANY-TO-ONE relationship with the Asset model
+    # the backref argument in the asset field allows us to access users from the Asset model
     # as simple as asset.users in our controllers.
-    asset_id = db.Column(db.Integer, db.ForeignKey('Assets.id'))
-    # asset = db.relationship('Assets', backref=db.backref('users', lazy='dynamic'))
+    asset_id = db.Column(db.Integer, db.ForeignKey('Asset.id'))
+    # a bidirectional relationship in many-to-one. Return object
+    asset = db.relationship('Asset', back_populates='users')
+
+    # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Section model
+    # the cascade will delete orphaned usersections
+    usersections = db.relationship('UserSection', back_populates='user', lazy='dynamic',  cascade="all, delete-orphan")
+    # or  Get all sections in view only mode
+    sections = db.relationship('Section', secondary='usersection', viewonly=True, back_populates='users', lazy='dynamic')
+
+    """
+    Return UserSection objects collection
+    and requires that child objects are associated with an association instance before being appended to the parent;
+    similarly, access from parent to child goes through the association object:
+    so to append sections via association
+        user1.usersections.append(UserSection(section = Section(title_en_US = 'test')))
+
+    or
+        UserSection(user = user1, Section(title_en_US = 'test'), extra_data="test")
+    To iterate through sections objects via association, including association attributes
+        for usersection in user.usersections:
+            print(usersection.extra_data)
+            print(usersection.section)
+        or 
+        for section in user.sections:
+            print(section.title_en_US)
+    WARNING : So don't use  directly user.sections.append(Section(title_en_US = 'test'))
+                cause it's redundant, it will cause a duplicate INSERT on Association with 
+                user.usersections.append(UserSection(section=section1))
+                add  viewonly=True on secondary relationship to stop edit, create or delete operations  here
+    """
 
 
     is_admin = db.Column(db.Boolean, default=True)
@@ -96,10 +132,10 @@ class Users(UserMixin, db.Model):
 
 
     def all_data(self, page, LISTINGS_PER_PAGE):
-        return Users.query.order_by(desc(Users.created_at)).paginate(page, LISTINGS_PER_PAGE, False)
+        return User.query.order_by(desc(User.created_at)).paginate(page, LISTINGS_PER_PAGE, False)
 
     def read_data(self, some_id):
-        user = Users.query.filter(Users.id == some_id).first_or_404()
+        user = User.query.filter(User.id == some_id).first_or_404()
         return user
 
 
@@ -108,20 +144,27 @@ class Users(UserMixin, db.Model):
         # dateTime conversion to timestamp
         timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
 
-        user = Users(
+
+        user = User(
                         email=form['email'], 
                         username=form['username'], 
-                        asset = form['asset'], 
+                        asset = form['asset'],
                         is_active = form['is_active'],
                         # convert string to integer format
                         created_at = int(timestamp_created_at)
                     )
+                    
+        # MANY-TO-MANY Relationship 
+        for section in form['sections']:
+            usersection = UserSection(user = user, section = section)
+            user.usersections.append(usersection)
+        
         db.session.add(user)
         db.session.commit()
 
 
     def update_data(self, some_id, form ):
-        user = Users.query.get_or_404(some_id)
+        user = User.query.get_or_404(some_id)
 
         user.email = form['email']
         user.username = form['username']
@@ -133,18 +176,26 @@ class Users(UserMixin, db.Model):
         # convert string to integer format
         user.created_at = int(timestamp_created_at)
 
+        # MANY-TO-MANY Relationship
+        user.usersections = []
+        for section in form['sections']:
+            usersection = UserSection(section = section)
+            user.usersections.append(usersection)
+
+
         db.session.commit()
 
     def destroy_data(self, some_id ):
-        user = Users.query.get_or_404(some_id)
+        user = User.query.get_or_404(some_id)
         db.session.delete(user)
         db.session.commit()
 
 
     def __repr__(self):
-        # return '<Users: {}>'.format(self.id)
-        return '<Users %r>' % self.id
+        # return '<User: {}>'.format(self.id)
+        return '<User %r>' % self.id
 
 
 
-
+# Defined at the end of the page for fixed issue
+from app.modules.sections.models import UserSection

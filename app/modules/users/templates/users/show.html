@@ -7,6 +7,8 @@
     <hr/>
 
     <p>{{ user.username }}</p>
+
+    <!-- ONE-TO-MANY -->
     <p>
         {% if user.asset %}
             <img src=" {{url_for('static', filename='images/' + user.asset.data_file_name)}}" width="100" class="img-thumbnail"><br/>{{ user.asset.data_file_name }}
@@ -14,6 +16,18 @@
             No Thumbnail
         {% endif %}
     </p>
+    
+    <!-- MANY-TO-MANY -->
+    <p>
+        {% if user.sections %}
+            {% for section in user.sections %}
+                {{ section.title_en_US }}, 
+            {% endfor %}
+        {% else %}
+            No sections
+        {% endif %}
+    </p>
+    
     <p>{{ user.is_active }}</p>
     <p>{{ user.updated_at }}</p>
     <p>{{ user.created_at }}</p>

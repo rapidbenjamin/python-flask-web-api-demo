@@ -83,7 +83,8 @@ class ProductionConfig(BaseConfig):
     SECRET_CONFIG = 'prod-config.py'
 
     SQLALCHEMY_DATABASE_URI = 'mysql://user:pass@server_ip:server_port/db_name'
-
+    SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+    
     CSRF_ENABLED = True
     WTF_CSRF_ENABLED = True
 

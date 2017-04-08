@@ -8,6 +8,16 @@
 
     <p>{{ section.slug }}</p>
     <p>{{ section['description_%s' %(g.current_lang)] }}</p>
+    <!-- MANY-TO-MANY -->
+    <p>
+        {% if section.users %}
+            {% for user in section.users %}
+                {{ user.username }}, 
+            {% endfor %}
+        {% else %}
+            No users
+        {% endif %}
+    </p>
     <p>{{ section.is_active }}</p>
     <p>{{ section.updated_at }}</p>
     <p>{{ section.created_at }}</p>

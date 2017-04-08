@@ -6,7 +6,7 @@ from wtforms import PasswordField, StringField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Email, EqualTo
 import base64
 
-from app.modules.users.models import Users
+from app.modules.users.models import User
 
 
 class RegistrationForm(FlaskForm):
@@ -30,11 +30,11 @@ class RegistrationForm(FlaskForm):
 
     # Method to ensure that the email entered have not been used before
     def validate_email(self, field):
-        if Users.query.filter_by(email=field.data).first():
+        if User.query.filter_by(email=field.data).first():
             raise ValidationError('Email is already in use.')
     
     # Method to ensure that the username entered have not been used before
     def validate_username(self, field):
-        if Users.query.filter_by(username=field.data).first():
+        if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username is already in use.')
     

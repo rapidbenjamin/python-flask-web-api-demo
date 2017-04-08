@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
     <h4 class="pull-right"><a href="/users/new"><span class="glyphicon glyphicon-plus"></span> New</a></h4>
-    <h3>Users</h3>
+    <h3>User</h3>
     <hr/>
 
     
@@ -13,6 +13,7 @@
             <th>Email</th>
             <th>User name</th>
             <th>Thumbnail</th>
+            <th>Sections</th>
             <th>Locale</th>
             <th>Timezone</th>
             <th>Active</th>
@@ -28,11 +29,22 @@
                     <td>{{ user.id }}</td>
                     <td><a href="{{ url_for('users_page.show', id = user.id) }}" >{{ user.email }}</a></td>
                     <td>{{ user.username }}</td>
+                    <!-- ONE-TO-MANY -->
                     <td>
                         {% if user.asset %}
                             <img src=" {{url_for('static', filename='images/' + user.asset.data_file_name)}}" width="100" class="img-thumbnail"><br/>{{ user.asset.data_file_name }}
                         {% else %}
                             None
+                        {% endif %}
+                    </td>
+                    <!-- MANY-TO-MANY -->
+                    <td>
+                        {% if user.sections.count() > 0 %}
+                            {% for section in user.sections %}
+                                {{ section.title_en_US }}, 
+                            {% endfor %}
+                        {% else %}
+                            No sections
                         {% endif %}
                     </td>
                     <td>{{ user.locale }}</td>
@@ -48,7 +60,7 @@
             {% endfor %}
          {% else %}
           <tr style="text-align: center">
-              <td colspan="10">
+              <td colspan="11">
             <h4> No users have been added. </h4>
             </td>
          </tr>

@@ -12,8 +12,8 @@ from app.modules.auth import auth_page
 from app import app
 from app.modules.auth.forms.settings_form import Form_Record_Settings
 from app import db
-from app.modules.users.models import Users
-from app.modules.sections.models import Sections
+from app.modules.users.models import User
+from app.modules.sections.models import Section
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 
@@ -27,8 +27,8 @@ def settings():
 
         # check_admin()
 
-        # sections = Sections.query.all()
-        sections = Sections.query.filter(Sections.is_active == True).all()
+        # sections = Section.query.all()
+        sections = Section.query.filter(Section.is_active == True).all()
         user = current_user
         
         form = Form_Record_Settings(request.form)

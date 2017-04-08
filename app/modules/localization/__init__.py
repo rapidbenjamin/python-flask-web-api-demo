@@ -3,7 +3,7 @@
 
 # ------- IMPORT DEPENDENCIES ------- 
 from flask import Blueprint
-from flask.ext.babel import Babel
+from flask_babel import Babel
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from app import app

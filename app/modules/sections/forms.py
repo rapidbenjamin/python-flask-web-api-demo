@@ -4,7 +4,9 @@
 # import dependencies
 from wtforms import Form, StringField, TextAreaField, validators, BooleanField
 from wtforms.fields.html5 import DateField
-
+from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
+from app.modules.users.models import User
+# from app.modules.sections.usersection_model import UserSection
 
 class Form_Record_Add(Form):
 
@@ -20,6 +22,11 @@ class Form_Record_Add(Form):
                                 validators=[validators.Length(max=200, message='max 200 characters')])
     description_fr_FR = TextAreaField('description_fr_FR',
                                 validators=[validators.Length(max=200, message='max 200 characters')])
+    # MANY-TO-MANY
+    users = QuerySelectMultipleField('Select Users',
+                             query_factory=lambda : User.query.filter(User.is_active == True).all(),
+                             get_label=lambda u: u.username,
+                             allow_blank=True)
 
     is_active = BooleanField('is_active')
 

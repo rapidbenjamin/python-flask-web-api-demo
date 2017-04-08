@@ -10,7 +10,7 @@ import sendgrid
 from . import contact_page
 from app import app
 from app.helpers import threaded_async
-from app.modules.users.models import Users
+from app.modules.users.models import User
 
 
 # SERVICE EMAIL
@@ -38,7 +38,7 @@ def send_email(app, to, subject, body):
 def index():
     try:
 
-        users = Users.query.filter(Users.is_active == True).all()
+        users = User.query.filter(User.is_active == True).all()
 
 
         recaptcha = current_app.config['RECAPTCHA_SITE_KEY']

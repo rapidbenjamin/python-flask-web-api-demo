@@ -18,9 +18,9 @@
                 {% if current_user.is_authenticated %}
                     <li><a class="{{ 'active' if 'dashboard' in request.endpoint else '' }}" href="{{ url_for('auth_page.dashboard') }}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
                 {% endif %}
-                <li><a class="{{ 'active' if 'users_page.index' in request.endpoint else '' }}" href="/users"><span class="glyphicon glyphicon-user"></span> Users</a></li>
-                <li><a class="{{ 'active' if 'sections_page.index' in request.endpoint else '' }}" href="/sections"><span class="glyphicon glyphicon-list-alt"></span> Sections</a></li>
-                <li><a class="{{ 'active' if 'assets_page.index' in request.endpoint else '' }}" href="/assets"><span class="glyphicon glyphicon-picture"></span> Assets</a></li>
+                <li><a class="{{ 'active' if 'users_page.index' in request.endpoint else '' }}" href="/users"><span class="glyphicon glyphicon-user"></span> User</a></li>
+                <li><a class="{{ 'active' if 'sections_page.index' in request.endpoint else '' }}" href="/sections"><span class="glyphicon glyphicon-list-alt"></span> Section</a></li>
+                <li><a class="{{ 'active' if 'assets_page.index' in request.endpoint else '' }}" href="/assets"><span class="glyphicon glyphicon-picture"></span> Asset</a></li>
                 <li><a class="{{ 'active' if 'contact_page.index' in request.endpoint else '' }}" href="/contact"><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

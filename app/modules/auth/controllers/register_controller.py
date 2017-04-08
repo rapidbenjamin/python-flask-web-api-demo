@@ -11,7 +11,7 @@ from app.modules.auth import auth_page
 from app import app
 from app.modules.auth.forms.registration_form import RegistrationForm
 from app import db
-from app.modules.users.models import Users
+from app.modules.users.models import User
 
 
 
@@ -33,9 +33,9 @@ def register():
         if request.method == 'POST' and form.validate_on_submit():
             
             # Check if username already exist     
-            existing_username = Users.query.filter_by(username=form.username.data).first()
+            existing_username = User.query.filter_by(username=form.username.data).first()
             # Check if email already exist
-            existing_email = Users.query.filter_by(email=form.email.data).first()
+            existing_email = User.query.filter_by(email=form.email.data).first()
 
             # Check validations
             if existing_username and existing_email :                
@@ -61,7 +61,7 @@ def register():
                 form.password.data = base64.b64decode(form.password.data).decode('UTF-8')
 
             # create user
-            user = Users(email=form.email.data,
+            user = User(email=form.email.data,
                         username=form.username.data,
                         password=form.password.data)
             

@@ -10,8 +10,8 @@ from app.modules.auth import auth_page
 from app import app
 from app.modules.auth.forms.login_form import LoginForm
 from app import db
-from app.modules.users.models import Users
-from app.modules.sections.models import Sections
+from app.modules.users.models import User
+from app.modules.sections.models import Section
 
 
 # ADMIN PROFILE PAGE
@@ -20,7 +20,7 @@ from app.modules.sections.models import Sections
 @login_required
 def profile():
     try:
-        m_users = Users()
+        m_users = User()
         m_user = current_user
         # html or Json response
         if request.is_xhr == True:

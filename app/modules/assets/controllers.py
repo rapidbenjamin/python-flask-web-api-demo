@@ -17,7 +17,7 @@ from PIL import Image
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from app import app, logger
 from . import assets_page
-from models import Assets
+from models import Asset
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 from app import config_name
@@ -56,7 +56,7 @@ def resize_image_to_max(image_path, max_size):
 @assets_page.route('/<int:page>')
 def index(page=1):
     try:
-        m_assets = Assets()
+        m_assets = Asset()
         list_assets = m_assets.all_data(page, app.config['LISTINGS_PER_PAGE'])
         # html or Json response
         if request.is_xhr == True:
@@ -77,7 +77,7 @@ def index(page=1):
 @assets_page.route('/<int:id>/show')
 def show(id=1):
     try:
-        m_assets = Assets()
+        m_assets = Asset()
         m_asset = m_assets.read_data(id)
         # html or Json response
         if request.is_xhr == True:
@@ -155,7 +155,7 @@ def new():
                     im.save(infilename + ".thumbnail" + ext)
 
 
-                    assets = Assets()
+                    assets = Asset()
 
                     sanitize_form = {
                         'assetable_id': form.assetable_id.data,
@@ -206,7 +206,7 @@ def edit(id=1):
 
         # check_admin()
 
-        assets = Assets()
+        assets = Asset()
         asset = assets.query.get_or_404(id)
 
         # request.form only contains form input data. request.files contains file upload data. 
@@ -335,7 +335,7 @@ def edit(id=1):
 @assets_page.route('/<int:id>/destroy')
 def destroy(id=1):
     try:
-        assets = Assets()
+        assets = Asset()
         asset = assets.query.get_or_404(id)
 
         target_dir = os.path.abspath(app.config['UPLOAD_FOLDER'])
@@ -356,7 +356,7 @@ def destroy(id=1):
             return jsonify(data = {message:"Record deleted successfully.", asset : m_asset})
         else:
             flash("Record deleted successfully.", category="success")
-            return redirect(url_for('assets_page.assets'))
+            return redirect(url_for('assets_page.index'))
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))

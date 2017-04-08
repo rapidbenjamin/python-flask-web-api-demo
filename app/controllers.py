@@ -27,14 +27,32 @@ from app.modules.localization import localization_service, babel
 
 
 
-
+# ------- START DATABASE  -------
 @app.before_first_request
 def before_first_request():
-    logger.info("-------------------- initializing everything ---------------------\n")
+    logger.info("-------------------- initializing DB ---------------------\n")
     with app.app_context():
         # Extensions like Flask-SQLAlchemy now know what the "current" app
         # is while within this block. Therefore, you can now run........
         db.create_all()
+        # and/or populate
+        # init_db()
+
+
+def init_db():
+    """Initializes the database."""
+    with app.open_resource('../data/schema.sql', mode='r') as f:
+        db.cursor().executescript(f.read())
+    db.commit()
+
+"""
+@app.teardown_appcontext
+def close_db(error):
+    \"""Closes the database again at the end of the request.\"""
+    db.close()
+"""
+# ----- EN DATABASE -----
+
 
 
 # ----- BASIC REQUESTS -----

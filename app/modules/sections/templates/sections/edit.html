@@ -5,9 +5,9 @@
     <hr/>
     <div class="row">
         <div class="col-lg-6">
-            <div class="well">{{ csrf_token() }}
+            <div class="well">
                 <form method="POST" action="{{ form.action }}" role="form" class="form-horizontal" accept-charset="utf-8">
- 
+
                     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
                     <fieldset>
                         <legend>Add new section</legend>
@@ -86,6 +86,34 @@
                                 {% endfor %}
                             </div>
                         </div>
+
+
+                        <!-- MANY-TO-MANY RELATIONSHIP -->
+                        <div class="form-group">
+                            <label for="section_users" class="col-lg-4 control-label">{{ form.users.label }}</label>
+                            <div class="col-lg-6">
+                               <select class="form-control" id="users" name="users" multiple="" >
+                                    {% for user in users %}
+                                        <option value="{{ user.id }}"
+                                        {% if form.users.data %}
+                                            {% for user2 in form.users.data %}
+                                                {% if user.id == user2.id %}
+                                                    selected="selected"
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        >
+                                        {{user.username}}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.errors.users %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
 
                         <div class="form-group">
                             <label for="section_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>

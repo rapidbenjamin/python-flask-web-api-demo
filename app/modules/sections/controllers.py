@@ -12,9 +12,12 @@ from flask_login import login_required, current_user
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from app import app, logger
 from . import sections_page
-from models import Sections
+from models import Section
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
+
+from app.modules.users.models import User
+
 
 # -------  ROUTINGS AND METHODS  ------- 
 
@@ -24,7 +27,7 @@ from app.modules.localization.controllers import get_locale, get_timezone
 @sections_page.route('/<int:page>')
 def index(page=1):
     try:
-        m_sections = Sections()
+        m_sections = Section()
         list_sections = m_sections.all_data(page, app.config['LISTINGS_PER_PAGE'])
         # html or Json response
         if request.is_xhr == True:
@@ -41,7 +44,7 @@ def index(page=1):
 @sections_page.route('/<int:id>/show', methods=['GET','POST'])
 def show(id=1):
     try:
-        m_sections = Sections()
+        m_sections = Section()
         m_section = m_sections.read_data(id)
         # html or Json response
         if request.is_xhr == True:
@@ -59,12 +62,12 @@ def show(id=1):
 @sections_page.route('/new', methods=['GET', 'POST'])
 def new():
     try :
-
+        users = User.query.filter(User.is_active == True).all()
         form = Form_Record_Add(request.form)
 
         if request.method == 'POST':
             if form.validate():
-                sections = Sections()
+                sections = Section()
 
                 sanitize_form = {
 
@@ -75,6 +78,8 @@ def new():
 
                     'description_en_US' : form.description_en_US.data,
                     'description_fr_FR' : form.description_fr_FR.data,
+
+                    'users' : form.users.data,
 
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
@@ -96,7 +101,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("sections/edit.html", form=form,  title_en_US='New', app = app)
+            return render_template("sections/edit.html", form=form, users=users,  title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -109,9 +114,10 @@ def edit(id=1):
     try : 
 
         # check_admin()
+        users = User.query.filter(User.is_active == True).all()
 
-        sections = Sections()
-        section = sections.query.get_or_404(id)
+        sections = Section()
+        section = Section.query.get_or_404(id)
 
         form = Form_Record_Add(request.form)
 
@@ -126,6 +132,8 @@ def edit(id=1):
 
                     'description_en_US' : form.description_en_US.data,
                     'description_fr_FR' : form.description_fr_FR.data,
+
+                    'users' : form.users.data,
 
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
@@ -150,6 +158,10 @@ def edit(id=1):
         form.description_en_US.data = section.description_en_US
         form.description_fr_FR.data = section.description_fr_FR
 
+
+        if  section.users :
+            form.users.data = section.users
+
         form.is_active.data = section.is_active
         form.created_at.data = string_timestamp_utc_to_string_datetime_utc(section.created_at, '%Y-%m-%d')
 
@@ -157,7 +169,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("sections/edit.html", form=form, title_en_US='Edit', app = app)
+            return render_template("sections/edit.html", form=form, users=users, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -169,7 +181,7 @@ def edit(id=1):
 @sections_page.route('/<int:id>/destroy')
 def destroy(id=1):
     try:
-        sections = Sections()
+        sections = Section()
         section = sections.query.get_or_404(id)
         sections.destroy_data(section.id)
         # html or Json response
@@ -177,7 +189,7 @@ def destroy(id=1):
             return jsonify(data = {message:"Record deleted successfully.", section : m_section})
         else:
             flash("Record deleted successfully.", category="success")
-            return redirect(url_for('sections_page.sections'))
+            return redirect(url_for('sections_page.index'))
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))

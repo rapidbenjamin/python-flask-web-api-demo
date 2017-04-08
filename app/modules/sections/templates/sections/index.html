@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
     <h4 class="pull-right"><a href="/sections/new"><span class="glyphicon glyphicon-plus"></span> New</a></h4>
-    <h3>Sections</h3>    
+    <h3>Section</h3>    
     <hr/>
 
 
@@ -14,6 +14,7 @@
             <th>Slug</th>
             <th>Title</th>
             <th>Description</th>
+            <th>Users</th>
             <th>Active</th>
             <th>Updated Date</th>
             <th>Created Date</th>
@@ -27,6 +28,16 @@
                     <td><a href="{{ url_for('sections_page.show', id = section.id) }}" >{{ section.slug }}</a></td>
                     <td><a href="{{ url_for('sections_page.show', id = section.id) }}" >{{ section['title_%s' %(g.current_lang)] }}</a></td>
                     <td>{{ section['description_%s' %(g.current_lang)] }}</td>
+                    <!-- MANY-TO-MANY -->
+                    <td>
+                        {% if section.users %}
+                            {% for user in section.users %}
+                                {{ user.username }}, 
+                            {% endfor %}
+                        {% else %}
+                            No users
+                        {% endif %}
+                    </td>
                     <td>{{ section.is_active }}</td>
                     <td>{{ section.updated_at | datetimeformat }}</td>
                     <td>{{ section.created_at | datetimeformat }}</td>
@@ -38,7 +49,7 @@
             {% endfor %}
         {% else %}
           <tr style="text-align: center">
-              <td colspan="8">
+              <td colspan="9">
             <h4> No sections have been added. </h4>
             </td>
          </tr>
