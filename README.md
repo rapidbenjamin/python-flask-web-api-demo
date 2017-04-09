@@ -3,7 +3,7 @@ Flask WEB API DEMO
 
 
 #### This is an advanced demo app forked from AndreiD/Flask-Easy-Template : https://github.com/AndreiD/Flask-Easy-Template
-	added reference sources : https://github.com/mbithenzomo/project-dream-team-three
+#### Additional reference sources : https://github.com/mbithenzomo/project-dream-team-three
 
 
 ### Features:
@@ -15,10 +15,10 @@ Flask WEB API DEMO
 	- Module Sample database USERS with SQLALchemy, relational models and Pagination
 	- Module Sample page MESSAGES with email form, recaptcha and Email service by SendGrid and Flash MESSAGE notification	
 	- Module Sample database RESOURCES : 
-								- ITEMS with images gallery, 
+								- ITEMS with images gallery, [coming-soon]
 								- ASSETS files and image processing with Pillow
-								- EVENTS (start/end datetime) 
-								- PLACES (geolocalization with latitude and longitude)
+								- EVENTS (start/end datetime) [coming-soon]
+								- PLACES (geolocalization with latitude and longitude) [coming-soon]
 	- Module Sample database ORDERS and orderitem many-to-many relationship
 	- Module sample ADMIN, backoffice member with authentication  and authorization powered by Flask-login plugin :
 			- User Registry, Login & Logout
