@@ -60,6 +60,7 @@ def show(id=1):
 
 # New section
 @sections_page.route('/new', methods=['GET', 'POST'])
+@login_required
 def new():
     try :
         users = User.query.filter(User.is_active == True).all()
@@ -95,7 +96,8 @@ def new():
                     return redirect("/sections")
 
         form.action = url_for('sections_page.new')
-        form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        form.created_at.data = datetime.now().strftime('%Y-%m-%d')
 
          # html or Json response
         if request.is_xhr == True:
@@ -110,6 +112,7 @@ def new():
 
 # Edit section
 @sections_page.route('/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
 def edit(id=1):
     try : 
 
@@ -179,6 +182,7 @@ def edit(id=1):
 
 # Delete section
 @sections_page.route('/<int:id>/destroy')
+@login_required
 def destroy(id=1):
     try:
         sections = Section()

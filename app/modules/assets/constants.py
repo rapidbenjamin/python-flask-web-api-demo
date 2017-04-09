@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-UPLOAD_FOLDER = '.app/static/images'
+UPLOAD_FOLDER = '.app/static/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 # limit the maximum allowed payload to 16 megabytes. 
 # If a larger file is transmitted, Flask will raise an RequestEntityTooLarge exception.

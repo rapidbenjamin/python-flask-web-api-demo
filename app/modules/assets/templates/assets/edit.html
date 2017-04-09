@@ -4,20 +4,20 @@
     <h3>{{ title_en_US }}</h3>
     <hr/>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-8 col-centered">
             <div class="well">
                 <form method="POST" action="{{ form.action }}" enctype="multipart/form-data" role="form" class="form-horizontal" accept-charset="utf-8">
                     
                     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
                     <fieldset>
-                        <legend>Add new asset</legend>
+                        <legend>Form asset</legend>
 
                         {% if form.data_file_name.data %}
                         <div class="form-group">
                             <label for="asset_data_file_name" class="col-lg-4 control-label">{{ form.data_file_name.data }}</label>
 
                             <div class="col-lg-6">
-                                <img src=" {{url_for('static', filename='images/' + form.data_file_name.data ) }}"  width="100" class="center img-thumbnail">
+                                <img src=" {{url_for('static', filename='uploads/' + form.data_file_name.data ) }}"  width="100" class="center img-thumbnail">
                             </div>
                         </div>
                             

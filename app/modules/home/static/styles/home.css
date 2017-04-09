@@ -9,6 +9,7 @@
     text-align: center;
     margin: 0;
     padding: 0;
+    margin-top: -60px;
     background: url(../images/intro-bg.jpg) no-repeat center center;
     background-size: cover;
     height: 100%;
@@ -16,16 +17,20 @@
 
 .intro-message {
     position: relative;
-    padding-top: 20%;
+    padding-top: 15%;
     padding-bottom: 20%;
+    align: center;
 }
 
 .intro-message > h1 {
+    color: #FFF;
     margin: 0;
     text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
-    font-size: 5em;
+    font-size: 50px;
+    text-transform: uppercase;
 }
 
 .intro-message > h3 {
+    color: #FFF;
     text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
 }

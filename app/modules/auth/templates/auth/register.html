@@ -6,13 +6,11 @@
     <h3>{{ title_en_US }}</h3>
     <hr/>
 <div class="content-section">
-  <div class="center">
-    <h1>Register for an account</h1>
-    <br/>
+  <div class="col-lg-8 col-md-8">
+    <!--
     {{ form.hidden_tag() }}
     {{ wtf.quick_form(form) }}
-
-    <hr/>
+    -->
       <form method="POST" action="{{ url_for('auth_page.register') }}" role="form" class="form-horizontal well" >
         
         <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
@@ -83,6 +81,28 @@
     </form>
 
   </div>
+
+  <div class="col-lg-4 col-md-4">
+    <div class="row">
+        <div class="col-xs-12 well">
+            <legend><span class="glyphicon glyphicon-info-sign"></span> Rules : </legend>
+            <ul>
+                <li> Rule 1 </li>
+                <li> Rule 2 </li>
+            </ul>
+        </div>
+        <div class="col-xs-12">
+            <legend><span class="glyphicon glyphicon-question-sign"></span> Login fast ? </legend>
+            <ul>
+                <li><a href="{{ url_for('auth_page.login') }}"><span class="glyphicon glyphicon-log-in"></span> click here to sign in with this demo credential </a></li>
+                <li> Login : admin@example.com </li>
+                <li> Password : password123 </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
 </div>
 </div>
 {% endblock %}

@@ -56,6 +56,39 @@ def close_db(error):
 
 
 # ----- BASIC REQUESTS -----
+
+# CHANGE THEME
+@app.before_request
+def before_request():
+    if request.args and 'theme' in request.args:
+        app.config['BOOTSWATCH_THEME'] = request.args['theme']
+        print("********************** \n\n THEME CHANGE : " + request.args['theme'] + "\n\n ***************************\n\n")
+
+
+# Maintenance - Coming soon page
+@app.route('/maintenance')
+def maintenance():
+    g.current_lang = app.config['BABEL_DEFAULT_LOCALE']
+    g.current_timezone = app.config['BABEL_DEFAULT_TIMEZONE']
+    return render_template('maintenance.html', post = {'title_en_US' : 'Coming soon' , 'description_en_US' : 'maintenance page' },  app = app )
+
+
+# Flash messages notifications collection
+@app.route('/flash')
+def flash_notify():
+    g.current_lang = app.config['BABEL_DEFAULT_LOCALE']
+    g.current_timezone = app.config['BABEL_DEFAULT_TIMEZONE']
+
+    flash("Flash success: Message notification service", category="success")
+    flash("Flash info : Message notification service", category="info")
+    flash("Flash warning : Message notification service", category="warning")
+    flash("Flash error: Message notification service", category="danger")
+
+    return render_template('flash.html', post = {'title_en_US' : 'Flash messages' , 'description_en_US' : 'flash collection page' },  app = app )
+
+
+
+
 @app.errorhandler(403)
 def page_forbidden(e):
     g.current_lang = app.config['BABEL_DEFAULT_LOCALE']
@@ -98,6 +131,10 @@ def unprocessable(e):
     return render_template('422.html', post = {'title_en_US' : 'Unprocessable Entity' , 'description_en_US' : str(e.description) },  app = app ), 422
 
 
+
+@app.route('/404')
+def error_404():
+    abort(404)
 
 @app.route('/500')
 def error():

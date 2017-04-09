@@ -6,14 +6,14 @@
     <h3>{{ title_en_US }}</h3>
     <hr/>
 <div class="content-section">
-  <br/>
-  <div class="center">
-    <h1>Login to your account</h1>
-    <br/>
+    
+  
+  <div class="col-lg-8 col-md-8">
+    <!--
     {{ form.hidden_tag() }}
     {{ wtf.quick_form(form) }}
-
-    <hr/>
+    -->
+        
       <form method="POST" action="{{ url_for('auth_page.login') }}" role="form" class="form-horizontal well" accept-charset="utf-8">
 
         <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
@@ -55,6 +55,16 @@
     </form>
 
   </div>
+
+<div class="col-lg-4 col-md-4 well">
+  <legend><span class="glyphicon glyphicon-user"></span> Demo try : </legend>
+  <ul>
+        <li> Login : admin@example.com </li>
+        <li> Password : password123 </li>
+    </ul>
+    </div>
+
+
 </div>
 </div>
 {% endblock %}

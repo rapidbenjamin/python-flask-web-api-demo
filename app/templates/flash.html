@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title_en_US %} {{ post.title_en_US }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+
+<style>
+body { text-align: center;}
+h1 { font-size: 50px; }
+details { display:block; }
+span[frown] { display:inline-block; color: #bbb; }
+</style>
+
+    <summary><h1>{{ post.title_en_US }}</h1></summary>
+    <h2>{{ post.description_en_US }}</h2>
+
+
+{% endblock content %}

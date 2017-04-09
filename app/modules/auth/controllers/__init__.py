@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from flask import g
+from flask import g, redirect, request, url_for, flash
 from app import db
 from flask_login import current_user, logout_user
 
@@ -62,6 +62,11 @@ def load_user_from_request(request):
     return None
 
 
+# Control access management
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    flash('Unauthorized access : You must login or register first | Previous link : ' + request.path, category="warning")
+    return redirect(url_for('auth_page.login', next=request.path))
 
 
 

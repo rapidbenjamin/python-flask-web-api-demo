@@ -18,6 +18,8 @@ instance/
 # sessions instance objects
 sessions/
 
+# uploads folder
+uploads/
 
 # virtual environment and vendors library
 envs/

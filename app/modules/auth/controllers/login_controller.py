@@ -59,6 +59,8 @@ def login():
                 session['current_lang'] = user.locale
 
                 # redirect to the appropriate page
+                # if request.args and 'next' in request.args:
+                        # return redirect(request.args['next'])      
                 if user.is_admin:
                     return redirect(url_for('auth_page.dashboard'))
                 else:

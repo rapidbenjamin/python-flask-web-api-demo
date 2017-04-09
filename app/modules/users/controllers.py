@@ -4,9 +4,10 @@
 # ------- IMPORT DEPENDENCIES ------- 
 import datetime
 import sendgrid
-from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for
+from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for,g
 from forms import *
 from time import time
+from flask_login import login_required, login_user, logout_user, current_user
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from app import app, logger
@@ -60,6 +61,7 @@ def show(id=1):
 
 # New user
 @users_page.route('/new', methods=['GET', 'POST'])
+@login_required
 def new():
     try : 
         form = Form_Record_Add(request.form)
@@ -89,7 +91,8 @@ def new():
                     return redirect("/users")
 
         form.action = url_for('users_page.new')
-        form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        form.created_at.data = datetime.now().strftime('%Y-%m-%d')
 
         # html or Json response
         if request.is_xhr == True:
@@ -103,6 +106,7 @@ def new():
 
 # Edit user
 @users_page.route('/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
 def edit(id=1):
     try : 
 
@@ -169,6 +173,7 @@ def edit(id=1):
 
 # Delete user
 @users_page.route('/<int:id>/destroy')
+@login_required
 def destroy(id=1):
     try:
         users = User()

@@ -5,13 +5,13 @@
     <hr/>
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-8 col-centered">
             <div class="well">
                 <form method="POST" action="{{ form.action }}" role="form" class="form-horizontal" accept-charset="utf-8" >
                     
                     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
                     <fieldset>
-                        <legend>Add new user</legend>
+                        <legend>Form user</legend>
                         <div class="form-group">
                             <label for="user_email" class="col-lg-4 control-label">{{ form.email.label }}</label>
 

@@ -6,7 +6,7 @@
     <h4 class="text-right"><a href="/assets"><span class="glyphicon glyphicon-home"></span> Back</a></h4>
     <hr/>
 
-    <p><img src=" {{url_for('static', filename='images/' + asset.data_file_name)}}" width="100" class="img-thumbnail"><br/>{{ asset.data_file_name }}</p>
+    <p><img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="100" class="img-thumbnail"><br/>{{ asset.data_file_name }}</p>
     <p>{{ asset.data_content_type }}</p>
     <p>{{ asset.data_file_size }}</p>
 

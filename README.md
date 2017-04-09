@@ -10,26 +10,31 @@ Flask WEB API DEMO
 	- configuration files, environment variables and sensitive variables (in private folder)
 	- Utils for server production setups
 	- Latest bootstrap, bootswatch, modernizer, jquery, moment.js, etc. served from content delivery networks.
-	- Module Sample page HOME full screen 
-	- Module Sample page CONTACT with form, recaptcha and Email service by SendGrid
+	- Module Sample PAGES, with home page  full-screen layout
+	- Module Sample database SECTIONS with SQLALchemy, relational models and Pagination		
 	- Module Sample database USERS with SQLALchemy, relational models and Pagination
-	- Module Sample database SECTIONS with SQLALchemy, relational models and Pagination
-	- Module Sample database ASSETS files and image processing with Pillow
-	- Module sample authentication  and authorization with Flask-login plugin :
+	- Module Sample page MESSAGES with email form, recaptcha and Email service by SendGrid and Flash MESSAGE notification	
+	- Module Sample database RESOURCES : 
+								- ITEMS with images gallery, 
+								- ASSETS files and image processing with Pillow
+								- EVENTS (start/end datetime) 
+								- PLACES (geolocalization with latitude and longitude)
+	- Module Sample database ORDERS and orderitem many-to-many relationship
+	- Module sample ADMIN, backoffice member with authentication  and authorization powered by Flask-login plugin :
 			- User Registry, Login & Logout
 			- Session based authentication or Basic HTTP authentication or Token based authentication (with active SSL recommended in production environement)
 			- Password encryption and password-check with werkzeug.security (bcrypt-like approach) (with active SSL recommended in production environment)
 			- password base64 encoding for remote ajax-based app client (optional)
 			- Role management (is_admin, is_owner, is_member), control access and Dashboard sample page
-	- Flash messages notification
 	- SQLite or MySQL database configuration option
-	- custom theme, layout and templates
+	- CUSTOM THEME layout and templates
 	- Logger setting service
-	- internationalization functions like get_locale() and get_timezone() (flask-babel optional) based on :
+	- INTERNATIONALIZATION with functions like get_locale() and get_timezone() (flask-babel optional) based on :
 						current_user locale and current_user timezone 
 						or global current_language  and global timezone
 						or browser language  and locale timezone
 	- Helpers (include decorators like SSL required, threaded function, Datetime and timezone utils, datetime format filter, random populate data, Random token generator)
+	- Maintenance/coming-soon, flash-message page 
 	- Error handlers :  404 (path not found),
 						500 (server error), 
 						403 (forbidden page or invalid csrf token form), 

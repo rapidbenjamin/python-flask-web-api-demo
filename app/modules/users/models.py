@@ -21,8 +21,9 @@ from app.modules.assets.models import Asset
 # from app.modules.sections.models import UserSection
 
 #######################
-# WARNING FIXED ISSUE : Look at the end of page  for registering UserSection : global name 'User' is not defined
+# WARNING FIXED ISSUE : UserSection model registered at the end of this page to fixe issue  :  global name 'User' is not defined
 #######################
+
 
 class User(UserMixin, db.Model):
     """
@@ -196,6 +197,8 @@ class User(UserMixin, db.Model):
         return '<User %r>' % self.id
 
 
+#######################
+# WARNING FIXED ISSUE : UserSection model registered at the end of this page to fixe issue  :  global name 'User' is not defined
+#######################
 
-# Defined at the end of the page for fixed issue
 from app.modules.sections.models import UserSection

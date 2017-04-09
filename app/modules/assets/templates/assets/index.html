@@ -16,7 +16,7 @@
             <th>Content type</th>
             <th>File size</th>
             <th>Asset type</th>
-            <th>User count</th>
+            <th>Users</th>
             <th>Width</th>
             <th>Height</th>
             <th>Description</th>
@@ -31,7 +31,7 @@
                 <tr>
                     <td>{{ asset.id }}</td>
                     <td><a href="{{ url_for('assets_page.show', id = asset.id) }}" >
-                        <img src=" {{url_for('static', filename='images/' + asset.data_file_name) }}"  width="60" class="img-thumbnail">
+                        <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name) }}"  width="60" class="img-thumbnail">
                     </a></td>
                     <td>{{ asset.data_file_name }}</td>
                     <td>{{ asset.data_content_type }}</td>
@@ -54,7 +54,7 @@
                     <td>{{ asset.created_at | datetimeformat }}</td>
                     <td><a href="{{ url_for('assets_page.show', id = asset.id) }}" ><i class="glyphicon glyphicon-file"></i> </a></td>
                     <td><a href="{{ url_for('assets_page.edit', id = asset.id) }}" ><i class="glyphicon glyphicon-pencil"></i> </a></td>
-                    <td><a href="{{ url_for('assets_page.destroy', id = asset.id) }}" ><i class="glyphicon glyphicon-trash"></i> </a></td>
+                    <td><a href="{{ url_for('assets_page.destroy', id = asset.id) }}" onclick="return confirm('Are you sure you want to delete this item?');"><i class="glyphicon glyphicon-trash"></i> </a></td>
 
                 </tr>
             {% endfor %}

@@ -93,6 +93,7 @@ def show(id=1):
 
 # New asset
 @assets_page.route('/new', methods=['GET', 'POST'])
+@login_required
 def new():
     try :
         # request.form only contains form input data. request.files contains file upload data. 
@@ -186,7 +187,8 @@ def new():
                         return redirect("/assets")
 
         form.action = url_for('assets_page.new')
-        form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        form.created_at.data = datetime.now().strftime('%Y-%m-%d')
 
          # html or Json response
         if request.is_xhr == True:
@@ -201,6 +203,7 @@ def new():
 
 # Edit asset
 @assets_page.route('/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
 def edit(id=1):
     try : 
 
@@ -333,6 +336,7 @@ def edit(id=1):
 
 # Delete asset
 @assets_page.route('/<int:id>/destroy')
+@login_required
 def destroy(id=1):
     try:
         assets = Asset()

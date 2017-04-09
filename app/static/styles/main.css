@@ -21,6 +21,19 @@ body {
   height: 60px;
 }
 
+/* for col-lg center */
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
+
+.col-centered .img-responsive {
+
+   margin: 0 auto;
+
+}
+
 
 /* @section forms */
 .btn.cancel { margin-left: 0.5rem; }
@@ -51,7 +64,7 @@ body {
 
 .active {
   color: #FFF !important;
-  background-color: #1e1e1e !important;
+  background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
 

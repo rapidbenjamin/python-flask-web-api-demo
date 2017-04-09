@@ -28,7 +28,7 @@ class BaseConfig(object):
     SQLALCHEMY_ECHO = False
 
     SQLALCHEMY_DATABASE_URI = ''
-    APP_NAME = 'Flask WEB API DEMO'
+    APP_NAME = 'WEB API DEMO'
     
     # secret key used also for csrf_token
     SECRET_KEY = 'write-a-secret-string-here-or-in-the-instance-secret-folder'
@@ -44,7 +44,7 @@ class BaseConfig(object):
     SECURITY_CONFIRMABLE = True
 
     # asset files
-    UPLOAD_FOLDER = 'app/static/images'
+    UPLOAD_FOLDER = 'app/static/uploads'
     ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
     # limit the maximum allowed payload to 16 megabytes. 
     # If a larger file is transmitted, Flask will raise an RequestEntityTooLarge exception.

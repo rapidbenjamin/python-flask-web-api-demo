@@ -37,9 +37,7 @@ def send_email(app, to, subject, body):
 @contact_page.route('/', methods=['GET', 'POST'])
 def index():
     try:
-
         users = User.query.filter(User.is_active == True).all()
-
 
         recaptcha = current_app.config['RECAPTCHA_SITE_KEY']
         email_sent = False

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # ------- IMPORT DEPENDENCIES ------- 
-from flask import request, render_template, flash, current_app, redirect, abort, jsonify
+from flask import request, render_template, flash, current_app, redirect, abort, jsonify, request
 import sendgrid
 from flask_login import login_required, current_user
 
@@ -16,7 +16,7 @@ from app import app
 @home_page.route('/')
 def index():
     try:
-        post = { 'title_en_US' : 'Flask api demo' , 'description_en_US' : 'Web api ' }
+        post = { 'title_en_US' : 'Quick and Clean' , 'description_en_US' : 'Flask web api demo' }
 
         # html or Json response
         if request.is_xhr == True :
@@ -28,3 +28,5 @@ def index():
         print("------------ ERROR  ------------\n" + str(ex.message))
         return render_template('404.html', post = {'title_en_US' : 'Error' , 'description_en_US' : str(ex.message) }, app = app )
         #abort(404)
+
+
