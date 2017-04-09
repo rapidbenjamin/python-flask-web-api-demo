@@ -53,8 +53,7 @@ Bootstrap(app)
 #To solve the problem from circular import, place the other imports which are dependent on 'db' and app below app== and db=SQLAlchemy(app).
 
 # ------- LAST REGISTER MODULES WITH BLUEPRINTS -------  
-from . import modules
-from . import controllers
+from . import modules, controllers, helpers
 
 
 # REGISTER BLUEPRINTS

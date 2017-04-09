@@ -38,25 +38,50 @@
                                 {% endfor %}
                             </div>
                         </div>
-
+                        
+                        <!-- ONE-TO-MANY -->
                         <div class="form-group">
-                            <label for="user_section" class="col-lg-4 control-label">{{ form.section.label }}</label>
+                            <label for="user_asset" class="col-lg-4 control-label">{{ form.asset.label }}</label>
                             <div class="col-lg-6">
-                                {{ form.section (class="form-control") }}
-                                <!--
-                                <select id="user_section" name="user_section" >
-                                    {% for section in sections %}
-                                        <option value="{{section.id}}">{{section.title_en_US}}</option>
+                                <select class="form-control" id="asset" name="asset" >
+                                    {% for asset in assets %}
+                                        <option value="{{ asset.id }}" {% if form.asset.data == asset.id %} selected="selected"{% endif %} >{{asset.data_file_name}}</option>
                                     {% endfor %}
                                 </select>
-                                -->
-                                {% for error in form.errors.section %} <br/>
+                                {% for error in form.errors.asset %} <br/>
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
                                     </div>
                                 {% endfor %}
                             </div>
                         </div>
+
+                        <!-- MANY-TO-MANY RELATIONSHIP -->
+                        <div class="form-group">
+                            <label for="user_sections" class="col-lg-4 control-label">{{ form.sections.label }}</label>
+                            <div class="col-lg-6">
+                                <select class="form-control" id="sections" name="sections" multiple="" >
+                                    {% for section in sections %}
+                                        <option value="{{ section.id }}"
+                                        {% if form.sections.data %}
+                                            {% for section2 in form.sections.data %}
+                                                {% if section.id == section2.id %}
+                                                    selected="selected"
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        >
+                                        {{section.title_en_US}}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.errors.sections %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
 
                         <div class="form-group">
                             <label for="user_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>

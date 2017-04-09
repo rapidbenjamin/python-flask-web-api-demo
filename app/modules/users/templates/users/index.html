@@ -39,7 +39,7 @@
                     </td>
                     <!-- MANY-TO-MANY -->
                     <td>
-                        {% if user.sections.count() > 0 %}
+                        {% if user.sections %}
                             {% for section in user.sections %}
                                 {{ section.title_en_US }}, 
                             {% endfor %}
