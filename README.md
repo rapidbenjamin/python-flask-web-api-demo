@@ -3,7 +3,7 @@ Flask WEB API DEMO
 
 
 #### This is an advanced demo app forked from AndreiD/Flask-Easy-Template : https://github.com/AndreiD/Flask-Easy-Template
-#### Additional reference sources : https://github.com/mbithenzomo/project-dream-team-three
+#### Additional reference sources - mbithenzomo/project-dream-team-three : https://github.com/mbithenzomo/project-dream-team-three
 
 
 ### Features:
