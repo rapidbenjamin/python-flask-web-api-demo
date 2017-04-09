@@ -10,6 +10,7 @@ CREATE TABLE usersection (
 	FOREIGN KEY(user_id) REFERENCES "User" (id), 
 	FOREIGN KEY(section_id) REFERENCES "Section" (id)
 );
+INSERT INTO `usersection` (user_id,section_id,description_en_US,description_fr_FR,updated_at,created_at) VALUES (1,1,NULL,NULL,1491759772,1491759772);
 CREATE TABLE "User" (
 	id INTEGER NOT NULL, 
 	email VARCHAR(60), 
@@ -35,6 +36,7 @@ CREATE TABLE "User" (
 	CHECK (is_anonymous IN (0, 1)), 
 	CHECK (is_active IN (0, 1))
 );
+INSERT INTO `User` (id,email,username,password_hash,asset_id,is_admin,is_owner,is_member,is_authenticated,is_anonymous,is_active,updated_at,created_at,locale,timezone) VALUES (1,'admin@example.com','admin','pbkdf2:sha1:1000$hSb7sGoA$ff10804b865b6691bdf813424dd213b3077a2cdc',1,1,0,1,1,0,1,1491759772,1491688800,'en_US','UTC');
 CREATE TABLE "Section" (
 	id INTEGER NOT NULL, 
 	slug VARCHAR(255), 
@@ -48,6 +50,7 @@ CREATE TABLE "Section" (
 	PRIMARY KEY (id), 
 	CHECK (is_active IN (0, 1))
 );
+INSERT INTO `Section` (id,slug,title_en_US,title_fr_FR,description_en_US,description_fr_FR,is_active,updated_at,created_at) VALUES (1,'departmenta','Department A','Catégorie A','Section A','Section A',1,1491759772,1491688800);
 CREATE TABLE "Asset" (
 	id INTEGER NOT NULL, 
 	assetable_id INTEGER, 
@@ -66,6 +69,7 @@ CREATE TABLE "Asset" (
 	PRIMARY KEY (id), 
 	CHECK (is_active IN (0, 1))
 );
+INSERT INTO `Asset` (id,assetable_id,assetable_type,data_file_name,data_content_type,data_file_size,asset_type,width,height,description_en_US,description_fr_FR,is_active,updated_at,created_at) VALUES (1,'','','avatar-systemaker-01.jpg','image/jpeg',54370,'',458,458,'Avatar','Avatar',1,1491759772,1491688800);
 CREATE INDEX "ix_usersection_description_fr_FR" ON usersection ("description_fr_FR");
 CREATE INDEX "ix_usersection_description_en_US" ON usersection ("description_en_US");
 CREATE UNIQUE INDEX "ix_User_username" ON "User" (username);
