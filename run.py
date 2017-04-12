@@ -14,6 +14,9 @@ from tornado.log import enable_pretty_logging
 from app import app
 
 
+
+
+
 # INITIALIZE
 enable_pretty_logging()
 
@@ -28,4 +31,7 @@ enable_pretty_logging()
 
 # ------- DEVELOPMENT CONFIG -------
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
+
+
+

@@ -19,6 +19,9 @@ class BaseConfig(object):
     # APPLICATION_ROOT = "/api/v1.0.0"
     # URL_PREFIX = '/api/v1.0.0'
 
+    # HOST='0.0.0.0'
+
+
     BOOTSWATCH_THEME = "slate"
 
     ADMIN_EMAIL = "your_email@gmail.com"
@@ -102,8 +105,9 @@ class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data/db.sqlite')
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
+    
     PORT = 5000
-    DEBUG = True
+    DEBUG = False
 
     # Allow SQLAlchemy to log errors
     SQLALCHEMY_ECHO = True 
