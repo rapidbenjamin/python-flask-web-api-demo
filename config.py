@@ -107,7 +107,7 @@ class DevelopmentConfig(BaseConfig):
 
     
     PORT = 5000
-    DEBUG = False
+    DEBUG = True
 
     # Allow SQLAlchemy to log errors
     SQLALCHEMY_ECHO = True 
