@@ -61,6 +61,37 @@ Flask WEB API DEMO
 		or on Windows systems `set FLASK_APP=run.py`
 	- `flask run`
 
+
+#### PRODUCTION CONFIG with GUNICORN : Use it for production with GUNICORN Upstart script and NGINX config from utils directory :
+	- config.py file turn app_config.default value from  'DevelopmentConfig' to 'ProductionConfig'   
+	- active your Python virtual environment
+	- GUNICORN : on shell command type  `gunicorn --bind 0.0.0.0:5000 run:app` 
+		'run' is the name of your main application file 'run.py'  which serve as the entry point for your application
+		'app' is here the name of your defined application in app/__init__.py 
+	- If you visit your server's domain name or IP address with :5000 appended to the end in your web browser, you should see 
+	 the homepage of your application
+	- Create an Upstart script which will allow server to automatically start Gunicorn and serve our Flask application whenever the server boots : 
+					- create Gunicorn Upstart script : `sudo nano /etc/init/myproject_gunicorn.conf`
+					or customize Upstart script file (see example in file 'myproject_gunicorn.conf' in utils directory) (replace user keyword by your chosen server user name ) and place it in /etc/init/myproject_gunicorn.conf
+					- then type `sudo start myproject_gunicorn` (replace myproject with your application folder name)
+
+	- NGINX:  then create a new server block configuration file in Nginx's sites-available directory.
+		`sudo nano /etc/nginx/sites-available/myproject`
+	- then customize it : see example in file 'myproject_nginx.txt' in utils directory
+	- Then enable the Nginx server block configuration,  link the file to the sites-enabled directory:
+	`sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled`
+	- test for syntax errors by typing: `sudo nginx -t`
+	- restart the Nginx process to read the our new config: `sudo service nginx restart`
+
+#### PRODUCTION CONFIG with TORNADO : Use it for production with TORNADO SERVER, SUPERVISOR Upstart script and NGINX config from utils directory :
+	- todo
+
+
+#### IMPORT SQL SCHEMA DATABASE SAMPLE IN MYSQL: 
+	`mysql -u root -p DB_NAME < /home/myproject_path/data/schema_mysql.sql`
+#### EXPORT SQL SCHEMA DATABASE FROM MYSQL:
+	`mysqldump -u root -p --databases DB_NAME > /home/myproject_path/data/schema_mysql.sql`
+
 #### About python virtual environment : how to manage it in local project directory:
 
 	# INSTALL VIRTUAL ENV : In Python 3.3, virtualenv is already included  !!! But his name is now pyvenv

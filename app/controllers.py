@@ -35,7 +35,7 @@ def before_first_request():
         # Extensions like Flask-SQLAlchemy now know what the "current" app
         # is while within this block. Therefore, you can now run........
         db.create_all()
-        # and/or populate
+        # and/or populate (not working db.cursor() error)
         # init_db()
 
 

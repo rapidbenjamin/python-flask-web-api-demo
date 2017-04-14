@@ -85,14 +85,15 @@ class ProductionConfig(BaseConfig):
 
     SECRET_CONFIG = 'prod-config.py'
 
-    SQLALCHEMY_DATABASE_URI = 'mysql://user:pass@server_ip:server_port/db_name'
+    # SQLALCHEMY_DATABASE_URI = 'mysql://user:pass@server_ip:server_port/db_name'
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
     
-    CSRF_ENABLED = True
-    WTF_CSRF_ENABLED = True
+    # CSRF_ENABLED = True
+    # WTF_CSRF_ENABLED = True
 
-    PORT = 5000
+    PORT = 80
     DEBUG = False
+    # Allow SQLAlchemy to log errors
     SQLALCHEMY_ECHO = False
 
 class DevelopmentConfig(BaseConfig):
@@ -108,7 +109,6 @@ class DevelopmentConfig(BaseConfig):
     
     PORT = 5000
     DEBUG = True
-
     # Allow SQLAlchemy to log errors
     SQLALCHEMY_ECHO = True 
 
@@ -126,7 +126,7 @@ class TestingConfig(BaseConfig):
 
 
 app_config = {  
-    'default': DevelopmentConfig,  
+    'default': ProductionConfig,  
     'production': ProductionConfig,
     'development': DevelopmentConfig,
     'testing': TestingConfig,

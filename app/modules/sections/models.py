@@ -36,8 +36,8 @@ class UserSection(db.Model):
     # or UserSection(user1, Section(title_en_US = 'test'), description_en_US="test")
 
     # Extra data
-    description_en_US = db.Column(db.Text(),  index=True)
-    description_fr_FR = db.Column(db.Text(),  index=True)
+    description_en_US = db.Column(db.Text())
+    description_fr_FR = db.Column(db.Text())
 
 
     updated_at = db.Column(db.Integer, default=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()), onupdate=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()))
@@ -64,8 +64,8 @@ class Section(db.Model):
     title_en_US = db.Column(db.String(255),  index=True, unique=True)
     title_fr_FR = db.Column(db.String(255),  index=True, unique=True)
 
-    description_en_US = db.Column(db.Text(),  index=True)
-    description_fr_FR = db.Column(db.Text(),  index=True)
+    description_en_US = db.Column(db.Text())
+    description_fr_FR = db.Column(db.Text())
 
     # MANY-TO-MANY relationship with with EXTRA_DATA association and the User model
     # the cascade will delete orphaned usersections
