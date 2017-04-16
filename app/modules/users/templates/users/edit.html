@@ -79,14 +79,10 @@
                                         {{section.title_en_US}}</option>
                                     {% endfor %}
                                 </select>
-                                {% for error in form.errors.sections %} <br/>
-                                    <div class="alert alert-danger" style="display: inline-block">
-                                        {{ error }}
-                                    </div>
-                                {% endfor %}
                             </div>
                         </div>
 
+                         
                         <div class="form-group">
                             <label for="user_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>
                             <div class="col-lg-6">

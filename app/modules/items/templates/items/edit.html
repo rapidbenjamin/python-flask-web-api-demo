@@ -10,14 +10,14 @@
 
                     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
                     <fieldset>
-                        <legend>Form section</legend>
+                        <legend>Form item</legend>
 
                         <div class="form-group">
-                            <label for="section_slug" class="col-lg-4 control-label">{{ form.slug.label }}</label>
+                            <label for="item_slug" class="col-lg-4 control-label">{{ form.slug.label }}</label>
 
                             <div class="col-lg-6">
                                 {{ form.slug (class="form-control") }}
-                                <!-- <input class="form-control" id="section_slug" name="section_slug" required="" value="" type="text"> -->
+                                <!-- <input class="form-control" id="item_slug" name="item_slug" required="" value="" type="text"> -->
                                 {% for error in form.errors.slug %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
@@ -28,11 +28,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="section_title_en_US" class="col-lg-4 control-label">{{ form.title_en_US.label }}</label>
+                            <label for="item_title_en_US" class="col-lg-4 control-label">{{ form.title_en_US.label }}</label>
 
                             <div class="col-lg-6">
                                 {{ form.title_en_US (class="form-control") }}
-                                <!-- <input class="form-control" id="section_title_en_US" name="section_title_en_US" required="" value="" type="text"> -->
+                                <!-- <input class="form-control" id="item_title_en_US" name="item_title_en_US" required="" value="" type="text"> -->
                                 {% for error in form.errors.title_en_US %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
@@ -43,11 +43,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="section_title_fr_FR" class="col-lg-4 control-label">{{ form.title_fr_FR.label }}</label>
+                            <label for="item_title_fr_FR" class="col-lg-4 control-label">{{ form.title_fr_FR.label }}</label>
 
                             <div class="col-lg-6">
                                 {{ form.title_fr_FR (class="form-control") }}
-                                <!-- <input class="form-control" id="section_title_fr_FR" name="section_title_fr_FR" required="" value="" type="text"> -->
+                                <!-- <input class="form-control" id="item_title_fr_FR" name="item_title_fr_FR" required="" value="" type="text"> -->
                                 {% for error in form.errors.title_fr_FR %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
@@ -58,11 +58,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="section_description_en_US" class="col-lg-4 control-label">{{ form.description_en_US.label }}</label>
+                            <label for="item_description_en_US" class="col-lg-4 control-label">{{ form.description_en_US.label }}</label>
 
                             <div class="col-lg-6">
                                 {{ form.description_en_US (cols="35", rows="5", class="form-control") }}
-                                <!-- <textarea class="form-control" id="section_description_en_US" name="section_description_en_US">form.description_en_US.data</textarea> -->
+                                <!-- <textarea class="form-control" id="item_description_en_US" name="item_description_en_US">form.description_en_US.data</textarea> -->
                                 {% for error in form.errors.description_en_US %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
@@ -73,11 +73,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="section_description_fr_FR" class="col-lg-4 control-label">{{ form.description_fr_FR.label }}</label>
+                            <label for="item_description_fr_FR" class="col-lg-4 control-label">{{ form.description_fr_FR.label }}</label>
 
                             <div class="col-lg-6">
                                 {{ form.description_fr_FR (cols="35", rows="5", class="form-control") }}
-                                <!-- <textarea class="form-control" id="section_description_fr_FR" name="section_description_fr_FR">form.description_fr_FR.data</textarea> -->
+                                <!-- <textarea class="form-control" id="item_description_fr_FR" name="item_description_fr_FR">form.description_fr_FR.data</textarea> -->
                                 {% for error in form.errors.description_en_US %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
@@ -90,28 +90,28 @@
 
                         <!-- MANY-TO-MANY RELATIONSHIP -->
                         <div class="form-group">
-                            <label for="section_users" class="col-lg-4 control-label">{{ form.users.label }}</label>
+                            <label for="item_assets" class="col-lg-4 control-label">{{ form.assets.label }}</label>
                             <div class="col-lg-6">
-                               <select class="form-control" id="users" name="users" multiple="" >
-                                    {% for user in users %}
-                                        <option value="{{ user.id }}"
-                                        {% if form.users.data %}
-                                            {% for user2 in form.users.data %}
-                                                {% if user.id == user2.id %}
+                               <select class="form-control" id="assets" name="assets" multiple="" >
+                                    {% for asset in assets %}
+                                        <option value="{{ asset.id }}"
+                                        {% if form.assets.data %}
+                                            {% for asset2 in form.assets.data %}
+                                                {% if asset.id == asset2.id %}
                                                     selected="selected"
                                                 {% endif %}
                                             {% endfor %}
                                         {% endif %}
                                         >
-                                        {{user.username}}</option>
+                                        {{asset.data_file_name}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                         </div>
-
+       
 
                         <div class="form-group">
-                            <label for="section_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>
+                            <label for="item_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>
                             <div class="col-lg-6">
                                 {{ form.is_active (class="form-control") }}
                                 <!-- <input type="checkbox" name="check" value="{{ form.is_active.data }}"> -->
@@ -124,7 +124,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="section_created_at" class="col-lg-4 control-label">{{ form.created_at.label }}</label>
+                            <label for="item_created_at" class="col-lg-4 control-label">{{ form.created_at.label }}</label>
 
                             <div class="col-lg-6 input-group date" >
         

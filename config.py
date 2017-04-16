@@ -103,7 +103,7 @@ class DevelopmentConfig(BaseConfig):
 
     SECRET_CONFIG = 'dev-config.py'
 
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data/db.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data/db.sqlite')
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
     
@@ -126,7 +126,7 @@ class TestingConfig(BaseConfig):
 
 
 app_config = {  
-    'default': ProductionConfig,  
+    'default': DevelopmentConfig,  
     'production': ProductionConfig,
     'development': DevelopmentConfig,
     'testing': TestingConfig,

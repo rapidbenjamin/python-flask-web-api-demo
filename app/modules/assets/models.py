@@ -14,13 +14,18 @@ from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 # from app.modules.users.models import User
 
+# from app.modules.items.models import Item
+# from app.modules.items.models import AssetItem
+
+
+
+#######################
+# WARNING FIXED ISSUE : AssetItem model registered at the end of this page to fixe issue  :  global name 'Asset' is not defined
+#######################
 
 class Asset(db.Model):
     __tablename__ = "Asset"
     id = db.Column(db.Integer, primary_key=True)
-
-    assetable_id = db.Column(db.Integer,  index=True)
-    assetable_type = db.Column(db.String(30),  index=True)
 
     data_file_name = db.Column(db.String(255))
     data_content_type = db.Column(db.String(255))
@@ -35,6 +40,36 @@ class Asset(db.Model):
 
     # one-to-many relationship with the User model
     users = db.relationship('User', back_populates='asset')
+
+
+    # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Item model
+    # the cascade will delete orphaned assetitems
+    assetitems = db.relationship('AssetItem', back_populates='asset', lazy='dynamic',  cascade="all, delete-orphan")
+    # or  Get all items in view only mode
+    items = db.relationship('Item', secondary='assetitem', viewonly=True, back_populates='assets', lazy='dynamic')
+
+    """
+    Return AssetItem objects collection
+    and requires that child objects are associated with an association instance before being appended to the parent;
+    similarly, access from parent to child goes through the association object:
+    so to append items via association
+        asset1.assetitems.append(AssetItem(item = Item(title_en_US = 'test')))
+
+    or
+        AssetItem(asset = asset1, Item(title_en_US = 'test'), extra_data="test")
+    To iterate through items objects via association, including association attributes
+        for assetitem in asset.assetitems:
+            print(assetitem.extra_data)
+            print(assetitem.item)
+        or 
+        for item in asset.items:
+            print(item.title_en_US)
+    WARNING : So don't use  directly asset.items.append(Item(title_en_US = 'test'))
+                cause it's redundant, it will cause a duplicate INSERT on Association with 
+                asset.assetitems.append(AssetItem(item=item1))
+                add  viewonly=True on secondary relationship to stop edit, create or delete operations  here
+    """
+
 
     # is_active usually returns True. 
     # This should return False only in cases where we have disabled asset. 
@@ -60,8 +95,6 @@ class Asset(db.Model):
         timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
 
         new_record = Asset(    
-                                assetable_id=form['assetable_id'], 
-                                assetable_type=form['assetable_type'], 
 
                                 data_file_name=form['data_file_name'], 
                                 data_content_type=form['data_content_type'], 
@@ -78,14 +111,17 @@ class Asset(db.Model):
                                 # convert string to integer format
                                 created_at = int(timestamp_created_at)
                             )
+        
+        # MANY-TO-MANY Relationship 
+        for item in form['items']:
+            assetitem = AssetItem(asset = asset, item = item)
+            asset.assetitems.append(assetitem)
+
         db.session.add(new_record)
         db.session.commit()
     
     def update_data(self, some_id, form ):
         asset = Asset.query.get_or_404(some_id)
-
-        asset.assetable_id=form['assetable_id'] 
-        asset.assetable_type=form['assetable_type'] 
 
         asset.data_file_name=form['data_file_name'] 
         asset.data_content_type=form['data_content_type'] 
@@ -106,6 +142,12 @@ class Asset(db.Model):
         asset.created_at = int(timestamp_created_at)
 
 
+        # MANY-TO-MANY Relationship
+        asset.assetitems = []
+        for item in form['items']:
+            assetitem = AssetItem(item = item)
+            asset.assetitems.append(assetitem)
+
         db.session.commit()
 
     def destroy_data(self, some_id ):
@@ -117,3 +159,10 @@ class Asset(db.Model):
     def __repr__(self):
         # return '<User: {}>'.format(self.id)
         return '<Asset %r>' % self.id
+
+
+#######################
+# WARNING FIXED ISSUE : AssetItem model registered at the end of this page to fixe issue  :  global name 'Asset' is not defined
+#######################
+
+from app.modules.items.models import AssetItem

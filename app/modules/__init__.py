@@ -5,4 +5,4 @@
 
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
-from . import localization, home, users, sections, contact, auth, assets
+from . import localization, home, users, sections, items, contact, auth, assets

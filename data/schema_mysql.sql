@@ -1,184 +1,139 @@
--- MySQL dump 10.13  Distrib 5.5.54, for debian-linux-gnu (x86_64)
---
--- Host: localhost    Database: quickandcleandb
--- ------------------------------------------------------
--- Server version	5.5.54-0ubuntu0.14.04.1
+CREATE SCHEMA quickandcleandb;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE TABLE quickandcleandb.asset ( 
+	id                   int  NOT NULL  AUTO_INCREMENT,
+	data_file_name       varchar(255)    ,
+	data_content_type    varchar(255)    ,
+	data_file_size       int    ,
+	asset_type           varchar(30)    ,
+	width                int    ,
+	height               int    ,
+	`description_en_US`  text    ,
+	`description_fr_FR`  text    ,
+	is_active            bit    ,
+	updated_at           int    ,
+	created_at           int    ,
+	CONSTRAINT pk_asset PRIMARY KEY ( id )
+ );
 
---
--- Current Database: `quickandcleandb`
---
+CREATE INDEX ix_Asset_asset_type ON quickandcleandb.asset ( asset_type );
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `quickandcleandb` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE INDEX ix_Asset_is_active ON quickandcleandb.asset ( is_active );
 
-USE `quickandcleandb`;
+CREATE TABLE quickandcleandb.item ( 
+	id                   int  NOT NULL  AUTO_INCREMENT,
+	slug                 varchar(255)    ,
+	`title_en_US`        varchar(255)    ,
+	`title_fr_FR`        varchar(255)    ,
+	`description_en_US`  text    ,
+	`description_fr_FR`  text    ,
+	is_active            bit    ,
+	updated_at           int    ,
+	created_at           int    ,
+	CONSTRAINT pk_item PRIMARY KEY ( id ),
+	CONSTRAINT `ix_Item_slug` UNIQUE ( slug ) ,
+	CONSTRAINT `ix_Item_title_en_US` UNIQUE ( `title_en_US` ) ,
+	CONSTRAINT `ix_Item_title_fr_FR` UNIQUE ( `title_fr_FR` ) 
+ );
 
---
--- Table structure for table `Asset`
---
+CREATE INDEX ix_Item_is_active ON quickandcleandb.item ( is_active );
 
-DROP TABLE IF EXISTS `Asset`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Asset` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `assetable_id` int(11) DEFAULT NULL,
-  `assetable_type` varchar(30) DEFAULT NULL,
-  `data_file_name` varchar(255) DEFAULT NULL,
-  `data_content_type` varchar(255) DEFAULT NULL,
-  `data_file_size` int(11) DEFAULT NULL,
-  `asset_type` varchar(30) DEFAULT NULL,
-  `width` int(11) DEFAULT NULL,
-  `height` int(11) DEFAULT NULL,
-  `description_en_US` text,
-  `description_fr_FR` text,
-  `is_active` tinyint(1) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL,
-  `created_at` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `ix_Asset_assetable_type` (`assetable_type`),
-  KEY `ix_Asset_is_active` (`is_active`),
-  KEY `ix_Asset_assetable_id` (`assetable_id`),
-  KEY `ix_Asset_asset_type` (`asset_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE quickandcleandb.section ( 
+	id                   int  NOT NULL  AUTO_INCREMENT,
+	slug                 varchar(255)    ,
+	`title_en_US`        varchar(255)    ,
+	`title_fr_FR`        varchar(255)    ,
+	`description_en_US`  text    ,
+	`description_fr_FR`  text    ,
+	is_active            bit    ,
+	updated_at           int    ,
+	created_at           int    ,
+	CONSTRAINT pk_section PRIMARY KEY ( id ),
+	CONSTRAINT `ix_Section_slug` UNIQUE ( slug ) ,
+	CONSTRAINT `ix_Section_title_fr_FR` UNIQUE ( `title_fr_FR` ) 
+ );
 
---
--- Dumping data for table `Asset`
---
+CREATE INDEX ix_Section_is_active ON quickandcleandb.section ( is_active );
 
-LOCK TABLES `Asset` WRITE;
-/*!40000 ALTER TABLE `Asset` DISABLE KEYS */;
-INSERT INTO `Asset` VALUES (1,0,'','cheikhna2016.jpg','image/jpeg',35966,'',320,320,'Avatar picture','Photo avatar',1,1492138814,1492128000),(2,0,'','avatar-systemaker-01.jpg','image/jpeg',54370,'',458,458,'logo','logo',1,1492138814,1492128000);
-/*!40000 ALTER TABLE `Asset` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE TABLE quickandcleandb.`user` ( 
+	id                   int  NOT NULL  AUTO_INCREMENT,
+	email                varchar(60)    ,
+	username             varchar(60)    ,
+	password_hash        varchar(128)    ,
+	asset_id             int    ,
+	is_admin             bit    ,
+	is_owner             bit    ,
+	is_member            bit    ,
+	is_authenticated     bit    ,
+	is_anonymous         bit    ,
+	is_active            bit    ,
+	updated_at           int    ,
+	created_at           int    ,
+	locale               varchar(30)    ,
+	timezone             varchar(60)    ,
+	CONSTRAINT pk_user PRIMARY KEY ( id ),
+	CONSTRAINT `ix_User_email` UNIQUE ( email ) ,
+	CONSTRAINT `ix_User_username` UNIQUE ( username ) 
+ );
 
---
--- Table structure for table `Section`
---
+CREATE INDEX asset_id ON quickandcleandb.`user` ( asset_id );
 
-DROP TABLE IF EXISTS `Section`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Section` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `slug` varchar(255) DEFAULT NULL,
-  `title_en_US` varchar(255) DEFAULT NULL,
-  `title_fr_FR` varchar(255) DEFAULT NULL,
-  `description_en_US` text,
-  `description_fr_FR` text,
-  `is_active` tinyint(1) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL,
-  `created_at` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ix_Section_title_fr_FR` (`title_fr_FR`),
-  UNIQUE KEY `ix_Section_slug` (`slug`),
-  KEY `ix_Section_is_active` (`is_active`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE INDEX ix_User_is_active ON quickandcleandb.`user` ( is_active );
 
---
--- Dumping data for table `Section`
---
+CREATE INDEX ix_User_locale ON quickandcleandb.`user` ( locale );
 
-LOCK TABLES `Section` WRITE;
-/*!40000 ALTER TABLE `Section` DISABLE KEYS */;
-INSERT INTO `Section` VALUES (1,'department1','Department 1','Catégorie 1','Department 1 description','Description de la catégorie 1',1,1492138814,1492128000),(2,'department2','Department 2','Catégorie 2','Department 2 description','Description de la catégorie 2',1,1492138814,1492128000);
-/*!40000 ALTER TABLE `Section` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE INDEX ix_User_timezone ON quickandcleandb.`user` ( timezone );
 
---
--- Table structure for table `User`
---
+CREATE TABLE quickandcleandb.usersection ( 
+	user_id              int  NOT NULL  ,
+	section_id           int  NOT NULL  ,
+	`description_en_US`  text    ,
+	`description_fr_FR`  text    ,
+	updated_at           int    ,
+	created_at           int    ,
+	CONSTRAINT pk_usersection PRIMARY KEY ( user_id, section_id )
+ );
 
-DROP TABLE IF EXISTS `User`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `User` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(60) DEFAULT NULL,
-  `username` varchar(60) DEFAULT NULL,
-  `password_hash` varchar(128) DEFAULT NULL,
-  `asset_id` int(11) DEFAULT NULL,
-  `is_admin` tinyint(1) DEFAULT NULL,
-  `is_owner` tinyint(1) DEFAULT NULL,
-  `is_member` tinyint(1) DEFAULT NULL,
-  `is_authenticated` tinyint(1) DEFAULT NULL,
-  `is_anonymous` tinyint(1) DEFAULT NULL,
-  `is_active` tinyint(1) DEFAULT NULL,
-  `updated_at` int(11) DEFAULT NULL,
-  `created_at` int(11) DEFAULT NULL,
-  `locale` varchar(30) DEFAULT NULL,
-  `timezone` varchar(60) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ix_User_username` (`username`),
-  UNIQUE KEY `ix_User_email` (`email`),
-  KEY `asset_id` (`asset_id`),
-  KEY `ix_User_timezone` (`timezone`),
-  KEY `ix_User_locale` (`locale`),
-  KEY `ix_User_is_active` (`is_active`),
-  CONSTRAINT `User_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `Asset` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE INDEX section_id ON quickandcleandb.usersection ( section_id );
 
---
--- Dumping data for table `User`
---
+CREATE TABLE quickandcleandb.assetitem ( 
+	asset_id             int  NOT NULL  ,
+	item_id              int  NOT NULL  ,
+	`description_en_US`  text    ,
+	`description_fr_FR`  text    ,
+	updated_at           int    ,
+	created_at           int    ,
+	CONSTRAINT pk_assetitem PRIMARY KEY ( asset_id, item_id )
+ );
 
-LOCK TABLES `User` WRITE;
-/*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'admin@example.com','admin@example.com','pbkdf2:sha1:1000$NaxQwKoE$e84ab2618e896e061c818da85d12ca965611076c',1,1,0,1,1,0,1,1492138814,1492128000,'en_US','UTC'),(2,'editor@example.com','editor@example.com','pbkdf2:sha1:1000$oDvgCreA$de59ac764b5149a12d9d983b934c7a3a3611f5c6',2,1,0,1,1,0,1,1492138814,1492128000,'en_US','UTC');
-/*!40000 ALTER TABLE `User` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE INDEX item_id ON quickandcleandb.assetitem ( item_id );
 
---
--- Table structure for table `usersection`
---
+ALTER TABLE quickandcleandb.assetitem ADD CONSTRAINT assetitem_ibfk_1 FOREIGN KEY ( asset_id ) REFERENCES quickandcleandb.asset( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-DROP TABLE IF EXISTS `usersection`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `usersection` (
-  `user_id` int(11) NOT NULL,
-  `section_id` int(11) NOT NULL,
-  `description_en_US` text,
-  `description_fr_FR` text,
-  `updated_at` int(11) DEFAULT NULL,
-  `created_at` int(11) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`section_id`),
-  KEY `section_id` (`section_id`),
-  CONSTRAINT `usersection_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`),
-  CONSTRAINT `usersection_ibfk_2` FOREIGN KEY (`section_id`) REFERENCES `Section` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+ALTER TABLE quickandcleandb.assetitem ADD CONSTRAINT assetitem_ibfk_2 FOREIGN KEY ( item_id ) REFERENCES quickandcleandb.item( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
---
--- Dumping data for table `usersection`
---
+ALTER TABLE quickandcleandb.`user` ADD CONSTRAINT `User_ibfk_1` FOREIGN KEY ( asset_id ) REFERENCES quickandcleandb.asset( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-LOCK TABLES `usersection` WRITE;
-/*!40000 ALTER TABLE `usersection` DISABLE KEYS */;
-INSERT INTO `usersection` VALUES (1,1,NULL,NULL,1492138814,1492138814),(2,2,NULL,NULL,1492138814,1492138814);
-/*!40000 ALTER TABLE `usersection` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+ALTER TABLE quickandcleandb.usersection ADD CONSTRAINT usersection_ibfk_2 FOREIGN KEY ( section_id ) REFERENCES quickandcleandb.section( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+ALTER TABLE quickandcleandb.usersection ADD CONSTRAINT usersection_ibfk_1 FOREIGN KEY ( user_id ) REFERENCES quickandcleandb.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
--- Dump completed on 2017-04-14  3:22:44
+INSERT INTO quickandcleandb.asset( id, data_file_name, data_content_type, data_file_size, asset_type, width, height, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 1, 'cheikhna2016.jpg', 'image/jpeg', 35966, '', 320, 320, 'Avatar picture', 'Photo avatar', 1, 1492138814, 1492128000 ); 
+INSERT INTO quickandcleandb.asset( id, data_file_name, data_content_type, data_file_size, asset_type, width, height, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 2, 'avatar-systemaker-01.jpg', 'image/jpeg', 54370, '', 458, 458, 'logo', 'logo', 1, 1492350688, 1492120800 ); 
+
+INSERT INTO quickandcleandb.item( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 1, 'product1', 'Product 1', 'Produit 1', 'Product description', 'Description de produit', 1, 1492350688, 1492293600 ); 
+INSERT INTO quickandcleandb.item( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 2, 'product2', 'Product 2', 'Produit 2', 'Product description', 'Description de produit', 1, 1492350688, 1492293600 ); 
+
+INSERT INTO quickandcleandb.section( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 1, 'department1', 'Department 1', 'Catégorie 1', 'Department 1 description', 'Description de la catégorie 1', 1, 1492138814, 1492128000 ); 
+INSERT INTO quickandcleandb.section( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 2, 'department2', 'Department 2', 'Catégorie 2', 'Department 2 description', 'Description de la catégorie 2', 1, 1492138814, 1492128000 ); 
+
+INSERT INTO quickandcleandb.`user`( id, email, username, password_hash, asset_id, is_admin, is_owner, is_member, is_authenticated, is_anonymous, is_active, updated_at, created_at, locale, timezone ) VALUES ( 1, 'admin@example.com', 'admin@example.com', 'pbkdf2:sha1:1000$NaxQwKoE$e84ab2618e896e061c818da85d12ca965611076c', 1, 1, 0, 1, 1, 0, 1, 1492138814, 1492128000, 'en_US', 'UTC' ); 
+INSERT INTO quickandcleandb.`user`( id, email, username, password_hash, asset_id, is_admin, is_owner, is_member, is_authenticated, is_anonymous, is_active, updated_at, created_at, locale, timezone ) VALUES ( 2, 'editor@example.com', 'editor@example.com', 'pbkdf2:sha1:1000$oDvgCreA$de59ac764b5149a12d9d983b934c7a3a3611f5c6', 2, 1, 0, 1, 1, 0, 1, 1492138814, 1492128000, 'en_US', 'UTC' ); 
+
+INSERT INTO quickandcleandb.usersection( user_id, section_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 1, 1, null, null, 1492138814, 1492138814 ); 
+INSERT INTO quickandcleandb.usersection( user_id, section_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 2, 2, null, null, 1492138814, 1492138814 ); 
+
+INSERT INTO quickandcleandb.assetitem( asset_id, item_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 1, 1, null, null, 1492350688, 1492350688 ); 
+INSERT INTO quickandcleandb.assetitem( asset_id, item_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 2, 1, null, null, 1492350688, 1492350688 ); 
+INSERT INTO quickandcleandb.assetitem( asset_id, item_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 2, 2, null, null, 1492350688, 1492350688 ); 
+

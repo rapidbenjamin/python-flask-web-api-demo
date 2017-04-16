@@ -23,7 +23,7 @@ from app.modules.localization.controllers import get_locale, get_timezone
 from app import config_name
 from constants import *
 
-
+from app.modules.items.models import Item, AssetItem
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
@@ -100,10 +100,12 @@ def new():
         # You need to pass the combination of both to the form. 
         form = Form_Record_Add(CombinedMultiDict((request.files, request.form)))
 
+        items = Item.query.filter(Item.is_active == True).all()
+
         if request.method == 'POST':
 
             if form.validate():
-
+                
                 # check if the post request has the file part
                 if 'data_file_name' not in request.files :
                     # redirect to the form page or Json response
@@ -159,8 +161,6 @@ def new():
                     assets = Asset()
 
                     sanitize_form = {
-                        'assetable_id': form.assetable_id.data,
-                        'assetable_type': form.assetable_type.data,
 
                         'data_file_name': filename,
                         'data_content_type': filetype,
@@ -172,6 +172,8 @@ def new():
 
                         'description_en_US' : form.description_en_US.data,
                         'description_fr_FR' : form.description_fr_FR.data,
+
+                        'items' : form.items.data,
 
                         'is_active' : form.is_active.data,
                         'created_at' : form.created_at.data
@@ -194,7 +196,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("assets/edit.html", form=form, title_en_US='New', app = app)
+            return render_template("assets/edit.html", form=form,  items = items, title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -211,6 +213,7 @@ def edit(id=1):
 
         assets = Asset()
         asset = assets.query.get_or_404(id)
+        items = Item.query.filter(Item.is_active == True).all()
 
         # request.form only contains form input data. request.files contains file upload data. 
         # You need to pass the combination of both to the form. 
@@ -276,8 +279,6 @@ def edit(id=1):
 
 
                 sanitize_form = {
-                    'assetable_id': form.assetable_id.data, 
-                    'assetable_type': form.assetable_type.data, 
 
                     'data_file_name': filename, 
                     'data_content_type': filetype, 
@@ -289,6 +290,8 @@ def edit(id=1):
 
                     'description_en_US' : form.description_en_US.data,
                     'description_fr_FR' : form.description_fr_FR.data,
+
+                    'items' : form.items.data,
 
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
@@ -305,9 +308,6 @@ def edit(id=1):
 
         form.action = url_for('assets_page.edit', id = asset.id)
 
-        form.assetable_id.data = asset.assetable_id
-        form.assetable_type.data = asset.assetable_type
-
         form.data_file_name.data = asset.data_file_name
         form.data_content_type.data = asset.data_content_type
         form.data_file_size.data = asset.data_file_size
@@ -319,6 +319,9 @@ def edit(id=1):
         form.description_en_US.data = asset.description_en_US
         form.description_fr_FR.data = asset.description_fr_FR
 
+        if  asset.items :
+            form.items.data = asset.items
+
         form.is_active.data = asset.is_active
         form.created_at.data = string_timestamp_utc_to_string_datetime_utc(asset.created_at, '%Y-%m-%d')
 
@@ -326,7 +329,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("assets/edit.html", form=form, title_en_US='Edit', app = app)
+            return render_template("assets/edit.html", form=form, items = items, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

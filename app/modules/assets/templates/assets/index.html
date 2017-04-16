@@ -20,6 +20,7 @@
             <th>Width</th>
             <th>Height</th>
             <th>Description</th>
+            <th>Items</th>
             <th>Active</th>
             <th>Updated Date</th>
             <th>Created Date</th>
@@ -49,6 +50,16 @@
                     <td>{{ asset.width }}</td>
                     <td>{{ asset.height }}</td>
                     <td>{{ asset.description_en_US }}</td>
+                     <!-- MANY-TO-MANY -->
+                    <td>
+                        {% if asset.items %}
+                            {% for item in asset.items %}
+                                {{ item.title_en_US }}, 
+                            {% endfor %}
+                        {% else %}
+                            No items
+                        {% endif %}
+                    </td>
                     <td>{{ asset.is_active }}</td>
                     <td>{{ asset.updated_at | datetimeformat }}</td>
                     <td>{{ asset.created_at | datetimeformat }}</td>

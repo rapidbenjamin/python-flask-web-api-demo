@@ -26,7 +26,7 @@
                         <span class="glyphicon glyphicon-file"></span> Products <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">                        
-                        <li><a class="" href="/maintenance"><span class="glyphicon glyphicon-file"></span> Items</a></li>
+                        <li><a class="{{ 'active' if 'items_page.index' in request.endpoint else '' }}" href="/items"><span class="glyphicon glyphicon-file"></span> Items</a></li>
                         <li><a class="{{ 'active' if 'assets_page.index' in request.endpoint else '' }}" href="/assets"><span class="glyphicon glyphicon-picture"></span> Assets</a></li>
                         <li><a class="" href="/maintenance"><span class="glyphicon glyphicon-time"></span> Events</a></li>
                         <li><a class="" href="/maintenance"><span class="glyphicon glyphicon-map-marker"></span> Places</a></li>

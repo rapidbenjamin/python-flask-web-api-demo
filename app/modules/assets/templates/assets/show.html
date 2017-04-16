@@ -20,6 +20,18 @@
             0
         {% endif %}
     </p>
+
+    <!-- MANY-TO-MANY -->
+    <p>
+        {% if asset.items %}
+            {% for item in asset.items %}
+                {{ item.title_en_US }}, 
+            {% endfor %}
+        {% else %}
+            No items
+        {% endif %}
+    </p>
+
     <p>{{ asset.width }}</p>
     <p>{{ asset.height }}</p>
     <p>{{ asset.description_en_US }}</p>
