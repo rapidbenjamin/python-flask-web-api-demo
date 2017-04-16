@@ -74,6 +74,7 @@ Flask WEB API DEMO
 					- create Gunicorn Upstart script : `sudo nano /etc/init/myproject_gunicorn.conf`
 					or customize Upstart script file (see example in file 'myproject_gunicorn.conf' in utils directory) (replace user keyword by your chosen server user name ) and place it in /etc/init/myproject_gunicorn.conf
 					- then type `sudo start myproject_gunicorn` (replace myproject with your application folder name)
+					- After editing a code, you can refresh app by typing `sudo service myproject_gunicorn restart`
 
 	- NGINX:  then create a new server block configuration file in Nginx's sites-available directory.
 		`sudo nano /etc/nginx/sites-available/myproject`
