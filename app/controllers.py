@@ -35,13 +35,14 @@ def before_first_request():
         # Extensions like Flask-SQLAlchemy now know what the "current" app
         # is while within this block. Therefore, you can now run........
         db.create_all()
-        # and/or populate (not working db.cursor() error)
+        # and/or populate (not working with mysql : db.cursor() error)
         # init_db()
 
 
 def init_db():
     """Initializes the database."""
-    with app.open_resource('../data/schema.sql', mode='r') as f:
+    # not working with mysql : db.cursor() error
+    with app.open_resource('../data/schema_sqlite.sql', mode='r') as f:
         db.cursor().executescript(f.read())
     db.commit()
 
