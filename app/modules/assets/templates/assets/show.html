@@ -13,11 +13,11 @@
     <p>{{ asset.asset_type }}</p>
     
     <!-- ONE-TO-MANY -->
-    <p> User : 
-        {% if asset.users %}
-            {{ asset.users }}
+    <p> User :
+        {% if asset.user %}
+            {{ asset.user.username }}
         {% else %}
-            0
+            No User
         {% endif %}
     </p>
 

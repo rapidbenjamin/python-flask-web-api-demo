@@ -18,6 +18,7 @@ from PIL import Image
 from app import app, logger
 from . import assets_page
 from models import Asset
+from app.modules.users.models import User
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 from app import config_name
@@ -100,6 +101,7 @@ def new():
         # You need to pass the combination of both to the form. 
         form = Form_Record_Add(CombinedMultiDict((request.files, request.form)))
 
+        users = User.query.filter(User.is_active == True).all()
         items = Item.query.filter(Item.is_active == True).all()
 
         if request.method == 'POST':
@@ -173,6 +175,8 @@ def new():
                         'description_en_US' : form.description_en_US.data,
                         'description_fr_FR' : form.description_fr_FR.data,
 
+                        'user' : form.user.data,
+
                         'items' : form.items.data,
 
                         'is_active' : form.is_active.data,
@@ -196,7 +200,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("assets/edit.html", form=form,  items = items, title_en_US='New', app = app)
+            return render_template("assets/edit.html", form=form,  users = users, items = items, title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -213,6 +217,10 @@ def edit(id=1):
 
         assets = Asset()
         asset = assets.query.get_or_404(id)
+
+        # users = User.query.all()
+        users = User.query.filter(User.is_active == True).all()
+
         items = Item.query.filter(Item.is_active == True).all()
 
         # request.form only contains form input data. request.files contains file upload data. 
@@ -291,6 +299,8 @@ def edit(id=1):
                     'description_en_US' : form.description_en_US.data,
                     'description_fr_FR' : form.description_fr_FR.data,
 
+                    'user' : form.user.data,
+
                     'items' : form.items.data,
 
                     'is_active' : form.is_active.data,
@@ -319,6 +329,9 @@ def edit(id=1):
         form.description_en_US.data = asset.description_en_US
         form.description_fr_FR.data = asset.description_fr_FR
 
+        if  asset.user :
+            form.user.data = asset.user.id
+
         if  asset.items :
             form.items.data = asset.items
 
@@ -329,7 +342,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("assets/edit.html", form=form, items = items, title_en_US='Edit', app = app)
+            return render_template("assets/edit.html", form=form, users = users, items = items, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

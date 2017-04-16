@@ -16,7 +16,6 @@ from app.modules.users.models import User
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 
-from app.modules.assets.models import Asset
 from app.modules.sections.models import Section, UserSection
 
 # ADMIN SETTINGS PAGE
@@ -30,7 +29,6 @@ def settings():
         # check_admin()
 
         # sections = Section.query.all()
-        assets = Asset.query.filter(Asset.is_active == True).all()
         sections = Section.query.filter(Section.is_active == True).all()
         user = current_user
         
@@ -39,12 +37,9 @@ def settings():
         if request.method == 'POST':
             if form.validate():
 
-                asset = form.asset.data
-
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
-                    'asset' : form.asset.data,
                     'sections' : form.sections.data,
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
@@ -64,9 +59,6 @@ def settings():
         form.email.data = user.email
         form.username.data = user.username
 
-        if  user.asset :
-            form.asset.data = user.asset.id
-
         if  user.sections :
             form.sections.data = user.sections
 
@@ -77,7 +69,7 @@ def settings():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("auth/settings.html", form=form,   assets = assets, sections = sections, title_en_US='Edit', app = app)
+            return render_template("auth/settings.html", form=form, sections = sections, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

@@ -14,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
-from app.modules.assets.models import Asset
+# from app.modules.assets.models import Asset
 
 
 # from app.modules.sections.models import Section
@@ -39,12 +39,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(60), index=True, unique=True)
     password_hash = db.Column(db.String(128))
 
-    # MANY-TO-ONE relationship with the Asset model
-    # the backref argument in the asset field allows us to access users from the Asset model
-    # as simple as asset.users in our controllers.
-    asset_id = db.Column(db.Integer, db.ForeignKey('Asset.id'))
-    # a bidirectional relationship in many-to-one. Return object
-    asset = db.relationship('Asset', back_populates='users')
+    # one-to-many relationship with the Asset model
+    assets = db.relationship('Asset', back_populates='user')
 
     # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Section model
     # the cascade will delete orphaned usersections
@@ -148,8 +144,8 @@ class User(UserMixin, db.Model):
 
         user = User(
                         email=form['email'], 
-                        username=form['username'], 
-                        asset = form['asset'],
+                        username=form['username'],
+                        
                         is_active = form['is_active'],
                         # convert string to integer format
                         created_at = int(timestamp_created_at)
@@ -169,7 +165,7 @@ class User(UserMixin, db.Model):
 
         user.email = form['email']
         user.username = form['username']
-        user.asset = form['asset']
+        
         user.is_active = form['is_active']
 
         # dateTime conversion to timestamp

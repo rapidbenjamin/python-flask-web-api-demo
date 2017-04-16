@@ -32,7 +32,7 @@
                     <td>
                         {% if item.assets %}
                             {% for asset in item.assets %}
-                                {{ asset.data_file_name }}, 
+                                <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="100" class="img-thumbnail"> {{ asset.data_file_name }}  
                             {% endfor %}
                         {% else %}
                             No assets

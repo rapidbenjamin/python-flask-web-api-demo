@@ -1,25 +1,5 @@
 CREATE SCHEMA quickandcleandb;
 
-CREATE TABLE quickandcleandb.asset ( 
-	id                   int  NOT NULL  AUTO_INCREMENT,
-	data_file_name       varchar(255)    ,
-	data_content_type    varchar(255)    ,
-	data_file_size       int    ,
-	asset_type           varchar(30)    ,
-	width                int    ,
-	height               int    ,
-	`description_en_US`  text    ,
-	`description_fr_FR`  text    ,
-	is_active            bit    ,
-	updated_at           int    ,
-	created_at           int    ,
-	CONSTRAINT pk_asset PRIMARY KEY ( id )
- );
-
-CREATE INDEX ix_Asset_asset_type ON quickandcleandb.asset ( asset_type );
-
-CREATE INDEX ix_Asset_is_active ON quickandcleandb.asset ( is_active );
-
 CREATE TABLE quickandcleandb.item ( 
 	id                   int  NOT NULL  AUTO_INCREMENT,
 	slug                 varchar(255)    ,
@@ -50,6 +30,7 @@ CREATE TABLE quickandcleandb.section (
 	created_at           int    ,
 	CONSTRAINT pk_section PRIMARY KEY ( id ),
 	CONSTRAINT `ix_Section_slug` UNIQUE ( slug ) ,
+	CONSTRAINT `ix_Section_title_en_US` UNIQUE ( `title_en_US` ) ,
 	CONSTRAINT `ix_Section_title_fr_FR` UNIQUE ( `title_fr_FR` ) 
  );
 
@@ -60,7 +41,6 @@ CREATE TABLE quickandcleandb.`user` (
 	email                varchar(60)    ,
 	username             varchar(60)    ,
 	password_hash        varchar(128)    ,
-	asset_id             int    ,
 	is_admin             bit    ,
 	is_owner             bit    ,
 	is_member            bit    ,
@@ -75,8 +55,6 @@ CREATE TABLE quickandcleandb.`user` (
 	CONSTRAINT `ix_User_email` UNIQUE ( email ) ,
 	CONSTRAINT `ix_User_username` UNIQUE ( username ) 
  );
-
-CREATE INDEX asset_id ON quickandcleandb.`user` ( asset_id );
 
 CREATE INDEX ix_User_is_active ON quickandcleandb.`user` ( is_active );
 
@@ -96,6 +74,29 @@ CREATE TABLE quickandcleandb.usersection (
 
 CREATE INDEX section_id ON quickandcleandb.usersection ( section_id );
 
+CREATE TABLE quickandcleandb.asset ( 
+	id                   int  NOT NULL  AUTO_INCREMENT,
+	data_file_name       varchar(255)    ,
+	data_content_type    varchar(255)    ,
+	data_file_size       int    ,
+	asset_type           varchar(30)    ,
+	width                int    ,
+	height               int    ,
+	`description_en_US`  text    ,
+	`description_fr_FR`  text    ,
+	user_id              int    ,
+	is_active            bit    ,
+	updated_at           int    ,
+	created_at           int    ,
+	CONSTRAINT pk_asset PRIMARY KEY ( id )
+ );
+
+CREATE INDEX ix_Asset_asset_type ON quickandcleandb.asset ( asset_type );
+
+CREATE INDEX ix_Asset_is_active ON quickandcleandb.asset ( is_active );
+
+CREATE INDEX user_id ON quickandcleandb.asset ( user_id );
+
 CREATE TABLE quickandcleandb.assetitem ( 
 	asset_id             int  NOT NULL  ,
 	item_id              int  NOT NULL  ,
@@ -108,32 +109,31 @@ CREATE TABLE quickandcleandb.assetitem (
 
 CREATE INDEX item_id ON quickandcleandb.assetitem ( item_id );
 
+ALTER TABLE quickandcleandb.asset ADD CONSTRAINT asset_ibfk_1 FOREIGN KEY ( user_id ) REFERENCES quickandcleandb.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 ALTER TABLE quickandcleandb.assetitem ADD CONSTRAINT assetitem_ibfk_1 FOREIGN KEY ( asset_id ) REFERENCES quickandcleandb.asset( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE quickandcleandb.assetitem ADD CONSTRAINT assetitem_ibfk_2 FOREIGN KEY ( item_id ) REFERENCES quickandcleandb.item( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-ALTER TABLE quickandcleandb.`user` ADD CONSTRAINT `User_ibfk_1` FOREIGN KEY ( asset_id ) REFERENCES quickandcleandb.asset( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE quickandcleandb.usersection ADD CONSTRAINT usersection_ibfk_2 FOREIGN KEY ( section_id ) REFERENCES quickandcleandb.section( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE quickandcleandb.usersection ADD CONSTRAINT usersection_ibfk_1 FOREIGN KEY ( user_id ) REFERENCES quickandcleandb.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-INSERT INTO quickandcleandb.asset( id, data_file_name, data_content_type, data_file_size, asset_type, width, height, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 1, 'cheikhna2016.jpg', 'image/jpeg', 35966, '', 320, 320, 'Avatar picture', 'Photo avatar', 1, 1492138814, 1492128000 ); 
-INSERT INTO quickandcleandb.asset( id, data_file_name, data_content_type, data_file_size, asset_type, width, height, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 2, 'avatar-systemaker-01.jpg', 'image/jpeg', 54370, '', 458, 458, 'logo', 'logo', 1, 1492350688, 1492120800 ); 
+INSERT INTO quickandcleandb.item( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 1, 'product1', 'Product 1', 'Produit 1', 'description_en_US', 'description_fr_FR', 1, 1492357734, 1492293600 ); 
+INSERT INTO quickandcleandb.item( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 2, 'product2', 'Product2', 'Produit 2', 'description_en_US', 'description_fr_FR', 1, 1492357734, 1492293600 ); 
 
-INSERT INTO quickandcleandb.item( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 1, 'product1', 'Product 1', 'Produit 1', 'Product description', 'Description de produit', 1, 1492350688, 1492293600 ); 
-INSERT INTO quickandcleandb.item( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 2, 'product2', 'Product 2', 'Produit 2', 'Product description', 'Description de produit', 1, 1492350688, 1492293600 ); 
+INSERT INTO quickandcleandb.section( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 1, 'department1', 'Department 1', 'Departement 1', 'description_en_US', 'description_fr_FR', 1, 1492358681, 1492293600 ); 
+INSERT INTO quickandcleandb.section( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 2, 'department2', 'Department 2', 'Departement 2', 'description_en_US', 'description_fr_FR', 1, 1492358681, 1492293600 ); 
 
-INSERT INTO quickandcleandb.section( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 1, 'department1', 'Department 1', 'Catégorie 1', 'Department 1 description', 'Description de la catégorie 1', 1, 1492138814, 1492128000 ); 
-INSERT INTO quickandcleandb.section( id, slug, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 2, 'department2', 'Department 2', 'Catégorie 2', 'Department 2 description', 'Description de la catégorie 2', 1, 1492138814, 1492128000 ); 
+INSERT INTO quickandcleandb.`user`( id, email, username, password_hash, is_admin, is_owner, is_member, is_authenticated, is_anonymous, is_active, updated_at, created_at, locale, timezone ) VALUES ( 1, 'admin@example.com', 'admin@example.com', 'pbkdf2:sha1:1000$YOKWljpH$d2e8789a3ce4060778103f225314f14f0f985a7f', 1, 0, 1, 1, 0, 1, 1492357733, 1492293600, 'en_US', 'UTC' ); 
 
-INSERT INTO quickandcleandb.`user`( id, email, username, password_hash, asset_id, is_admin, is_owner, is_member, is_authenticated, is_anonymous, is_active, updated_at, created_at, locale, timezone ) VALUES ( 1, 'admin@example.com', 'admin@example.com', 'pbkdf2:sha1:1000$NaxQwKoE$e84ab2618e896e061c818da85d12ca965611076c', 1, 1, 0, 1, 1, 0, 1, 1492138814, 1492128000, 'en_US', 'UTC' ); 
-INSERT INTO quickandcleandb.`user`( id, email, username, password_hash, asset_id, is_admin, is_owner, is_member, is_authenticated, is_anonymous, is_active, updated_at, created_at, locale, timezone ) VALUES ( 2, 'editor@example.com', 'editor@example.com', 'pbkdf2:sha1:1000$oDvgCreA$de59ac764b5149a12d9d983b934c7a3a3611f5c6', 2, 1, 0, 1, 1, 0, 1, 1492138814, 1492128000, 'en_US', 'UTC' ); 
+INSERT INTO quickandcleandb.usersection( user_id, section_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 1, 1, null, null, 1492357733, 1492357733 ); 
+INSERT INTO quickandcleandb.usersection( user_id, section_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 1, 2, null, null, 1492358681, 1492358681 ); 
 
-INSERT INTO quickandcleandb.usersection( user_id, section_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 1, 1, null, null, 1492138814, 1492138814 ); 
-INSERT INTO quickandcleandb.usersection( user_id, section_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 2, 2, null, null, 1492138814, 1492138814 ); 
+INSERT INTO quickandcleandb.asset( id, data_file_name, data_content_type, data_file_size, asset_type, width, height, description_en_US, description_fr_FR, user_id, is_active, updated_at, created_at ) VALUES ( 1, 'avatar-systemaker-01.jpg', 'image/jpeg', 54370, '', 458, 458, 'description US', 'description FR', 1, 1, 1492357235, 1492293600 ); 
+INSERT INTO quickandcleandb.asset( id, data_file_name, data_content_type, data_file_size, asset_type, width, height, description_en_US, description_fr_FR, user_id, is_active, updated_at, created_at ) VALUES ( 2, 'cheikhna2016.jpg', 'image/jpeg', 35966, '', 320, 320, 'description_en_US', 'description_fr_FR', 1, 1, 1492357235, 1492293600 ); 
 
-INSERT INTO quickandcleandb.assetitem( asset_id, item_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 1, 1, null, null, 1492350688, 1492350688 ); 
-INSERT INTO quickandcleandb.assetitem( asset_id, item_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 2, 1, null, null, 1492350688, 1492350688 ); 
-INSERT INTO quickandcleandb.assetitem( asset_id, item_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 2, 2, null, null, 1492350688, 1492350688 ); 
+INSERT INTO quickandcleandb.assetitem( asset_id, item_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 1, 1, null, null, 1492357734, 1492357734 ); 
+INSERT INTO quickandcleandb.assetitem( asset_id, item_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 1, 2, null, null, 1492357734, 1492357734 ); 
+INSERT INTO quickandcleandb.assetitem( asset_id, item_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 2, 1, null, null, 1492357734, 1492357734 ); 
 

@@ -12,7 +12,7 @@ from ... import db
 import time
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
-# from app.modules.users.models import User
+from app.modules.users.models import User
 
 # from app.modules.items.models import Item
 # from app.modules.items.models import AssetItem
@@ -38,8 +38,12 @@ class Asset(db.Model):
     description_en_US = db.Column(db.Text())
     description_fr_FR = db.Column(db.Text())
 
-    # one-to-many relationship with the User model
-    users = db.relationship('User', back_populates='asset')
+    # MANY-TO-ONE relationship with the User model
+    # the backref argument in the user field allows us to access assets from the User model
+    # as simple as user.assets in our controllers.
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    # a bidirectional relationship in many-to-one. Return object
+    user = db.relationship('User', back_populates='assets')
 
 
     # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Item model
@@ -107,6 +111,8 @@ class Asset(db.Model):
                                 description_en_US=form['description_en_US'],
                                 description_fr_FR=form['description_fr_FR'],
 
+                                user = form['user'],
+
                                 is_active = form['is_active'],
                                 # convert string to integer format
                                 created_at = int(timestamp_created_at)
@@ -133,6 +139,8 @@ class Asset(db.Model):
 
         asset.description_en_US = form['description_en_US']
         asset.description_fr_FR = form['description_fr_FR']
+
+        asset.user = form['user']
 
         asset.is_active = form['is_active']
 

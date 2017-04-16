@@ -9,13 +9,16 @@
     <p>{{ user.username }}</p>
 
     <!-- ONE-TO-MANY -->
-    <p>
-        {% if user.asset %}
-            <img src=" {{url_for('static', filename='uploads/' + user.asset.data_file_name)}}" width="100" class="img-thumbnail"><br/>{{ user.asset.data_file_name }}
+    <p> Assets : 
+        {% if user.assets %}
+            {% for asset in user.assets %}
+                <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="100" class="img-thumbnail"> {{ asset.data_file_name }} 
+            {% endfor %}
         {% else %}
-            No Thumbnail
+            No assets
         {% endif %}
     </p>
+
     
     <!-- MANY-TO-MANY -->
     <p>

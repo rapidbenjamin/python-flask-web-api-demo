@@ -11,7 +11,7 @@
             <th>Id</th>
             <th>Email</th>
             <th>User name</th>
-            <th>Thumbnail</th>
+            <th>Assets</th>
             <th>Sections</th>
             <th>Locale</th>
             <th>Timezone</th>
@@ -30,8 +30,10 @@
                     <td>{{ user.username }}</td>
                     <!-- ONE-TO-MANY -->
                     <td>
-                        {% if user.asset %}
-                            <img src=" {{url_for('static', filename='uploads/' + user.asset.data_file_name)}}" width="100" class="img-thumbnail"><br/>{{ user.asset.data_file_name }}
+                        {% if user.assets %}
+                            {% for asset in user.assets %}
+                                <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="100" class="img-thumbnail"> {{ asset.data_file_name }} 
+                            {% endfor %}
                         {% else %}
                             None
                         {% endif %}

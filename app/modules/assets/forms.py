@@ -6,6 +6,8 @@ from wtforms import Form, StringField, FileField, TextAreaField, validators, Boo
 from wtforms.fields.html5 import DateField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 
+
+from app.modules.users.models import User
 from app.modules.items.models import Item
 # from app.modules.items.assetitem_model import AssetItem
 
@@ -24,6 +26,9 @@ class Form_Record_Add(Form):
 
     description_fr_FR = TextAreaField('description_fr_FR',
                                 validators=[validators.Length(max=200, message='max 200 characters')])
+
+    user = QuerySelectField(query_factory=lambda: User.query.filter(User.is_active == True).all(), get_label="username", allow_blank=True)
+
 
     items = QuerySelectMultipleField('Select Items',
                              query_factory=lambda : Item.query.filter(Item.is_active == True).all(),
