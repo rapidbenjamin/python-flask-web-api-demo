@@ -49,6 +49,25 @@ def resize_image_to_max(image_path, max_size):
 
 
 
+def get_asset_type(filetype):
+    asset_type = ''
+    if  'image' in filetype:
+        asset_type =  'image'
+    
+    if  'application' in filetype:
+        asset_type =  'application'
+
+    if  'video' in filetype:
+        asset_type =  'video'
+    
+    if  'audio' in filetype:
+        asset_type =  'audio'
+
+    if  'text' in filetype:
+        asset_type =  'text'
+    return asset_type
+
+
 # -------  ROUTINGS AND METHODS  ------- 
 
 
@@ -150,6 +169,10 @@ def new():
                     filetype = file.content_type
 
 
+                    # guess asset type
+                    asset_type =  get_asset_type(filetype)
+                    
+
                     # image processing thumbnail 
                     infilename, ext = os.path.splitext(target)
                     im = Image.open(target)
@@ -168,7 +191,7 @@ def new():
                         'data_content_type': filetype,
                         'data_file_size': filesize,
 
-                        'asset_type' : form.asset_type.data,
+                        'asset_type' : asset_type,
                         'width': filewidth,
                         'height': fileheight,
 
@@ -273,6 +296,8 @@ def edit(id=1):
 
                     filewidth, fileheight = im.size
 
+                    # guess asset type
+                    asset_type =  get_asset_type(filetype)
 
                     im.thumbnail(app.config['THUMBNAIL_SIZE'])
                     im.save(infilename + ".thumbnail" + ext)
@@ -284,6 +309,7 @@ def edit(id=1):
                     filesize = asset.data_file_size
                     filewidth = asset.width
                     fileheight = asset.height
+                    asset_type = asset.asset_type
 
 
                 sanitize_form = {
@@ -292,7 +318,7 @@ def edit(id=1):
                     'data_content_type': filetype, 
                     'data_file_size': filesize, 
 
-                    'asset_type' : form.asset_type.data,
+                    'asset_type' : asset_type,
                     'width': filewidth,
                     'height': fileheight,
 

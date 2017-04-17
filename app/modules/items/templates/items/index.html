@@ -14,7 +14,10 @@
             <th>Slug</th>
             <th>Title</th>
             <th>Description</th>
+            <th>Price</th>
+            <th>Sections</th>
             <th>Assets</th>
+            <th>Orders</th>
             <th>Active</th>
             <th>Updated Date</th>
             <th>Created Date</th>
@@ -28,6 +31,17 @@
                     <td><a href="{{ url_for('items_page.show', id = item.id) }}" >{{ item.slug }}</a></td>
                     <td><a href="{{ url_for('items_page.show', id = item.id) }}" >{{ item['title_%s' %(g.current_lang)] }}</a></td>
                     <td>{{ item['description_%s' %(g.current_lang)] }}</td>
+                    <td>{{ item.price }}</td>
+                    <!-- MANY-TO-MANY -->
+                    <td>
+                        {% if item.sections %}
+                            {% for section in item.sections %}
+                                {{ section.slug }}  
+                            {% endfor %}
+                        {% else %}
+                            No sections
+                        {% endif %}
+                    </td>
                     <!-- MANY-TO-MANY -->
                     <td>
                         {% if item.assets %}
@@ -36,6 +50,16 @@
                             {% endfor %}
                         {% else %}
                             No assets
+                        {% endif %}
+                    </td>
+                    <!-- MANY-TO-MANY -->
+                    <td>
+                        {% if item.orders %}
+                            {% for order in item.orders %}
+                                {{ order.id }}  
+                            {% endfor %}
+                        {% else %}
+                            No orders
                         {% endif %}
                     </td>
                     <td>{{ item.is_active }}</td>

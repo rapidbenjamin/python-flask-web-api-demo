@@ -41,6 +41,16 @@
             No users
         {% endif %}
     </p>
+    <!-- MANY-TO-MANY -->
+    <p>
+        {% if section.items %}
+            {% for item in section.items %}
+                {{ item.title_en_US }}, 
+            {% endfor %}
+        {% else %}
+            No items
+        {% endif %}
+    </p>
     <p>{{ section.is_active }}</p>
     <p>{{ section.updated_at }}</p>
     <p>{{ section.created_at }}</p>

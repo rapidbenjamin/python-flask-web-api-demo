@@ -42,6 +42,9 @@ class User(UserMixin, db.Model):
     # one-to-many relationship with the Asset model
     assets = db.relationship('Asset', back_populates='user')
 
+    # one-to-many relationship with the Order model
+    orders = db.relationship('Order', back_populates='user')
+
     # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Section model
     # the cascade will delete orphaned usersections
     usersections = db.relationship('UserSection', back_populates='user', lazy='dynamic',  cascade="all, delete-orphan")

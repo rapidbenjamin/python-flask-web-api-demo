@@ -8,6 +8,17 @@
 
     <p>{{ item.slug }}</p>
     <p>{{ item['description_%s' %(g.current_lang)] }}</p>
+    <p>{{ item.price }}</p>
+    <!-- MANY-TO-MANY -->
+    <p>
+        {% if item.sections %}
+            {% for section in item.sections %}
+                {{ section.slug }}  
+            {% endfor %}
+        {% else %}
+            No sections
+        {% endif %}
+    </p>
     <!-- MANY-TO-MANY -->
     <p>
         {% if item.assets %}
@@ -16,6 +27,16 @@
             {% endfor %}
         {% else %}
             No assets
+        {% endif %}
+    </p>
+    <!-- MANY-TO-MANY -->
+    <p>
+        {% if item.orders %}
+            {% for order in item.orders %}
+                {{ order.id }}  
+            {% endfor %}
+        {% else %}
+            No orders
         {% endif %}
     </p>
     <p>{{ item.is_active }}</p>

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h4 class="pull-right"><a href="/orders/new"><span class="glyphicon glyphicon-plus"></span> New</a></h4>
+    <h3>Order</h3>
+    <hr/>
+
+
+
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Status</th>
+            <th>User</th>
+            <th>Items</th>
+            <th>Amount</th>
+            <th>Active</th>
+            <th>Updated Date</th>
+            <th>Created Date</th>
+            <th colspan="3">Actions</th>
+        </tr>
+        </thead>
+        {% if list_orders.items %}
+            {% for order in list_orders.items %}
+                <tr>
+                    <td><a href="{{ url_for('orders_page.show', id = order.id) }}" >{{ order.id }}</a></td>
+                    <td>{{ order.status }}</td>
+
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if order.user %}
+                            {{ order.user.username }}
+                        {% else %}
+                            No User
+                        {% endif %}
+                    </td>
+                    <!-- MANY-TO-MANY -->
+                    <td>
+                        {% if order.items %}
+                            {% for orderitem in order.orderitems %}
+                                {{ orderitem.item.title_en_US }} | 
+                                unit price : {{ orderitem.unit_price }} | 
+                                quantity : {{ orderitem.quantity }} | 
+                                Amount :{{ orderitem.total_price }} <br/>
+                            {% endfor %}
+                        {% else %}
+                            No items
+                        {% endif %}
+                    </td>
+                    <!-- AMOUNT -->
+                    <td>
+                        {{ order.amount }}
+                    </td>
+                    <td>{{ order.is_active }}</td>
+                    <td>{{ order.updated_at | datetimeformat }}</td>
+                    <td>{{ order.created_at | datetimeformat }}</td>
+                    <td><a href="{{ url_for('orders_page.show', id = order.id) }}" ><i class="glyphicon glyphicon-file"></i> </a></td>
+                    <td><a href="{{ url_for('orders_page.edit', id = order.id) }}" ><i class="glyphicon glyphicon-pencil"></i> </a></td>
+                    <td><a href="{{ url_for('orders_page.destroy', id = order.id) }}" onclick="return confirm('Are you sure you want to delete this item?');"><i class="glyphicon glyphicon-trash"></i> </a></td>
+
+                </tr>
+            {% endfor %}
+        {% else %}
+          <tr style="text-align: center">
+              <td colspan="14">
+            <h4> No orders have been added. </h4>
+            </td>
+         </tr>
+        {% endif %}
+    </table>
+
+    <ul class="pagination">
+        {%- for page in list_orders.iter_pages() %}
+            {% if page %}
+                {% if page != list_orders.page %}
+                    <li><a href="{{ url_for('orders_page.orders', page = page) }}">{{ page }}</a></li>
+                {% else %}
+                    <li class="active"><a href="#"><strong>{{ page }}</strong></a></li>
+                {% endif %}
+            {% else %}
+                <li><span class=ellipsis>…</span></li>
+            {% endif %}
+        {%- endfor %}
+    </ul>
+</div>
+
+{% endblock content %}

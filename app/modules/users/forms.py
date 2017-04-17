@@ -20,7 +20,7 @@ class Form_Record_Add(Form):
                              get_label=lambda s: s.title_en_US,
                              allow_blank=True)
 
-    is_active = BooleanField('is_active')
+    is_active = BooleanField('is_active', default=True)
 
     # created_at = DateField('created_at', format='%Y-%m-%d %H:%M:%S')
     created_at = DateField('created_at', format='%Y-%m-%d')

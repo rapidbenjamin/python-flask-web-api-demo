@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h3>{{ title_en_US }}</h3>
+    <hr/>
+    <div class="row">
+        <div class="col-lg-8 col-centered">
+            <div class="well">
+                <form method="POST" action="{{ form.action }}" enctype="multipart/form-data" role="form" class="form-horizontal" accept-charset="utf-8">
+                    
+                    <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
+                    <fieldset>
+                        <legend>Form order</legend>
+
+
+                        <div class="form-group">
+                            <label for="order_status" class="col-lg-4 control-label">{{ form.status.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.status (class="form-control") }}
+                                <!-- <input class="form-control" id="order_status" name="order_status" required="" value="" type="text"> -->
+                                {% for error in form.errors.status %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                        <!-- ONE-TO-MANY -->
+                        <div class="form-group">
+                            <label for="order_user" class="col-lg-4 control-label">{{ form.user.label }}</label>
+                            <div class="col-lg-6">
+                                <select class="form-control" id="user" name="user" >
+                                    <option value="" >None</option>
+                                    {% for user in users %}
+                                        <option value="{{ user.id }}" {% if form.user.data == user.id %} selected="selected"{% endif %} >{{user.username}}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.errors.user %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+
+                        <!-- MANY-TO-MANY RELATIONSHIP -->
+                        <div class="form-group">
+                            <label for="order_items" class="col-lg-4 control-label">{{ form.items.label }}</label>
+                            <div class="col-lg-6">
+                                <select class="form-control" id="items" name="items" multiple="" >
+                                    <option value="" >None</option>
+                                    {% for item in items %}
+                                        <option value="{{ item.id }}"
+                                        {% if form.items.data %}
+                                            {% for item2 in form.items.data %}
+                                                {% if item.id == item2.id %}
+                                                    selected="selected"
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        >
+                                        {{item.title_en_US}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="form-group">
+                            <label for="order_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>
+                            <div class="col-lg-6">
+                                {{ form.is_active (class="form-control") }}
+                                <!-- <input type="checkbox" name="check" value="{{ form.is_active.data }}"> -->
+                                {% for error in form.errors.is_active %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="order_created_at" class="col-lg-4 control-label">{{ form.created_at.label }}</label>
+
+                            <div class="col-lg-6 input-group date" >
+        
+                                <input value="{{ form.created_at.data }}" class="form-control datepicker"  data-provide="datepicker" data-date-format="yyyy-mm-dd" id="created_at" name="created_at" required="" type="text">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                                {% for error in form.errors.created_at %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-lg-4  col-lg-offset-4">
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    </div>
+</div>
+<script>    
+
+    $('#created_at')
+        .datepicker({
+            setDate: new Date(),
+            autoclose: true,
+             language: 'fr-FR',
+             dateFormat: "yyyy-mm-dd"
+        });
+
+</script>
+
+{% endblock content %}

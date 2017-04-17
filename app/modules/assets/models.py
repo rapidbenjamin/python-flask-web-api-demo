@@ -98,7 +98,7 @@ class Asset(db.Model):
         # dateTime conversion to timestamp
         timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
 
-        new_record = Asset(    
+        asset = Asset(    
 
                                 data_file_name=form['data_file_name'], 
                                 data_content_type=form['data_content_type'], 
@@ -123,7 +123,7 @@ class Asset(db.Model):
             assetitem = AssetItem(asset = asset, item = item)
             asset.assetitems.append(assetitem)
 
-        db.session.add(new_record)
+        db.session.add(asset)
         db.session.commit()
     
     def update_data(self, some_id, form ):

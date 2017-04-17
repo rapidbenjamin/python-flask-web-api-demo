@@ -3,6 +3,7 @@
 
 # ------- IMPORT DEPENDENCIES ------- 
 import datetime
+import decimal
 import sendgrid
 from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for
 from forms import *
@@ -16,7 +17,9 @@ from models import Item
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 
+from app.modules.sections.models import Section
 from app.modules.assets.models import Asset
+from app.modules.orders.models import Order
 
 
 # -------  ROUTINGS AND METHODS  ------- 
@@ -63,7 +66,13 @@ def show(id=1):
 @login_required
 def new():
     try :
+
+        sections = Section.query.filter(Section.is_active == True).all()
         assets = Asset.query.filter(Asset.is_active == True).all()
+        orders = Order.query.filter(Order.is_active == True).all()
+        
+
+
         form = Form_Record_Add(request.form)
 
         if request.method == 'POST':
@@ -80,7 +89,13 @@ def new():
                     'description_en_US' : form.description_en_US.data,
                     'description_fr_FR' : form.description_fr_FR.data,
 
+                    'price' : decimal.Decimal(form.price.data),
+
+                    'sections' : form.sections.data,
+
                     'assets' : form.assets.data,
+
+                    'orders' : form.orders.data,
 
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
@@ -103,7 +118,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("items/edit.html", form=form, assets=assets,  title_en_US='New', app = app)
+            return render_template("items/edit.html", form=form, sections=sections, assets=assets, orders=orders,  title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -117,7 +132,9 @@ def edit(id=1):
     try : 
 
         # check_admin()
+        sections = Section.query.filter(Section.is_active == True).all()
         assets = Asset.query.filter(Asset.is_active == True).all()
+        orders = Order.query.filter(Order.is_active == True).all()
 
         items = Item()
         item = Item.query.get_or_404(id)
@@ -136,7 +153,11 @@ def edit(id=1):
                     'description_en_US' : form.description_en_US.data,
                     'description_fr_FR' : form.description_fr_FR.data,
 
+                    'price' : decimal.Decimal(form.price.data),
+
+                    'sections' : form.sections.data,
                     'assets' : form.assets.data,
+                    'orders' : form.orders.data,
 
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
@@ -161,9 +182,16 @@ def edit(id=1):
         form.description_en_US.data = item.description_en_US
         form.description_fr_FR.data = item.description_fr_FR
 
+        form.price.data = item.price
+
+        if  item.sections :
+            form.sections.data = item.sections
 
         if  item.assets :
             form.assets.data = item.assets
+
+        if  item.orders :
+            form.orders.data = item.orders
 
         form.is_active.data = item.is_active
         form.created_at.data = string_timestamp_utc_to_string_datetime_utc(item.created_at, '%Y-%m-%d')
@@ -172,7 +200,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("items/edit.html", form=form, assets=assets, title_en_US='Edit', app = app)
+            return render_template("items/edit.html", form=form, sections=sections, assets=assets, orders=orders, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

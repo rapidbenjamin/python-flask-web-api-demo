@@ -32,7 +32,7 @@
                         <li><a class="" href="/maintenance"><span class="glyphicon glyphicon-map-marker"></span> Places</a></li>
                     </ul>
                 </li>
-                <li><a class="" href="/maintenance"><span class="glyphicon glyphicon-shopping-cart"></span> Orders</a></li>
+                <li><a <a class="{{ 'active' if 'orders_page.index' in request.endpoint else '' }}" href="/orders"><span class="glyphicon glyphicon-shopping-cart"></span> Orders</a></li>
                 
                 <li class="btn-group dropdown" >
                     <a class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >

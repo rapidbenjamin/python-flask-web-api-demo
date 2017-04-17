@@ -17,6 +17,11 @@ from app.modules.localization.controllers import get_locale, get_timezone
 # from app.modules.users.models import User
 
 
+#######################
+# WARNING FIXED ISSUE : SectionItem model registered at the end of this page to fixe issue  :  global name 'Section' is not defined
+#######################
+
+
 class UserSection(db.Model):
     __tablename__ = "usersection"
     #__table_args__ = db.PrimaryKeyConstraint('user_id', 'section_id')
@@ -38,7 +43,6 @@ class UserSection(db.Model):
     # Extra data
     description_en_US = db.Column(db.Text())
     description_fr_FR = db.Column(db.Text())
-
 
     updated_at = db.Column(db.Integer, default=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()), onupdate=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()))
 
@@ -102,6 +106,38 @@ class Section(db.Model):
                 add  viewonly=True on secondary relationship to stop edit, create or delete operations  here
     """
 
+
+    # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Item model
+    # the cascade will delete orphaned sectionitems
+    sectionitems = db.relationship('SectionItem', back_populates='section', lazy='dynamic',  cascade="all, delete-orphan")
+    # or  Get all items in view only mode
+    items = db.relationship('Item', secondary='sectionitem', viewonly=True, back_populates='sections', lazy='dynamic')
+
+    """
+    Return SectionItem objects collection
+    and requires that child objects are associated with an association instance before being appended to the parent;
+    similarly, access from parent to child goes through the association object:
+    so to append items via association
+        section1.sectionitems.append(SectionItem(item = Item(title_en_US = 'test')))
+
+    or
+        SectionItem(section = section1, Item(title_en_US = 'test'), extra_data="test")
+    To iterate through items objects via association, including association attributes
+        for sectionitem in section.sectionitems:
+            print(sectionitem.extra_data)
+            print(sectionitem.item)
+        or 
+        for item in section.items:
+            print(item.title_en_US)
+    WARNING : So don't use  directly section.items.append(Item(title_en_US = 'test'))
+                cause it's redundant, it will cause a duplicate INSERT on Association with 
+                section.sectionitems.append(SectionItem(item=item1))
+                add  viewonly=True on secondary relationship to stop edit, create or delete operations  here
+    """
+
+
+
+
     # is_active usually returns True. 
     # This should return False only in cases where we have disabled section. 
     is_active = db.Column(db.Boolean, index=True, default=True)
@@ -146,6 +182,11 @@ class Section(db.Model):
             usersection = UserSection(user = user, section = section)
             section.usersections.append(usersection)
 
+        # MANY-TO-MANY Relationship 
+        for item in form['items']:
+            sectionitem = SectionItem(section = section, item = item)
+            section.sectionitems.append(sectionitem)
+
         db.session.add(section)
         db.session.commit()
 
@@ -175,6 +216,11 @@ class Section(db.Model):
             usersection = UserSection(user = user, section = section)
             section.usersections.append(usersection)
 
+        # MANY-TO-MANY Relationship
+        section.sectionitems = []
+        for item in form['items']:
+            sectionitem = SectionItem(item = item)
+            section.sectionitems.append(sectionitem)
 
         db.session.commit()
 
@@ -187,5 +233,12 @@ class Section(db.Model):
     def __repr__(self):
         # return '<Section: {}>'.format(self.id)
         return '<Section %r>' % self.id
+
+
+#######################
+# WARNING FIXED ISSUE : SectionItem model registered at the end of this page to fixe issue  :  global name 'Section' is not defined
+#######################
+
+from app.modules.items.models import SectionItem
 
 

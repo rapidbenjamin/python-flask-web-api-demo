@@ -17,6 +17,7 @@
             <th>Title</th>
             <th>Description</th>
             <th>Users</th>
+            <th>Items</th>
             <th>Active</th>
             <th>Updated Date</th>
             <th>Created Date</th>
@@ -60,6 +61,16 @@
                             {% endfor %}
                         {% else %}
                             No users
+                        {% endif %}
+                    </td>
+                     <!-- MANY-TO-MANY -->
+                    <td>
+                        {% if section.items %}
+                            {% for item in section.items %}
+                                {{ item.title_en_US }}, 
+                            {% endfor %}
+                        {% else %}
+                            No items
                         {% endif %}
                     </td>
                     <td>{{ section.is_active }}</td>

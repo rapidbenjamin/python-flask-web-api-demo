@@ -72,6 +72,9 @@ app.register_blueprint(items_page, url_prefix='/items')
 from modules.assets import assets_page
 app.register_blueprint(assets_page, url_prefix='/assets')
 
+from modules.orders import orders_page
+app.register_blueprint(orders_page, url_prefix='/orders')
+
 from modules.localization import localization_service
 app.register_blueprint(localization_service, url_prefix='/localization')
 

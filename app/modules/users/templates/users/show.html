@@ -19,6 +19,16 @@
         {% endif %}
     </p>
 
+    <!-- ONE-TO-MANY -->
+    <p>
+        {% if user.orders %}
+            {% for order in user.orders %}
+                {{ order.id }} 
+            {% endfor %}
+        {% else %}
+            None
+        {% endif %}
+    </p>
     
     <!-- MANY-TO-MANY -->
     <p>

@@ -14,12 +14,10 @@
 
                         <div class="form-group">
                             <label for="item_slug" class="col-lg-4 control-label">{{ form.slug.label }}</label>
-
                             <div class="col-lg-6">
                                 {{ form.slug (class="form-control") }}
                                 <!-- <input class="form-control" id="item_slug" name="item_slug" required="" value="" type="text"> -->
                                 {% for error in form.errors.slug %} <br/>
-
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
                                     </div>
@@ -78,12 +76,49 @@
                             <div class="col-lg-6">
                                 {{ form.description_fr_FR (cols="35", rows="5", class="form-control") }}
                                 <!-- <textarea class="form-control" id="item_description_fr_FR" name="item_description_fr_FR">form.description_fr_FR.data</textarea> -->
-                                {% for error in form.errors.description_en_US %} <br/>
+                                {% for error in form.errors.description_fr_FR %} <br/>
 
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
                                     </div>
                                 {% endfor %}
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="item_price" class="col-lg-4 control-label">{{ form.price.label }}</label>
+                            <div class="col-lg-6">
+                                {{ form.price (class="form-control") }}
+                                <!-- <input class="form-control" id="item_price" name="item_price" required="" value="" type="text"> -->
+                                {% for error in form.errors.price %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                        <!-- MANY-TO-MANY RELATIONSHIP -->
+                        <div class="form-group">
+                            <label for="item_sections" class="col-lg-4 control-label">{{ form.sections.label }}</label>
+                            <div class="col-lg-6">
+                               <select class="form-control" id="sections" name="sections" multiple="" >
+                                   <option value="" >None</option>
+                                    {% for section in sections %}
+                                        <option value="{{ section.id }}"
+                                        {% if form.sections.data %}
+                                            {% for section2 in form.sections.data %}
+                                                {% if section.id == section2.id %}
+                                                    selected="selected"
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        >
+                                        {{section.slug}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
 
@@ -105,6 +140,29 @@
                                         {% endif %}
                                         >
                                         {{asset.data_file_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <!-- MANY-TO-MANY RELATIONSHIP -->
+                        <div class="form-group">
+                            <label for="item_orders" class="col-lg-4 control-label">{{ form.orders.label }}</label>
+                            <div class="col-lg-6">
+                               <select class="form-control" id="orders" name="orders" multiple="" >
+                                   <option value="" >None</option>
+                                    {% for order in orders %}
+                                        <option value="{{ order.id }}"
+                                        {% if form.orders.data %}
+                                            {% for order2 in form.orders.data %}
+                                                {% if order.id == order2.id %}
+                                                    selected="selected"
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        >
+                                        {{order.id}}</option>
                                     {% endfor %}
                                 </select>
                             </div>

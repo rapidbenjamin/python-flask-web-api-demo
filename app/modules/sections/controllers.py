@@ -17,7 +17,7 @@ from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 
 from app.modules.users.models import User
-
+from app.modules.items.models import Item, SectionItem
 
 # -------  ROUTINGS AND METHODS  ------- 
 
@@ -66,6 +66,7 @@ def new():
         users = User.query.filter(User.is_active == True).all()
         form = Form_Record_Add(request.form)
         sections = Section.query.filter(Section.is_active == True).all()
+        items = Item.query.filter(Item.is_active == True).all()
 
         if request.method == 'POST':
             if form.validate():
@@ -84,6 +85,8 @@ def new():
                     'description_fr_FR' : form.description_fr_FR.data,
 
                     'users' : form.users.data,
+
+                    'items' : form.items.data,
 
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
@@ -106,7 +109,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("sections/edit.html", form=form, sections = sections, users=users,  title_en_US='New', app = app)
+            return render_template("sections/edit.html", form=form, sections = sections, items = items, users=users,  title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -124,6 +127,9 @@ def edit(id=1):
 
         # sections = Section.query.all()
         sections = Section.query.filter(Section.is_active == True).all()
+
+        # items = Item.query.all()
+        items = Item.query.filter(Item.is_active == True).all()
 
         section = Section.query.get_or_404(id)
 
@@ -144,6 +150,8 @@ def edit(id=1):
                     'description_fr_FR' : form.description_fr_FR.data,
 
                     'users' : form.users.data,
+
+                    'items' : form.items.data,
 
                     'is_active' : form.is_active.data,
                     'created_at' : form.created_at.data
@@ -176,6 +184,9 @@ def edit(id=1):
         if  section.users :
             form.users.data = section.users
 
+        if  section.items :
+            form.items.data = section.items
+
         form.is_active.data = section.is_active
         form.created_at.data = string_timestamp_utc_to_string_datetime_utc(section.created_at, '%Y-%m-%d')
 
@@ -183,7 +194,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("sections/edit.html", form=form, sections = sections, users=users, title_en_US='Edit', app = app)
+            return render_template("sections/edit.html", form=form, sections = sections, items = items, users=users, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

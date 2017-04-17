@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title_en_US %} {{ order.id }} - {{ order.data_file_name }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>{{ order.id }} - {{ order.data_file_name }}</h3>
+    <h4 class="text-right"><a href="/orders"><span class="glyphicon glyphicon-home"></span> Back</a></h4>
+    <hr/>
+
+    <p>{{ order.status }}</p>
+    
+    <!-- ONE-TO-MANY -->
+    <p> User :
+        {% if order.user %}
+            {{ order.user.username }}
+        {% else %}
+            No User
+        {% endif %}
+    </p>
+
+    <!-- MANY-TO-MANY -->
+    <p>
+        {% if order.items %}
+            {% for orderitem in order.orderitems %}
+                {{ orderitem.item.title_en_US }} | 
+                unit price : {{ orderitem.unit_price }} | 
+                quantity : {{ orderitem.quantity }} | 
+                Amount :{{ orderitem.total_price }} <br/>
+            {% endfor %}
+        {% else %}
+            No items
+        {% endif %}
+    </p>
+    <p>{{ order.amount }}</p>
+    <p>{{ order.is_active }}</p>
+    <p>{{ order.updated_at }}</p>
+    <p>{{ order.created_at }}</p>
+</div>
+{% endblock content %}
+
