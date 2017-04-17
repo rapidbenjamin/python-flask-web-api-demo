@@ -4,14 +4,20 @@
 # import dependencies
 from wtforms import Form, StringField, TextAreaField, validators, BooleanField
 from wtforms.fields.html5 import DateField
-from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from app.modules.users.models import User
+from models import Section
+
 # from app.modules.sections.usersection_model import UserSection
 
 class Form_Record_Add(Form):
 
     slug = StringField('slug', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
+
+
+    parent = QuerySelectField(query_factory=lambda: Section.query.filter(Section.is_active == True).all(), get_label="slug", allow_blank=True)
+
 
     title_en_US = StringField('title_en_US', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])

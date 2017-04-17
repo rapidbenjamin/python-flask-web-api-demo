@@ -7,6 +7,29 @@
     <hr/>
 
     <p>{{ section.slug }}</p>
+
+    <!-- HIERARCHIC : PARENT -->
+    <p> Parent :
+        {% if section.parent %}
+            {{ section.parent.slug}}
+        {% else %}
+            No Parent
+        {% endif %}
+    </p>
+
+    <!-- HIERARCHIC: CHILDREN -->
+    <p> Children : 
+        {% if section.children %}
+            {% for child in section.children %}
+                {{ child.slug }} 
+            {% endfor %}
+        {% else %}
+            No children
+        {% endif %}
+    </p>
+
+
+
     <p>{{ section['description_%s' %(g.current_lang)] }}</p>
     <!-- MANY-TO-MANY -->
     <p>

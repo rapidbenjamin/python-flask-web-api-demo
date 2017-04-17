@@ -12,6 +12,8 @@
         <tr>
             <th>Id</th>
             <th>Slug</th>
+            <th>Parent</th>
+            <th>Children</th>
             <th>Title</th>
             <th>Description</th>
             <th>Users</th>
@@ -26,6 +28,28 @@
                 <tr>
                     <td>{{ section.id }}</td>
                     <td><a href="{{ url_for('sections_page.show', id = section.id) }}" >{{ section.slug }}</a></td>
+
+                    <!-- HIERARCHIC : PARENT -->
+                    <td>
+                        {% if section.parent %}
+                            {{ section.parent.slug}}
+                        {% else %}
+                            No Parent
+                        {% endif %}
+                    </td>
+
+                    <!-- HIERARCHIC: CHILDREN -->
+                    <td> 
+                        {% if section.children %}
+                            {% for child in section.children %}
+                                {{ child.slug }} 
+                            {% endfor %}
+                        {% else %}
+                            No children
+                        {% endif %}
+                    </td>
+
+
                     <td><a href="{{ url_for('sections_page.show', id = section.id) }}" >{{ section['title_%s' %(g.current_lang)] }}</a></td>
                     <td>{{ section['description_%s' %(g.current_lang)] }}</td>
                     <!-- MANY-TO-MANY -->

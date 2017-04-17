@@ -27,6 +27,10 @@ Python Flask WEB API DEMO
 			- password base64 encoding for remote ajax-based app client (optional)
 			- Role management (is_admin, is_owner, is_member), control access and Dashboard sample page
 	- SQLite or MySQL database configuration option
+	- ORM Schema relationships samples with SQLAlchemy :
+		- ONE-TO-MANY and MANY-TO-ONE
+		- HIERARCHIC (Adjacency List Relationships : parent-children)
+		- MANY-TO-MANY Association object
 	- CUSTOM THEME layout and templates
 	- Logger setting service
 	- INTERNATIONALIZATION with functions like get_locale() and get_timezone() (flask-babel optional) based on :

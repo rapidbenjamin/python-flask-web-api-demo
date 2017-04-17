@@ -61,6 +61,17 @@ class Section(db.Model):
 
     slug = db.Column(db.String(255), index=True, unique=True)
 
+    # HIERARCHICAL relationship (parent-children, Adjacency List Relationships) with the self Section model
+    parent_id = db.Column(db.Integer,db.ForeignKey('Section.id'), index=True, nullable=True)
+    # a bidirectional relationship in one-to-one hirerachical
+    # WARNING ! : uselist = False is required here to get a scalar object and avoid default ORM convertion to a list
+    # PASSIVES_DELETE : when the ORM tries to delete the parent without first setting the child's section.parent_id = None, 
+    # the database will throw an IntegrityError complaining that the child's ForeignKey references a non-existent parent!
+    # passives_delete can throw exception for circular dependency too so a section can't have parent as child too
+    children = db.relationship('Section', backref=db.backref('parent', remote_side='Section.id', uselist = False), passive_deletes='all')
+    # parent = db.relationship('Section', backref=db.backref('children', remote_side='Section.id'))
+
+
     title_en_US = db.Column(db.String(255),  index=True, unique=True)
     title_fr_FR = db.Column(db.String(255),  index=True, unique=True)
 
@@ -117,6 +128,8 @@ class Section(db.Model):
         section = Section(
                                 slug=form['slug'],
 
+                                parent = form['parent'],
+
                                 title_en_US=form['title_en_US'],
                                 title_fr_FR=form['title_fr_FR'],
 
@@ -140,6 +153,8 @@ class Section(db.Model):
         section = Section.query.get_or_404(some_id)
 
         section.slug = form['slug']
+
+        section.parent = form['parent']
 
         section.title_en_US = form['title_en_US']
         section.title_fr_FR = form['title_fr_FR']

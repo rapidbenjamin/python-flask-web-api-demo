@@ -65,6 +65,7 @@ def new():
     try :
         users = User.query.filter(User.is_active == True).all()
         form = Form_Record_Add(request.form)
+        sections = Section.query.filter(Section.is_active == True).all()
 
         if request.method == 'POST':
             if form.validate():
@@ -73,6 +74,8 @@ def new():
                 sanitize_form = {
 
                     'slug' : form.slug.data,
+
+                    'parent' : form.parent.data,
 
                     'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
@@ -86,7 +89,7 @@ def new():
                     'created_at' : form.created_at.data
                 }
 
-                sections.create_data(sanitize_form)
+                Section().create_data(sanitize_form)
                 logger.info("Adding a new record.")
                 
                 if request.is_xhr == True:
@@ -103,7 +106,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("sections/edit.html", form=form, users=users,  title_en_US='New', app = app)
+            return render_template("sections/edit.html", form=form, sections = sections, users=users,  title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -119,7 +122,9 @@ def edit(id=1):
         # check_admin()
         users = User.query.filter(User.is_active == True).all()
 
-        sections = Section()
+        # sections = Section.query.all()
+        sections = Section.query.filter(Section.is_active == True).all()
+
         section = Section.query.get_or_404(id)
 
         form = Form_Record_Add(request.form)
@@ -129,6 +134,8 @@ def edit(id=1):
 
                 sanitize_form = {
                     'slug' : form.slug.data,
+
+                    'parent' : form.parent.data,
 
                     'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
@@ -142,9 +149,10 @@ def edit(id=1):
                     'created_at' : form.created_at.data
                 }
 
-                sections.update_data(section.id, sanitize_form)
+
+                Section().update_data(section.id, sanitize_form)
                 logger.info("Editing a new record.")
-                
+
                 if request.is_xhr == True:
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
@@ -154,6 +162,9 @@ def edit(id=1):
         form.action = url_for('sections_page.edit', id = section.id)
 
         form.slug.data = section.slug
+
+        if  section.parent :
+            form.parent.data = section.parent.id
 
         form.title_en_US.data = section.title_en_US
         form.title_fr_FR.data = section.title_fr_FR
@@ -172,7 +183,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("sections/edit.html", form=form, users=users, title_en_US='Edit', app = app)
+            return render_template("sections/edit.html", form=form, sections = sections, users=users, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -186,14 +197,24 @@ def edit(id=1):
 def destroy(id=1):
     try:
         sections = Section()
-        section = sections.query.get_or_404(id)
-        sections.destroy_data(section.id)
-        # html or Json response
-        if request.is_xhr == True:
-            return jsonify(data = {message:"Record deleted successfully.", section : m_section})
-        else:
-            flash("Record deleted successfully.", category="success")
-            return redirect(url_for('sections_page.index'))
+        section = sections.query.get_or_404(id)        
+
+        if section.children:
+            # html or Json response
+            if request.is_xhr == True :
+                    return jsonify(data =  {message:"Unauthorized : Must delete child's section' first"}), 422, {'Content-Type': 'application/json'}
+            else:
+                flash("Unauthorized : Must delete child's section first.", category="danger")
+                return redirect(url_for('sections_page.index'))
+
+        else :
+            sections.destroy_data(section.id)
+            # html or Json response
+            if request.is_xhr == True:
+                return jsonify(data = {message:"Record deleted successfully.", section : m_section})
+            else:
+                flash("Record deleted successfully.", category="success")
+                return redirect(url_for('sections_page.index'))
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))

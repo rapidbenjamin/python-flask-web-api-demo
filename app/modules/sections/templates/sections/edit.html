@@ -14,7 +14,6 @@
 
                         <div class="form-group">
                             <label for="section_slug" class="col-lg-4 control-label">{{ form.slug.label }}</label>
-
                             <div class="col-lg-6">
                                 {{ form.slug (class="form-control") }}
                                 <!-- <input class="form-control" id="section_slug" name="section_slug" required="" value="" type="text"> -->
@@ -26,6 +25,26 @@
                                 {% endfor %}
                             </div>
                         </div>
+
+
+                        <!-- HIERARCHIC PARENTS -->
+                        <div class="form-group">
+                            <label for="section_parent" class="col-lg-4 control-label">{{ form.parent.label }}</label>
+                            <div class="col-lg-6">
+                                <select class="form-control" id="parent" name="parent" >
+                                    <option value="" >None</option>
+                                    {% for section in sections %}
+                                        <option value="{{ section.id }}" {% if form.parent.data == section.id %} selected="selected"{% endif %} >{{section.slug}}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.errors.parent %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
 
                         <div class="form-group">
                             <label for="section_title_en_US" class="col-lg-4 control-label">{{ form.title_en_US.label }}</label>
