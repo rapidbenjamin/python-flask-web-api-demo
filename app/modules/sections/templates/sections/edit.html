@@ -112,6 +112,7 @@
                             <label for="section_users" class="col-lg-4 control-label">{{ form.users.label }}</label>
                             <div class="col-lg-6">
                                <select class="form-control" id="users" name="users" multiple="" >
+                                   <option value="" >None</option>
                                     {% for user in users %}
                                         <option value="{{ user.id }}"
                                         {% if form.users.data %}

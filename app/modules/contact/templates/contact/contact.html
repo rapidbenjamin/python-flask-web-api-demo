@@ -31,7 +31,7 @@
             <!-- EMAIL TO -->
             <div class="form-group">
               <select  class="form-control" id="email_to" name="email_to" >
-                  <option value=""></option>
+                  <option value="" >None</option>
                   {% for user2 in users %}
                       <option value="{{user2.email}}">{{user2.username}} | {{user2.email}}</option>
                   {% endfor %}

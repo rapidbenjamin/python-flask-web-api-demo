@@ -46,6 +46,7 @@
                             <label for="user_sections" class="col-lg-4 control-label">{{ form.sections.label }}</label>
                             <div class="col-lg-6">
                                 <select class="form-control" id="sections" name="sections" multiple="" >
+                                    <option value="" >None</option>
                                     {% for section in sections %}
                                         <option value="{{ section.id }}"
                                         {% if form.sections.data %}

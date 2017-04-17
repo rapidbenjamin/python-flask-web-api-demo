@@ -150,6 +150,7 @@
                             <label for="asset_user" class="col-lg-4 control-label">{{ form.user.label }}</label>
                             <div class="col-lg-6">
                                 <select class="form-control" id="user" name="user" >
+                                    <option value="" >None</option>
                                     {% for user in users %}
                                         <option value="{{ user.id }}" {% if form.user.data == user.id %} selected="selected"{% endif %} >{{user.username}}</option>
                                     {% endfor %}
@@ -169,6 +170,7 @@
                             <label for="asset_items" class="col-lg-4 control-label">{{ form.items.label }}</label>
                             <div class="col-lg-6">
                                 <select class="form-control" id="items" name="items" multiple="" >
+                                    <option value="" >None</option>
                                     {% for item in items %}
                                         <option value="{{ item.id }}"
                                         {% if form.items.data %}

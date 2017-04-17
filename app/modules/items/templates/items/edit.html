@@ -93,6 +93,7 @@
                             <label for="item_assets" class="col-lg-4 control-label">{{ form.assets.label }}</label>
                             <div class="col-lg-6">
                                <select class="form-control" id="assets" name="assets" multiple="" >
+                                   <option value="" >None</option>
                                     {% for asset in assets %}
                                         <option value="{{ asset.id }}"
                                         {% if form.assets.data %}
