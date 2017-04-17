@@ -12,12 +12,3 @@ INSERT INTO quickandcleandb.assetitem( asset_id, item_id, updated_at, created_at
 INSERT INTO quickandcleandb.assetitem( asset_id, item_id, updated_at, created_at ) VALUES ( 1, 2, 1492357734, 1492357734 ); 
 INSERT INTO quickandcleandb.assetitem( asset_id, item_id, updated_at, created_at ) VALUES ( 2, 2, 1492419023, 1492419023 ); 
 
-INSERT INTO quickandcleandb.section( id, slug, parent_id, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 1, 'department1', 3, 'Department 1', 'Departement 1', 'description_en_US', 'description_fr_FR', 1, 1492419023, 1492293600 ); 
-INSERT INTO quickandcleandb.section( id, slug, parent_id, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 2, 'department2', 3, 'Department 2', 'Departement 2', 'description_en_US', 'description_fr_FR', 1, 1492419023, 1492293600 ); 
-INSERT INTO quickandcleandb.section( id, slug, parent_id, title_en_US, title_fr_FR, description_en_US, description_fr_FR, is_active, updated_at, created_at ) VALUES ( 3, 'domain', null, 'domain', 'Domaine', 'description_en_US', 'description_fr_FR', 1, 1492419023, 1492380000 ); 
-
-INSERT INTO quickandcleandb.usersection( user_id, section_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 1, 1, null, null, 1492357733, 1492357733 ); 
-INSERT INTO quickandcleandb.usersection( user_id, section_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 1, 3, null, null, 1492419023, 1492419023 ); 
-INSERT INTO quickandcleandb.usersection( user_id, section_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 2, 2, null, null, 1492419023, 1492419023 ); 
-INSERT INTO quickandcleandb.usersection( user_id, section_id, description_en_US, description_fr_FR, updated_at, created_at ) VALUES ( 2, 3, null, null, 1492419023, 1492419023 ); 
-

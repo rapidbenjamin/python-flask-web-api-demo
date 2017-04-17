@@ -20,6 +20,7 @@ from app import app
 # INITIALIZE
 enable_pretty_logging()
 
+
 # ------- PRODUCTION CONFIG -------
 # http_server = HTTPServer(WSGIContainer(app))
 # http_server.bind(app.config['PORT'])
@@ -31,7 +32,7 @@ enable_pretty_logging()
 
 # ------- DEVELOPMENT CONFIG -------
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=app.config['PORT'])
 
 
 
