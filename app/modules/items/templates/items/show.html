@@ -9,6 +9,16 @@
     <p>{{ item.slug }}</p>
     <p>{{ item['description_%s' %(g.current_lang)] }}</p>
     <p>{{ item.price }}</p>
+
+    <!-- ONE-TO-MANY -->
+    <p> User :
+        {% if item.user %}
+            {{ item.user.username }}
+        {% else %}
+            No User
+        {% endif %}
+    </p>
+
     <!-- MANY-TO-MANY -->
     <p>
         {% if item.sections %}

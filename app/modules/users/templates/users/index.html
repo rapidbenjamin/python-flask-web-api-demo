@@ -12,6 +12,7 @@
             <th>Email</th>
             <th>User name</th>
             <th>Assets</th>
+            <th>Items</th>
             <th>Orders</th>
             <th>Sections</th>
             <th>Locale</th>
@@ -34,6 +35,16 @@
                         {% if user.assets %}
                             {% for asset in user.assets %}
                                 <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="100" class="img-thumbnail"> {{ asset.data_file_name }} 
+                            {% endfor %}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if user.items %}
+                            {% for item in user.items %}
+                                {{ item.slug }} 
                             {% endfor %}
                         {% else %}
                             None

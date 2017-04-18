@@ -18,7 +18,16 @@
             No assets
         {% endif %}
     </p>
-
+    <!-- ONE-TO-MANY -->
+    <p>
+        {% if user.items %}
+            {% for item in user.items %}
+                {{ item.slug }} 
+            {% endfor %}
+        {% else %}
+            None
+        {% endif %}
+    </p>
     <!-- ONE-TO-MANY -->
     <p>
         {% if user.orders %}

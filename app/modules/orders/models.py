@@ -93,18 +93,18 @@ class Order(db.Model):
         # dateTime conversion to timestamp
         timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
 
-        order = Order(    
+        order = Order(
 
-                                status=form['status'], 
-                                
-                                user = form['user'],
+                            status=form['status'],
 
-                                is_active = form['is_active'],
-                                # convert string to integer format
-                                created_at = int(timestamp_created_at)
-                            )
-        
-        # MANY-TO-MANY Relationship 
+                            user = form['user'],
+
+                            is_active = form['is_active'],
+                            # convert string to integer format
+                            created_at = int(timestamp_created_at)
+                        )
+
+        # MANY-TO-MANY Relationship
         amount = decimal.Decimal(0)
         for item in form['items']:
             orderitem = OrderItem(order = order, item = item)
@@ -120,7 +120,7 @@ class Order(db.Model):
         order.amount = amount
         db.session.add(order)
         db.session.commit()
-    
+
     def update_data(self, some_id, form ):
         order = Order.query.get_or_404(some_id)
 

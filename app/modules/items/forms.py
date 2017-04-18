@@ -4,11 +4,12 @@
 # import dependencies
 from wtforms import Form, StringField, TextAreaField, validators, BooleanField, DecimalField
 from wtforms.fields.html5 import DateField
-from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 
 from app.modules.sections.models import Section
 from app.modules.assets.models import Asset
 from app.modules.orders.models import Order
+from app.modules.users.models import User
 
 # from app.modules.items.assetitem_model import AssetItem
 
@@ -28,6 +29,9 @@ class Form_Record_Add(Form):
                                 validators=[validators.Length(max=200, message='max 200 characters')])
     description_fr_FR = TextAreaField('description_fr_FR',
                                 validators=[validators.Length(max=200, message='max 200 characters')])
+
+    user = QuerySelectField(query_factory=lambda: User.query.filter(User.is_active == True).all(), get_label="username", allow_blank=True)
+
 
     # MANY-TO-MANY
     sections = QuerySelectMultipleField('Select Sections',

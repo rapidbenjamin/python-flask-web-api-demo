@@ -42,6 +42,9 @@ class User(UserMixin, db.Model):
     # one-to-many relationship with the Asset model
     assets = db.relationship('Asset', back_populates='user')
 
+    # one-to-many relationship with the Asset model
+    items = db.relationship('Item', back_populates='user')
+
     # one-to-many relationship with the Order model
     orders = db.relationship('Order', back_populates='user')
 

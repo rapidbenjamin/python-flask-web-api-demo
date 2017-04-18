@@ -13,7 +13,7 @@ from app import db
 import time
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
-
+from app.modules.users.models import User
 
 
 # ------- MANY-TO-MANY ASSOCIATION OBJECT : SECTION-ITEM  ------- 
@@ -143,6 +143,13 @@ class Item(db.Model):
     # price in decimal , precision=10, scale=2 .
     price = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
 
+    # MANY-TO-ONE relationship with the User model
+    # the backref argument in the user field allows us to access items from the User model
+    # as simple as user.items in our controllers.
+    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    # a bidirectional relationship in many-to-one. Return object
+    user = db.relationship('User', back_populates='items')
+
     # MANY-TO-MANY relationship with with EXTRA_DATA association and the Asset model
     # the cascade will delete orphaned assetitems
     assetitems = db.relationship('AssetItem', back_populates='item', lazy='dynamic', cascade="all, delete-orphan")
@@ -251,6 +258,8 @@ class Item(db.Model):
 
                                 price = decimal.Decimal(form['price']),
 
+                                user = form['user'],
+
                                 is_active = form['is_active'],
                                 # convert string to integer format
                                 created_at = int(timestamp_created_at)
@@ -287,6 +296,8 @@ class Item(db.Model):
         item.description_fr_FR = form['description_fr_FR']
 
         item.price = decimal.Decimal(form['price'])
+
+        item.user = form['user']
 
         item.is_active = form['is_active']
 

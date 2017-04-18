@@ -5,6 +5,8 @@
 import datetime
 import decimal
 import sendgrid
+from sqlalchemy import desc
+from sqlalchemy import or_, and_
 from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for
 from forms import *
 from time import time
@@ -20,23 +22,44 @@ from app.modules.localization.controllers import get_locale, get_timezone
 from app.modules.sections.models import Section
 from app.modules.assets.models import Asset
 from app.modules.orders.models import Order
+from app.modules.users.models import User
 
 
 # -------  ROUTINGS AND METHODS  ------- 
 
 
 # All items
-@items_page.route('/')
-@items_page.route('/<int:page>')
+@items_page.route('/', methods=['GET','POST'])
+@items_page.route('/<int:page>', methods=['GET','POST'])
 def index(page=1):
     try:
+        
+        users = User.query.filter(User.is_active == True).all()
+        sections = Section.query.filter(Section.is_active == True).all()
+
+
         m_items = Item()
         list_items = m_items.all_data(page, app.config['LISTINGS_PER_PAGE'])
+
+        # if request.args and 'item_keyword' in request.args:
+        if request.method == 'POST' and (request.form['item_userid'] or request.form['item_sectionid'] or request.form['item_keyword']):   
+            filter_items = Item.query
+            # list_items = Item.query.filter(Item.slug == request.args['item_keyword']).order_by(desc(Item.created_at)).paginate(page, LISTINGS_PER_PAGE, False)
+            if request.form['item_userid'] != "":
+                filter_items = filter_items.filter(  Item.user_id.is_(request.form['item_userid']))
+            if request.form['item_sectionid'] != "":
+                filter_items = filter_items.filter(Item.sections.any(Section.id.is_(request.form['item_sectionid'])))
+            if request.form['item_keyword'] != "":
+                filter_items = filter_items.filter(or_(Item.slug.like("%"+request.form['item_keyword']+"%"), Item.title_en_US.like("%"+request.form['item_keyword']+"%"), Item.description_en_US.like("%"+request.form['item_keyword']+"%")))
+            # list_items = list_items.filter(Item.user_id = request.form['item_user'])
+
+            list_items = filter_items.order_by(desc(Item.created_at)).paginate(page, app.config['LISTINGS_PER_PAGE'], False)
+        
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_items.items])
         else:
-            return render_template("items/index.html", list_items=list_items, app = app)
+            return render_template("items/index.html", sections = sections, users = users, list_items=list_items, app = app)
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
@@ -70,6 +93,7 @@ def new():
         sections = Section.query.filter(Section.is_active == True).all()
         assets = Asset.query.filter(Asset.is_active == True).all()
         orders = Order.query.filter(Order.is_active == True).all()
+        users = User.query.filter(User.is_active == True).all()
         
 
 
@@ -90,6 +114,8 @@ def new():
                     'description_fr_FR' : form.description_fr_FR.data,
 
                     'price' : decimal.Decimal(form.price.data),
+
+                    'user' : form.user.data,
 
                     'sections' : form.sections.data,
 
@@ -118,7 +144,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("items/edit.html", form=form, sections=sections, assets=assets, orders=orders,  title_en_US='New', app = app)
+            return render_template("items/edit.html", form=form, sections=sections, users = users, assets=assets, orders=orders,  title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -132,9 +158,12 @@ def edit(id=1):
     try : 
 
         # check_admin()
+        
         sections = Section.query.filter(Section.is_active == True).all()
         assets = Asset.query.filter(Asset.is_active == True).all()
         orders = Order.query.filter(Order.is_active == True).all()
+        # users = User.query.all()
+        users = User.query.filter(User.is_active == True).all()
 
         items = Item()
         item = Item.query.get_or_404(id)
@@ -154,6 +183,8 @@ def edit(id=1):
                     'description_fr_FR' : form.description_fr_FR.data,
 
                     'price' : decimal.Decimal(form.price.data),
+
+                    'user' : form.user.data,
 
                     'sections' : form.sections.data,
                     'assets' : form.assets.data,
@@ -184,6 +215,9 @@ def edit(id=1):
 
         form.price.data = item.price
 
+        if  item.user :
+            form.user.data = item.user.id
+
         if  item.sections :
             form.sections.data = item.sections
 
@@ -200,7 +234,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("items/edit.html", form=form, sections=sections, assets=assets, orders=orders, title_en_US='Edit', app = app)
+            return render_template("items/edit.html", form=form, users = users, sections=sections, assets=assets, orders=orders, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

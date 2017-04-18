@@ -100,6 +100,24 @@
                         </div>
 
 
+                        <!-- ONE-TO-MANY -->
+                        <div class="form-group">
+                            <label for="item_user" class="col-lg-4 control-label">{{ form.user.label }}</label>
+                            <div class="col-lg-6">
+                                <select class="form-control" id="user" name="user" >
+                                    <option value="" >None</option>
+                                    {% for user in users %}
+                                        <option value="{{ user.id }}" {% if form.user.data == user.id %} selected="selected"{% endif %} >{{user.username}}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.errors.user %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
                         <!-- MANY-TO-MANY RELATIONSHIP -->
                         <div class="form-group">
                             <label for="item_sections" class="col-lg-4 control-label">{{ form.sections.label }}</label>
