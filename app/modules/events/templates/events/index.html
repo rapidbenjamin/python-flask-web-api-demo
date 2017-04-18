@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h4 class="pull-right"><a href="/events/new"><span class="glyphicon glyphicon-plus"></span> New</a></h4>
+    <h3>Events</h3>    
+    <hr/>
+
+    <div class="panel panel-header text-center">{{ list_events.query.count() }} results</div>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Type</th>
+            <th>Price</th>
+            <th>User</th>
+            <th>Item</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Days</th>
+            <th>Allday</th>
+            <th>Status</th>
+            <th>Active</th>
+            <th>Updated Date</th>
+            <th>Created Date</th>
+            <th colspan="3">Actions</th>
+        </tr>
+        </thead>
+        {% if list_events.items %}
+            {% for event in list_events.items %}
+                <tr>
+                    <td>{{ event.id }}</td>
+                    <td><a href="{{ url_for('events_page.show', id = event.id) }}" >{{ event.type }}</a></td>
+                    <td>{{ event.price }}</td>
+
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if event.user %}
+                            {{ event.user.username }}
+                        {% else %}
+                            No User
+                        {% endif %}
+                    </td>
+
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if event.item %}
+                            {{ event.item.slug }}
+                        {% else %}
+                            No Item
+                        {% endif %}
+                    </td>
+                    <td>{{ event.start | datetimeformat }}</td>
+                    <td>{{ event.end | datetimeformat }}</td>
+
+                    <td>{{ event.days }}</td>
+                    <td>{{ event.allday }}</td>
+                    <td>{{ event.status }}</td>
+
+                    <td>{{ event.is_active }}</td>
+                    <td>{{ event.updated_at | datetimeformat }}</td>
+                    <td>{{ event.created_at | datetimeformat }}</td>
+                    <td><a href="{{ url_for('events_page.show', id = event.id) }}" ><i class="glyphicon glyphicon-file"></i> </a></td>
+                    <td><a href="{{ url_for('events_page.edit', id = event.id) }}" ><i class="glyphicon glyphicon-pencil"></i> </a></td>
+                    <td><a href="{{ url_for('events_page.destroy', id = event.id) }}" onclick="return confirm('Are you sure you want to delete this event?');"><i class="glyphicon glyphicon-trash"></i> </a></td>
+
+                </tr>
+            {% endfor %}
+        {% else %}
+          <tr style="text-align: center">
+              <td colspan="9">
+            <h4> No events for this search. </h4>
+            </td>
+         </tr>
+        {% endif %}
+    </table>
+
+    <ul class="pagination">
+        {%- for page in list_events.iter_pages() %}
+            {% if page %}
+                {% if page != list_events.page %}
+                    <li><a href="{{ url_for('events_page.events', page = page) }}">{{ page }}</a></li>
+                {% else %}
+                    <li class="active"><a href="#"><strong>{{ page }}</strong></a></li>
+                {% endif %}
+            {% else %}
+                <li><span class=ellipsis>…</span></li>
+            {% endif %}
+        {%- endfor %}
+    </ul>
+
+</div>
+{% endblock content %}

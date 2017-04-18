@@ -143,6 +143,9 @@ class Item(db.Model):
     # price in decimal , precision=10, scale=2 .
     price = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
 
+    # one-to-many relationship with the Asset model
+    events = db.relationship('Event', back_populates='item')
+
     # MANY-TO-ONE relationship with the User model
     # the backref argument in the user field allows us to access items from the User model
     # as simple as user.items in our controllers.

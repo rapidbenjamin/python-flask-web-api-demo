@@ -14,11 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
-# from app.modules.assets.models import Asset
 
-
-# from app.modules.sections.models import Section
-# from app.modules.sections.models import UserSection
 
 #######################
 # WARNING FIXED ISSUE : UserSection model registered at the end of this page to fixe issue  :  global name 'User' is not defined
@@ -42,11 +38,16 @@ class User(UserMixin, db.Model):
     # one-to-many relationship with the Asset model
     assets = db.relationship('Asset', back_populates='user')
 
-    # one-to-many relationship with the Asset model
+    # one-to-many relationship with the Item model
     items = db.relationship('Item', back_populates='user')
+
+    # one-to-many relationship with the Event model
+    events = db.relationship('Event', back_populates='user')
 
     # one-to-many relationship with the Order model
     orders = db.relationship('Order', back_populates='user')
+
+
 
     # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Section model
     # the cascade will delete orphaned usersections

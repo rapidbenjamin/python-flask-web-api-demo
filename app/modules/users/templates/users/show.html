@@ -30,6 +30,16 @@
     </p>
     <!-- ONE-TO-MANY -->
     <p>
+        {% if user.events %}
+            {% for event in user.events %}
+                {{ event.type }}-{{ event.id }} 
+            {% endfor %}
+        {% else %}
+            None
+        {% endif %}
+    </p>
+    <!-- ONE-TO-MANY -->
+    <p>
         {% if user.orders %}
             {% for order in user.orders %}
                 {{ order.id }} 

@@ -69,6 +69,9 @@ app.register_blueprint(sections_page, url_prefix='/sections')
 from modules.items import items_page
 app.register_blueprint(items_page, url_prefix='/items')
 
+from modules.events import events_page
+app.register_blueprint(events_page, url_prefix='/events')
+
 from modules.assets import assets_page
 app.register_blueprint(assets_page, url_prefix='/assets')
 

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title_en_US %} {{ event.id }} - {{ event['title_%s' %(g.current_lang)] }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>{{ event.id }} - {{ event['title_%s' %(g.current_lang)] }}</h3>
+    <h4 class="text-right"><a href="/events"><span class="glyphicon glyphicon-home"></span> Back</a></h4>
+    <hr/>
+
+    <p>{{ event.type }}</p>
+    <p>{{ event.price }}</p>
+
+    <!-- ONE-TO-MANY -->
+    <p> User :
+        {% if event.user %}
+            {{ event.user.username }}
+        {% else %}
+            No User
+        {% endif %}
+    </p>
+
+    <!-- ONE-TO-MANY -->
+    <p> Item :
+        {% if event.item %}
+            {{ event.item.slug }}
+        {% else %}
+            No Item
+        {% endif %}
+    </p>
+    <p>{{ event.start }}</p>
+    <p>{{ event.end }}</p>
+    
+    <p>{{ event.days }}</p>
+    <p>{{ event.allday }}</p>
+    <p>{{ event.status }}</p>
+    
+    <p>{{ event.is_active }}</p>
+    <p>{{ event.updated_at }}</p>
+    <p>{{ event.created_at }}</p>
+</div>
+{% endblock content %}
+

@@ -13,6 +13,7 @@
             <th>User name</th>
             <th>Assets</th>
             <th>Items</th>
+            <th>Events</th>
             <th>Orders</th>
             <th>Sections</th>
             <th>Locale</th>
@@ -45,6 +46,16 @@
                         {% if user.items %}
                             {% for item in user.items %}
                                 {{ item.slug }} 
+                            {% endfor %}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if user.events %}
+                            {% for event in user.events %}
+                                {{ event.type }}-{{ event.id }} 
                             {% endfor %}
                         {% else %}
                             None

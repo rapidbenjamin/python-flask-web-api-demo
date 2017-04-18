@@ -19,6 +19,17 @@
         {% endif %}
     </p>
 
+    <!-- ONE-TO-MANY -->
+    <p>
+        {% if item.events %}
+            {% for event in item.events %}
+                {{ event.type }}-{{ event.id }} 
+            {% endfor %}
+        {% else %}
+            None
+        {% endif %}
+    </p>
+
     <!-- MANY-TO-MANY -->
     <p>
         {% if item.sections %}

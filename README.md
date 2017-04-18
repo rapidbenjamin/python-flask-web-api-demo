@@ -15,7 +15,7 @@ Python Flask WEB API DEMO
 	- Module Sample database USERS with SQLALchemy, relational models and Pagination
 	- Module Sample page MESSAGES with email form, recaptcha and Email service by SendGrid and Flash MESSAGE notification	
 	- Module Sample database RESOURCES : 
-								- ITEMS with images gallery, [coming-soon]
+								- ITEMS with images gallery,]
 								- ASSETS files and image processing with Pillow
 								- EVENTS (start/end datetime) [coming-soon]
 								- PLACES (geolocalization with latitude and longitude) [coming-soon]

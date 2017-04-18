@@ -59,6 +59,7 @@
             <th>Description</th>
             <th>Price</th>
             <th>User</th>
+            <th>Events</th>
             <th>Sections</th>
             <th>Assets</th>
             <th>Orders</th>
@@ -85,7 +86,16 @@
                             No User
                         {% endif %}
                     </td>
-
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if item.events %}
+                            {% for event in item.events %}
+                               {{ event.type }}-{{ event.id }} 
+                            {% endfor %}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
                     <!-- MANY-TO-MANY -->
                     <td>
                         {% if item.sections %}
