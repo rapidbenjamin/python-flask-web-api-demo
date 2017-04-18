@@ -161,26 +161,34 @@ def new():
                         os.mkdir(target_dir)
 
                     file.save(target)
-
-                    # resize if too high
-                    resize_image_to_max(target, app.config['MAX_SIZE'])
-
-                    filesize = os.stat(target).st_size
+                    
                     filetype = file.content_type
-
 
                     # guess asset type
                     asset_type =  get_asset_type(filetype)
+
+                    if asset_type == "image" :
+                        # resize if too high
+                        resize_image_to_max(target, app.config['MAX_SIZE'])
+
+                    filesize = os.stat(target).st_size
+
+
+                    
                     
 
                     # image processing thumbnail 
                     infilename, ext = os.path.splitext(target)
-                    im = Image.open(target)
 
-                    filewidth, fileheight = im.size
+                    filewidth = ""
+                    fileheight = ""
 
-                    im.thumbnail(app.config['THUMBNAIL_SIZE'])
-                    im.save(infilename + ".thumbnail" + ext)
+                    if asset_type == "image" :
+                        im = Image.open(target)
+                        filewidth, fileheight = im.size
+
+                        im.thumbnail(app.config['THUMBNAIL_SIZE'])
+                        im.save(infilename + ".thumbnail" + ext)
 
 
                     assets = Asset()
@@ -283,25 +291,34 @@ def edit(id=1):
                     
 
                     file.save(target)
-
-                    # resize if too high
-                    resize_image_to_max(target, app.config['MAX_SIZE'])
-
-                    filesize = os.stat(target).st_size
+                    
                     filetype = file.content_type
-
-                    # image processing thumbnail 
-                    infilename, ext = os.path.splitext(target)
-                    im = Image.open(target)
-
-                    filewidth, fileheight = im.size
-
+                    
                     # guess asset type
                     asset_type =  get_asset_type(filetype)
 
-                    im.thumbnail(app.config['THUMBNAIL_SIZE'])
-                    im.save(infilename + ".thumbnail" + ext)
+                    if asset_type == "image" :
+                        # resize if too high
+                        resize_image_to_max(target, app.config['MAX_SIZE'])
+
+                    filesize = os.stat(target).st_size
                     
+
+                    # image processing thumbnail 
+                    infilename, ext = os.path.splitext(target)
+
+                    
+
+                    filewidth = ""
+                    fileheight = ""
+
+                    if asset_type == "image" :
+                        im = Image.open(target)
+
+                        filewidth, fileheight = im.size
+                        im.thumbnail(app.config['THUMBNAIL_SIZE'])
+                        im.save(infilename + ".thumbnail" + ext)
+
 
                 if not file :
                     filename =  asset.data_file_name
