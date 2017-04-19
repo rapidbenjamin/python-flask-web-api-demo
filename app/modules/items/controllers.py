@@ -46,9 +46,9 @@ def index(page=1):
             filter_items = Item.query
             # list_items = Item.query.filter(Item.slug == request.args['item_keyword']).order_by(desc(Item.created_at)).paginate(page, LISTINGS_PER_PAGE, False)
             if request.form['item_userid'] != "":
-                filter_items = filter_items.filter(  Item.user_id.is_(request.form['item_userid']))
+                filter_items = filter_items.filter(  Item.user_id.in_(request.form['item_userid']))
             if request.form['item_sectionid'] != "":
-                filter_items = filter_items.filter(Item.sections.any(Section.id.is_(request.form['item_sectionid'])))
+                filter_items = filter_items.filter(Item.sections.any(Section.id.in_(request.form['item_sectionid'])))
             if request.form['item_keyword'] != "":
                 filter_items = filter_items.filter(or_(Item.slug.like("%"+request.form['item_keyword']+"%"), Item.title_en_US.like("%"+request.form['item_keyword']+"%"), Item.description_en_US.like("%"+request.form['item_keyword']+"%")))
             # list_items = list_items.filter(Item.user_id = request.form['item_user'])
@@ -123,8 +123,7 @@ def new():
 
                     'orders' : form.orders.data,
 
-                    'is_active' : form.is_active.data,
-                    'created_at' : form.created_at.data
+                    'is_active' : form.is_active.data
                 }
 
                 items.create_data(sanitize_form)
@@ -137,8 +136,6 @@ def new():
                     return redirect("/items")
 
         form.action = url_for('items_page.new')
-        # form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        form.created_at.data = datetime.now().strftime('%Y-%m-%d')
 
          # html or Json response
         if request.is_xhr == True:
@@ -190,8 +187,7 @@ def edit(id=1):
                     'assets' : form.assets.data,
                     'orders' : form.orders.data,
 
-                    'is_active' : form.is_active.data,
-                    'created_at' : form.created_at.data
+                    'is_active' : form.is_active.data
                 }
 
                 items.update_data(item.id, sanitize_form)
@@ -228,7 +224,6 @@ def edit(id=1):
             form.orders.data = item.orders
 
         form.is_active.data = item.is_active
-        form.created_at.data = string_timestamp_utc_to_string_datetime_utc(item.created_at, '%Y-%m-%d')
 
         # html or Json response
         if request.is_xhr == True:

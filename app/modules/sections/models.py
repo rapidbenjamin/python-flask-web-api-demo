@@ -158,8 +158,6 @@ class Section(db.Model):
 
 
     def create_data(self, form):
-        # dateTime conversion to timestamp
-        timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
 
         section = Section(
                                 slug=form['slug'],
@@ -172,9 +170,7 @@ class Section(db.Model):
                                 description_en_US=form['description_en_US'],
                                 description_fr_FR=form['description_fr_FR'],
 
-                                is_active = form['is_active'],
-                                # convert string to integer format
-                                created_at = int(timestamp_created_at)
+                                is_active = form['is_active']
                             )
 
         # MANY-TO-MANY Relationship
@@ -204,11 +200,6 @@ class Section(db.Model):
         section.description_fr_FR = form['description_fr_FR']
 
         section.is_active = form['is_active']
-
-        # dateTime conversion to timestamp
-        timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
-        # convert string to integer format
-        section.created_at = int(timestamp_created_at)
 
         # MANY-TO-MANY Relationship 
         section.usersections = []

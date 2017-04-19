@@ -32,6 +32,7 @@ def index(page=1):
     try:
         
         users = User.query.filter(User.is_active == True).all()
+        guests = users
         items = Event.query.filter(Item.is_active == True).all()
 
 
@@ -43,7 +44,7 @@ def index(page=1):
         if request.is_xhr == True:
             return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_events.items])
         else:
-            return render_template("events/index.html", items = items, users = users, list_events=list_events, app = app)
+            return render_template("events/index.html", items = items, users = users, guests = guests, list_events=list_events, app = app)
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
@@ -75,9 +76,9 @@ def new():
     try :
 
         users = User.query.filter(User.is_active == True).all()
-        items = Item.query.filter(Item.is_active == True).all()
-        
+        guests = users
 
+        items = Item.query.filter(Item.is_active == True).all()
 
         form = Form_Record_Add(request.form)
 
@@ -89,23 +90,27 @@ def new():
 
                     'type' : form.type.data,
 
+                    'title_en_US' : form.title_en_US.data,
+                    'title_fr_FR' : form.title_fr_FR.data,
+
                     'price' : decimal.Decimal(form.price.data),
 
                     'user' : form.user.data,
 
                     'item' : form.item.data,
 
+                    'guests' : form.guests.data,
+
                     'start' : form.start.data,
 
                     'end' : form.end.data,
 
-                    'days' : form.days.data,
 
                     'allday' : form.allday.data,
 
                     'status' : form.status.data,
 
-                    'is_active' : form.is_active.data,
+                    'is_active' : form.is_active.data
 
                 }
 
@@ -131,7 +136,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("events/edit.html", form=form, items=items, users = users, title_en_US='New', app = app)
+            return render_template("events/edit.html", form=form, items=items, users = users, guests = guests, title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -148,6 +153,7 @@ def edit(id=1):
 
         # users = User.query.all()
         users = User.query.filter(User.is_active == True).all()
+        guests = users
         items = Item.query.filter(Item.is_active == True).all()
 
         events = Event()
@@ -161,23 +167,26 @@ def edit(id=1):
                 sanitize_form = {
                     'type' : form.type.data,
 
+                    'title_en_US' : form.title_en_US.data,
+                    'title_fr_FR' : form.title_fr_FR.data,
+
                     'price' : decimal.Decimal(form.price.data),
 
                     'user' : form.user.data,
 
                     'item' : form.item.data,
 
+                    'guests' : form.guests.data,
+
                     'start' : form.start.data,
 
                     'end' : form.end.data,
-
-                    'days' : form.days.data,
 
                     'allday' : form.allday.data,
 
                     'status' : form.status.data,
 
-                    'is_active' : form.is_active.data,
+                    'is_active' : form.is_active.data
 
                 }
 
@@ -194,6 +203,9 @@ def edit(id=1):
 
         form.type.data = event.type
 
+        form.title_en_US.data = event.title_en_US
+        form.title_fr_FR.data = event.title_fr_FR
+
         form.price.data = event.price
 
         if  event.user :
@@ -201,14 +213,15 @@ def edit(id=1):
 
         if  event.item :
             form.item.data = event.item.id
+
+        if  event.guests :
+            form.guests.data = event.guests
         
         # form.start.data = string_timestamp_utc_to_string_datetime_utc(event.start, '%Y-%m-%d %H:%M:%S')
         form.start.data = string_timestamp_utc_to_string_datetime_utc(event.start, '%Y-%m-%d')
 
         # form.end.data = string_timestamp_utc_to_string_datetime_utc(event.end, '%Y-%m-%d %H:%M:%S')
         form.end.data = string_timestamp_utc_to_string_datetime_utc(event.end, '%Y-%m-%d')
-
-        form.days.data = event.days
 
         form.allday.data = event.allday
 
@@ -221,7 +234,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("events/edit.html", form=form, items = items, users = users, title_en_US='Edit', app = app)
+            return render_template("events/edit.html", form=form, items = items, users = users, guests = guests, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

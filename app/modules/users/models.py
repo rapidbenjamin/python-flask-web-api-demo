@@ -47,6 +47,11 @@ class User(UserMixin, db.Model):
     # one-to-many relationship with the Order model
     orders = db.relationship('Order', back_populates='user')
 
+    # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Event model
+    # the cascade will delete orphaned userevents
+    userevents = db.relationship('UserEvent', back_populates='guest', lazy='dynamic',  cascade="all, delete-orphan")
+    # or  Get all events in view only mode
+    in_events = db.relationship('Event', secondary='userevent', viewonly=True, back_populates='guests', lazy='dynamic')
 
 
     # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Section model
@@ -144,20 +149,20 @@ class User(UserMixin, db.Model):
 
 
     def create_data(self, form):
-        
-        # dateTime conversion to timestamp
-        timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
-
 
         user = User(
                         email=form['email'], 
                         username=form['username'],
                         
-                        is_active = form['is_active'],
-                        # convert string to integer format
-                        created_at = int(timestamp_created_at)
+                        is_active = form['is_active']
                     )
-                    
+
+        # MANY-TO-MANY Relationship 
+        for in_event in form['in_events']:
+            userevent = UserEvent(guest = user, in_event = in_event)
+            user.userevents.append(userevent)
+
+
         # MANY-TO-MANY Relationship 
         for section in form['sections']:
             usersection = UserSection(user = user, section = section)
@@ -175,16 +180,18 @@ class User(UserMixin, db.Model):
         
         user.is_active = form['is_active']
 
-        # dateTime conversion to timestamp
-        timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
-        # convert string to integer format
-        user.created_at = int(timestamp_created_at)
 
         # MANY-TO-MANY Relationship
         user.usersections = []
         for section in form['sections']:
             usersection = UserSection(section = section)
             user.usersections.append(usersection)
+
+        # MANY-TO-MANY Relationship
+        user.userevents = []
+        for in_event in form['in_events']:
+            userevent = UserEvent(in_event = in_event)
+            user.userevents.append(userevent)
 
 
         db.session.commit()
@@ -205,3 +212,5 @@ class User(UserMixin, db.Model):
 #######################
 
 from app.modules.sections.models import UserSection
+
+from app.modules.events.models import UserEvent

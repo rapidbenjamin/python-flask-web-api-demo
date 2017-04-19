@@ -7,6 +7,7 @@ from wtforms.fields.html5 import DateField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 
 from app.modules.sections.models import Section
+from app.modules.events.models import Event
 # from app.modules.sections.usersection_model import UserSection
 
 class Form_Record_Add(Form):
@@ -20,7 +21,9 @@ class Form_Record_Add(Form):
                              get_label=lambda s: s.title_en_US,
                              allow_blank=True)
 
-    is_active = BooleanField('is_active', default=True)
+    in_events = QuerySelectMultipleField('Select In_events',
+                             query_factory=lambda : Event.query.filter(Event.is_active == True).all(),
+                             get_label=lambda s: s.title_en_US,
+                             allow_blank=True)
 
-    # created_at = DateField('created_at', format='%Y-%m-%d %H:%M:%S')
-    created_at = DateField('created_at', format='%Y-%m-%d')
+    is_active = BooleanField('is_active', default=True)

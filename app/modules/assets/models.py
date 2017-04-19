@@ -95,8 +95,6 @@ class Asset(db.Model):
 
 
     def create_data(self, form):
-        # dateTime conversion to timestamp
-        timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
 
         asset = Asset(    
 
@@ -113,9 +111,8 @@ class Asset(db.Model):
 
                                 user = form['user'],
 
-                                is_active = form['is_active'],
-                                # convert string to integer format
-                                created_at = int(timestamp_created_at)
+                                is_active = form['is_active']
+
                             )
         
         # MANY-TO-MANY Relationship 
@@ -143,11 +140,6 @@ class Asset(db.Model):
         asset.user = form['user']
 
         asset.is_active = form['is_active']
-
-        # dateTime conversion to timestamp
-        timestamp_created_at = string_datetime_utc_to_string_timestamp_utc(form['created_at'])
-        # convert string to integer format
-        asset.created_at = int(timestamp_created_at)
 
 
         # MANY-TO-MANY Relationship

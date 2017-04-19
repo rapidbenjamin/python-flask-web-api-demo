@@ -98,8 +98,7 @@ def new():
 
                     'items' : form.items.data,
 
-                    'is_active' : form.is_active.data,
-                    'created_at' : form.created_at.data
+                    'is_active' : form.is_active.data
                 }
 
                 orders.create_data(sanitize_form)
@@ -112,8 +111,6 @@ def new():
                     return redirect("/orders")
 
         form.action = url_for('orders_page.new')
-        # form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        form.created_at.data = datetime.now().strftime('%Y-%m-%d')
 
          # html or Json response
         if request.is_xhr == True:
@@ -157,8 +154,7 @@ def edit(id=1):
 
                     'items' : form.items.data,
 
-                    'is_active' : form.is_active.data,
-                    'created_at' : form.created_at.data
+                    'is_active' : form.is_active.data
                 }
 
                 orders.update_data(order.id, sanitize_form)
@@ -181,7 +177,6 @@ def edit(id=1):
             form.items.data = order.items
 
         form.is_active.data = order.is_active
-        form.created_at.data = string_timestamp_utc_to_string_datetime_utc(order.created_at, '%Y-%m-%d')
 
         # html or Json response
         if request.is_xhr == True:

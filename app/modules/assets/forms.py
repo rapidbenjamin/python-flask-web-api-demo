@@ -37,5 +37,4 @@ class Form_Record_Add(Form):
 
     is_active = BooleanField('is_active', default=True)
 
-    # created_at = DateField('created_at', format='%Y-%m-%d %H:%M:%S')
-    created_at = DateField('created_at', format='%Y-%m-%d')
+

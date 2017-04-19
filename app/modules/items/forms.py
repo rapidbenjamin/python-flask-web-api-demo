@@ -18,7 +18,7 @@ class Form_Record_Add(Form):
     slug = StringField('slug', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
 
-    price = DecimalField('price', default=0.0)
+    price = DecimalField('price', default=0.00)
 
     title_en_US = StringField('title_en_US', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
@@ -54,5 +54,3 @@ class Form_Record_Add(Form):
 
     is_active = BooleanField('is_active', default=True)
 
-    # created_at = DateField('created_at', format='%Y-%m-%d %H:%M:%S')
-    created_at = DateField('created_at', format='%Y-%m-%d')

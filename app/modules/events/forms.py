@@ -16,11 +16,22 @@ class Form_Record_Add(Form):
     type = StringField('type', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
 
+    title_en_US = StringField('title_en_US', validators=[validators.DataRequired(),
+                                             validators.Length(max=255, message='max 255 characters')])
+    title_fr_FR = StringField('title_fr_FR', validators=[validators.DataRequired(),
+                                             validators.Length(max=255, message='max 255 characters')])
+
     price = DecimalField('price', default=0.0)
 
     user = QuerySelectField(query_factory=lambda: User.query.filter(User.is_active == True).all(), get_label="username", allow_blank=True)
-
+    
     item = QuerySelectField(query_factory=lambda: Item.query.filter(Item.is_active == True).all(), get_label="slug", allow_blank=True)
+
+     # MANY-TO-MANY
+    guests = QuerySelectMultipleField('Select Guests',
+                             query_factory=lambda : User.query.filter(User.is_active == True).all(),
+                             get_label=lambda u: u.username,
+                             allow_blank=True)
 
     # start = DateField('start', format='%Y-%m-%d %H:%M:%S')
     start = DateField('start', format='%Y-%m-%d')
@@ -28,7 +39,6 @@ class Form_Record_Add(Form):
     # end = DateField('end', format='%Y-%m-%d %H:%M:%S')
     end = DateField('end', format='%Y-%m-%d')
 
-    days = IntegerField('days', default=0)
 
     allday = BooleanField('allday', default=False)
     

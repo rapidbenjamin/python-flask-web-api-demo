@@ -32,7 +32,7 @@
     <p>
         {% if user.events %}
             {% for event in user.events %}
-                {{ event.type }}-{{ event.id }} 
+                {{ event.title_en_US }}
             {% endfor %}
         {% else %}
             None
@@ -49,6 +49,18 @@
         {% endif %}
     </p>
     
+    <!-- MANY-TO-MANY -->
+    <p>
+        {% if user.in_events %}
+            {% for in_event in user.in_events %}
+                {{ in_event.title_en_US }}, 
+            {% endfor %}
+        {% else %}
+            No in_events
+        {% endif %}
+    </p>
+
+
     <!-- MANY-TO-MANY -->
     <p>
         {% if user.sections %}

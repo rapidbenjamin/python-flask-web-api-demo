@@ -41,8 +41,7 @@ def settings():
                     'email' : form.email.data,
                     'username' : form.username.data,
                     'sections' : form.sections.data,
-                    'is_active' : form.is_active.data,
-                    'created_at' : form.created_at.data
+                    'is_active' : form.is_active.data
                 }
 
                 user.update_data(user.id, sanitize_form)
@@ -63,7 +62,6 @@ def settings():
             form.sections.data = user.sections
 
         form.is_active.data = user.is_active
-        form.created_at.data = string_timestamp_utc_to_string_datetime_utc(user.created_at, '%Y-%m-%d')
 
         # html or Json response
         if request.is_xhr == True:

@@ -19,6 +19,8 @@ from app.modules.localization.controllers import get_locale, get_timezone
 
 from app.modules.sections.models import Section, UserSection
 
+from app.modules.events.models import Event, UserEvent
+
 # -------  ROUTINGS AND METHODS  ------- 
 
 # All users
@@ -68,6 +70,7 @@ def new():
         #  form = request.form
         
         sections = Section.query.filter(Section.is_active == True).all()
+        in_events = Event.query.filter(Event.is_active == True).all()
 
         if request.method == 'POST':
             if form.validate():
@@ -77,9 +80,9 @@ def new():
                     'email' : form.email.data,
                     'username' : form.username.data,
                     
+                    'in_events' : form.in_events.data,
                     'sections' : form.sections.data,
-                    'is_active' : form.is_active.data,
-                    'created_at' : form.created_at.data
+                    'is_active' : form.is_active.data
                 }
 
                 users.create_data(sanitize_form)
@@ -91,14 +94,13 @@ def new():
                     return redirect("/users")
 
         form.action = url_for('users_page.new')
-        # form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        form.created_at.data = datetime.now().strftime('%Y-%m-%d')
+
 
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form, sections = sections, title_en_US='New', app = app)
+            return render_template("users/edit.html", form=form, in_events = in_events, sections = sections, title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -113,6 +115,8 @@ def edit(id=1):
         # check_admin()
 
         sections = Section.query.filter(Section.is_active == True).all()
+        in_events = Event.query.filter(Event.is_active == True).all()
+
         user = User.query.get_or_404(id)
         
         form = Form_Record_Add(request.form)
@@ -126,9 +130,9 @@ def edit(id=1):
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
+                    'in_events' : form.in_events.data,
                     'sections' : form.sections.data,
-                    'is_active' : form.is_active.data,
-                    'created_at' : form.created_at.data
+                    'is_active' : form.is_active.data
                 }
 
                 user.update_data(user.id, sanitize_form)
@@ -148,16 +152,17 @@ def edit(id=1):
         if  user.sections :
             form.sections.data = user.sections
 
-        form.is_active.data = user.is_active
-        form.created_at.data = string_timestamp_utc_to_string_datetime_utc(user.created_at, '%Y-%m-%d')
+        if  user.in_events :
+            form.in_events.data = user.in_events
 
+        form.is_active.data = user.is_active
 
 
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form,  sections = sections, title_en_US='Edit', app = app)
+            return render_template("users/edit.html", form=form,  in_events = in_events, sections = sections, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

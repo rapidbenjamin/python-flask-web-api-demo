@@ -88,8 +88,7 @@ def new():
 
                     'items' : form.items.data,
 
-                    'is_active' : form.is_active.data,
-                    'created_at' : form.created_at.data
+                    'is_active' : form.is_active.data
                 }
 
                 Section().create_data(sanitize_form)
@@ -102,8 +101,6 @@ def new():
                     return redirect("/sections")
 
         form.action = url_for('sections_page.new')
-        # form.created_at.data = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        form.created_at.data = datetime.now().strftime('%Y-%m-%d')
 
          # html or Json response
         if request.is_xhr == True:
@@ -153,8 +150,7 @@ def edit(id=1):
 
                     'items' : form.items.data,
 
-                    'is_active' : form.is_active.data,
-                    'created_at' : form.created_at.data
+                    'is_active' : form.is_active.data
                 }
 
 
@@ -188,8 +184,7 @@ def edit(id=1):
             form.items.data = section.items
 
         form.is_active.data = section.is_active
-        form.created_at.data = string_timestamp_utc_to_string_datetime_utc(section.created_at, '%Y-%m-%d')
-
+        
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}

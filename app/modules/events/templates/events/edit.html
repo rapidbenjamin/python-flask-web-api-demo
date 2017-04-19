@@ -27,6 +27,36 @@
 
 
                         <div class="form-group">
+                            <label for="event_title_en_US" class="col-lg-4 control-label">{{ form.title_en_US.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.title_en_US (class="form-control") }}
+                                <!-- <input class="form-control" id="event_title_en_US" name="event_title_en_US" required="" value="" type="text"> -->
+                                {% for error in form.errors.title_en_US %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="event_title_fr_FR" class="col-lg-4 control-label">{{ form.title_fr_FR.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.title_fr_FR (class="form-control") }}
+                                <!-- <input class="form-control" id="event_title_fr_FR" name="event_title_fr_FR" required="" value="" type="text"> -->
+                                {% for error in form.errors.title_fr_FR %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="event_price" class="col-lg-4 control-label">{{ form.price.label }}</label>
                             <div class="col-lg-6">
                                 {{ form.price (class="form-control") }}
@@ -76,6 +106,27 @@
                             </div>
                         </div>
 
+                        <!-- MANY-TO-MANY RELATIONSHIP -->
+                        <div class="form-group">
+                            <label for="event_guests" class="col-lg-4 control-label">{{ form.guests.label }}</label>
+                            <div class="col-lg-6">
+                               <select class="form-control" id="guests" name="guests" multiple="" >
+                                   <option value="" >None</option>
+                                    {% for guest in guests %}
+                                        <option value="{{ guest.id }}"
+                                        {% if form.guests.data %}
+                                            {% for guest2 in form.guests.data %}
+                                                {% if guest.id == guest2.id %}
+                                                    selected="selected"
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        >
+                                        {{guest.username}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label for="event_start" class="col-lg-4 control-label">{{ form.start.label }}</label>
@@ -114,18 +165,6 @@
 
 
 
-                        <div class="form-group">
-                            <label for="event_days" class="col-lg-4 control-label">{{ form.days.label }}</label>
-                            <div class="col-lg-6">
-                                {{ form.days (class="form-control") }}
-                                <!-- <input class="form-control" id="event_days" name="event_days" required="" value="" type="text"> -->
-                                {% for error in form.errors.days %} <br/>
-                                    <div class="alert alert-danger" style="display: inline-block">
-                                        {{ error }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label for="event_allday" class="col-lg-4 control-label">{{ form.allday.label }}</label>

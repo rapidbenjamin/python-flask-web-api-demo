@@ -5,15 +5,17 @@
     <h3>Events</h3>    
     <hr/>
 
-    <div class="panel panel-header text-center">{{ list_events.query.count() }} results</div>
+    <div class="text-left">{{ list_events.query.count() }} results</div>
     <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
             <th>Id</th>
             <th>Type</th>
+            <th>Title</th>
             <th>Price</th>
             <th>User</th>
             <th>Item</th>
+            <th>Guests</th>
             <th>Start</th>
             <th>End</th>
             <th>Days</th>
@@ -29,7 +31,8 @@
             {% for event in list_events.items %}
                 <tr>
                     <td>{{ event.id }}</td>
-                    <td><a href="{{ url_for('events_page.show', id = event.id) }}" >{{ event.type }}</a></td>
+                    <td>{{ event.type }}</td>
+                    <td><a href="{{ url_for('events_page.show', id = event.id) }}" >{{ event['title_%s' %(g.current_lang)] }}</a></td>
                     <td>{{ event.price }}</td>
 
                     <!-- ONE-TO-MANY -->
@@ -47,6 +50,16 @@
                             {{ event.item.slug }}
                         {% else %}
                             No Item
+                        {% endif %}
+                    </td>
+                     <!-- MANY-TO-MANY -->
+                    <td>
+                        {% if event.guests %}
+                            {% for guest in event.guests %}
+                                {{ guest.username }}, 
+                            {% endfor %}
+                        {% else %}
+                            No guests
                         {% endif %}
                     </td>
                     <td>{{ event.start | datetimeformat }}</td>

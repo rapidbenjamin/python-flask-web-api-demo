@@ -26,16 +26,26 @@
             No Item
         {% endif %}
     </p>
-    <p>{{ event.start }}</p>
-    <p>{{ event.end }}</p>
+    <!-- MANY-TO-MANY -->
+    <p>
+        {% if event.guests %}
+            {% for guest in event.guests %}
+                {{ guest.username }}, 
+            {% endfor %}
+        {% else %}
+            No guests
+        {% endif %}
+    </p>
+    <p>{{ event.start | datetimeformat }}</p>
+    <p>{{ event.end | datetimeformat }}</p>
     
     <p>{{ event.days }}</p>
     <p>{{ event.allday }}</p>
     <p>{{ event.status }}</p>
     
     <p>{{ event.is_active }}</p>
-    <p>{{ event.updated_at }}</p>
-    <p>{{ event.created_at }}</p>
+    <p>{{ event.updated_at | datetimeformat }}</p>
+    <p>{{ event.created_at | datetimeformat }}</p>
 </div>
 {% endblock content %}
 

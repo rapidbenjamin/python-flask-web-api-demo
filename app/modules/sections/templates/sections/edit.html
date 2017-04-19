@@ -166,23 +166,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="section_created_at" class="col-lg-4 control-label">{{ form.created_at.label }}</label>
-
-                            <div class="col-lg-6 input-group date" >
-        
-                                <input value="{{ form.created_at.data }}" class="form-control datepicker"  data-provide="datepicker" data-date-format="yyyy-mm-dd" id="created_at" name="created_at" required="" type="text">
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </div>
-                                {% for error in form.errors.created_at %} <br/>
-                                    <div class="alert alert-danger" style="display: inline-block">
-                                        {{ error }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-
 
                         <div class="form-group">
                             <div class="col-lg-4  col-lg-offset-4">
@@ -201,16 +184,5 @@
 
     </div>
 </div>
-<script>    
-
-    $('#created_at')
-        .datepicker({
-            setDate: new Date(),
-            autoclose: true,
-             language: 'fr-FR',
-             dateFormat: "yyyy-mm-dd"
-        });
-
-</script>
 
 {% endblock content %}
