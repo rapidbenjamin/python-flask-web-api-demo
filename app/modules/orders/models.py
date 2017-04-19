@@ -67,7 +67,7 @@ class Order(db.Model):
                 add  viewonly=True on secondary relationship to stop edit, create or delete operations  here
     """
 
-    # price in decimal , precision=10, scale=2 .
+    # amount in decimal , precision=10, scale=2 .
     amount = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
 
     # is_active usually returns True. 
@@ -107,10 +107,10 @@ class Order(db.Model):
             orderitem = OrderItem(order = order, item = item)
 
             # Caculate amount
-            orderitem.unit_price = item.price
+            orderitem.unit_amount = item.amount
             orderitem.quantity = 1
-            orderitem.total_price = orderitem.unit_price * orderitem.quantity
-            amount = amount +  orderitem.total_price
+            orderitem.total_amount = orderitem.unit_amount * orderitem.quantity
+            amount = amount +  orderitem.total_amount
 
             order.orderitems.append(orderitem)
 
@@ -135,10 +135,10 @@ class Order(db.Model):
             orderitem = OrderItem(item = item)
 
             # Caculate amount
-            orderitem.unit_price = item.price
+            orderitem.unit_amount = item.amount
             orderitem.quantity= 1 
-            orderitem.total_price = orderitem.unit_price * orderitem.quantity
-            amount = amount +  orderitem.total_price
+            orderitem.total_amount = orderitem.unit_amount * orderitem.quantity
+            amount = amount +  orderitem.total_amount
 
             order.orderitems.append(orderitem)
         

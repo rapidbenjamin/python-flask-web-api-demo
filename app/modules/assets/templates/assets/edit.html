@@ -16,8 +16,12 @@
                         <div class="form-group">
                             <label for="asset_data_file_name" class="col-lg-4 control-label">{{ form.data_file_name.data }}</label>
 
-                            <div class="col-lg-6">
-                                <img src=" {{url_for('static', filename='uploads/' + form.data_file_name.data ) }}"  width="100" class="center img-thumbnail">
+                            <div class="col-lg-6 text-center">
+                                {% if form.asset_type.data == 'image' %}    
+                                    <img src=" {{url_for('static', filename='uploads/' + form.data_file_name.data)}}" width="100" class="img-thumbnail">
+                                {% else %}
+                                    <i class="glyphicon glyphicon-file" style="font-size: 100px;"></i>
+                                {% endif %}
                             </div>
                         </div>
                             

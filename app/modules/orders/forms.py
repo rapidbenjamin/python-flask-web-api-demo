@@ -15,9 +15,7 @@ class Form_Record_Add(Form):
 
     status = StringField('status', validators=[validators.Length(max=255, message='max 255 characters')])
 
-
     user = QuerySelectField(query_factory=lambda: User.query.filter(User.is_active == True).all(), get_label="username", allow_blank=True)
-
 
     items = QuerySelectMultipleField('Select Items',
                              query_factory=lambda : Item.query.filter(Item.is_active == True).all(),

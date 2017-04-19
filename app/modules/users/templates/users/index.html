@@ -36,7 +36,11 @@
                     <td>
                         {% if user.assets %}
                             {% for asset in user.assets %}
-                                <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="100" class="img-thumbnail"> {{ asset.data_file_name }} 
+                                {% if asset.asset_type == 'image' %}    
+                                    <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="60" class="img-thumbnail">
+                                {% else %}
+                                    <i class="glyphicon glyphicon-file" style="font-size: 60px;"></i>
+                                {% endif %}
                             {% endfor %}
                         {% else %}
                             None

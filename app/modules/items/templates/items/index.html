@@ -57,7 +57,7 @@
             <th>Slug</th>
             <th>Title</th>
             <th>Description</th>
-            <th>Price</th>
+            <th>Amount</th>
             <th>User</th>
             <th>Events</th>
             <th>Sections</th>
@@ -76,7 +76,7 @@
                     <td><a href="{{ url_for('items_page.show', id = item.id) }}" >{{ item.slug }}</a></td>
                     <td><a href="{{ url_for('items_page.show', id = item.id) }}" >{{ item['title_%s' %(g.current_lang)] }}</a></td>
                     <td>{{ item['description_%s' %(g.current_lang)] }}</td>
-                    <td>{{ item.price }}</td>
+                    <td>{{ item.amount }}</td>
 
                     <!-- ONE-TO-MANY -->
                     <td>
@@ -110,7 +110,11 @@
                     <td>
                         {% if item.assets %}
                             {% for asset in item.assets %}
-                                <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="100" class="img-thumbnail"> {{ asset.data_file_name }}  
+                                {% if asset.asset_type == 'image' %}    
+                                    <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="60" class="img-thumbnail">
+                                {% else %}
+                                    <i class="glyphicon glyphicon-file" style="font-size: 60px;"></i>
+                                {% endif %}
                             {% endfor %}
                         {% else %}
                             No assets

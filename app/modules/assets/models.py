@@ -32,8 +32,8 @@ class Asset(db.Model):
     data_file_size = db.Column(db.Integer)
 
     asset_type = db.Column(db.String(30), index=True)
-    width = db.Column(db.Integer)
-    height = db.Column(db.Integer)
+    width = db.Column(db.Integer, default=0)
+    height = db.Column(db.Integer, default=0)
 
     description_en_US = db.Column(db.Text())
     description_fr_FR = db.Column(db.Text())

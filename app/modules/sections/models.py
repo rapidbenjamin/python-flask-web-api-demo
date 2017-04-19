@@ -38,11 +38,10 @@ class UserSection(db.Model):
     # so you can do :
     # usersection1.append(User(username = 'test')))
     # or usersection1.append(user1)
-    # or UserSection(user1, Section(title_en_US = 'test'), description_en_US="test")
+    # or UserSection(user1, Section(title_en_US = 'test'), options="test")
 
     # Extra data
-    description_en_US = db.Column(db.Text())
-    description_fr_FR = db.Column(db.Text())
+    options = db.Column(db.Text())
 
     updated_at = db.Column(db.Integer, default=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()), onupdate=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()))
 

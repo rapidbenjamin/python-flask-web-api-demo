@@ -21,7 +21,7 @@ class Form_Record_Add(Form):
     title_fr_FR = StringField('title_fr_FR', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
 
-    price = DecimalField('price', default=0.0)
+    amount = DecimalField('amount', default=0.0)
 
     user = QuerySelectField(query_factory=lambda: User.query.filter(User.is_active == True).all(), get_label="username", allow_blank=True)
     

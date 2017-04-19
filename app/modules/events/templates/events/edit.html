@@ -57,11 +57,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="event_price" class="col-lg-4 control-label">{{ form.price.label }}</label>
+                            <label for="event_amount" class="col-lg-4 control-label">{{ form.amount.label }}</label>
                             <div class="col-lg-6">
-                                {{ form.price (class="form-control") }}
-                                <!-- <input class="form-control" id="event_price" name="event_price" required="" value="" type="text"> -->
-                                {% for error in form.errors.price %} <br/>
+                                {{ form.amount (class="form-control") }}
+                                <!-- <input class="form-control" id="event_amount" name="event_amount" required="" value="" type="text"> -->
+                                {% for error in form.errors.amount %} <br/>
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
                                     </div>

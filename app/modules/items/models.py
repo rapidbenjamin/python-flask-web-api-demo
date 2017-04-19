@@ -31,7 +31,7 @@ class SectionItem(db.Model):
     # so you can do :
     # sectionitem1.append(Section(sectionname = 'test')))
     # or sectionitem1.append(section1)
-    # or SectionItem(section1, Item(title_en_US = 'test'), description_en_US="test")
+    # or SectionItem(section1, Item(title_en_US = 'test'), options="test")
 
     # Extra data
     options = db.Column(db.Text())
@@ -65,7 +65,7 @@ class AssetItem(db.Model):
     # so you can do :
     # assetitem1.append(Asset(assetname = 'test')))
     # or assetitem1.append(asset1)
-    # or AssetItem(asset1, Item(title_en_US = 'test'), description_en_US="test")
+    # or AssetItem(asset1, Item(title_en_US = 'test'), options="test")
 
     # Extra data
     options = db.Column(db.Text())
@@ -104,13 +104,13 @@ class OrderItem(db.Model):
     # EXTRA DATA
     options = db.Column(db.Text())
 
-    # price in decimal , precision=10, scale=2
-    unit_price = db.Column(db.Numeric(10,2), nullable=False)
+    # amount in decimal , precision=10, scale=2
+    unit_amount = db.Column(db.Numeric(10,2), nullable=False)
 
     quantity = db.Column(db.Integer, nullable=False, default=1)
 
-    # price in decimal , precision=10, scale=2 .
-    total_price = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
+    # amount in decimal , precision=10, scale=2 .
+    total_amount = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
 
 
     updated_at = db.Column(db.Integer, default=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()), onupdate=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()))
@@ -140,8 +140,8 @@ class Item(db.Model):
     description_en_US = db.Column(db.Text())
     description_fr_FR = db.Column(db.Text())
 
-    # price in decimal , precision=10, scale=2 .
-    price = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
+    # amount in decimal , precision=10, scale=2 .
+    amount = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
 
     # one-to-many relationship with the Asset model
     events = db.relationship('Event', back_populates='item')
@@ -257,7 +257,7 @@ class Item(db.Model):
                                 description_en_US=form['description_en_US'],
                                 description_fr_FR=form['description_fr_FR'],
 
-                                price = decimal.Decimal(form['price']),
+                                amount = decimal.Decimal(form['amount']),
 
                                 user = form['user'],
 
@@ -277,7 +277,7 @@ class Item(db.Model):
         
         # MANY-TO-MANY Relationship
         for order in form['orders']:
-            # Do not calculate quantity and total price for order.amount when an item is just created
+            # Do not calculate quantity and total amount for order.amount when an item is just created
             orderitem = OrderItem(order = order, item = item)
             item.orderitems.append(orderitem)
         
@@ -295,7 +295,7 @@ class Item(db.Model):
         item.description_en_US = form['description_en_US']
         item.description_fr_FR = form['description_fr_FR']
 
-        item.price = decimal.Decimal(form['price'])
+        item.amount = decimal.Decimal(form['amount'])
 
         item.user = form['user']
 
@@ -316,7 +316,7 @@ class Item(db.Model):
         # MANY-TO-MANY Relationship 
         item.orderitems = []
         for order in form['orders']:
-            # DO not calculate again quantity and total price for order.amount, no updates when order already exist 
+            # DO not calculate again quantity and total amount for order.amount, no updates when order already exist 
             orderitem = OrderItem(order = order, item = item)
 
 

@@ -93,7 +93,7 @@ def new():
                     'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
 
-                    'price' : decimal.Decimal(form.price.data),
+                    'amount' : decimal.Decimal(form.amount.data),
 
                     'user' : form.user.data,
 
@@ -170,7 +170,7 @@ def edit(id=1):
                     'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
 
-                    'price' : decimal.Decimal(form.price.data),
+                    'amount' : decimal.Decimal(form.amount.data),
 
                     'user' : form.user.data,
 
@@ -206,7 +206,7 @@ def edit(id=1):
         form.title_en_US.data = event.title_en_US
         form.title_fr_FR.data = event.title_fr_FR
 
-        form.price.data = event.price
+        form.amount.data = event.amount
 
         if  event.user :
             form.user.data = event.user.id

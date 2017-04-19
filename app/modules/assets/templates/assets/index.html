@@ -32,7 +32,11 @@
                 <tr>
                     <td>{{ asset.id }}</td>
                     <td><a href="{{ url_for('assets_page.show', id = asset.id) }}" >
-                        <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name) }}"  width="60" class="img-thumbnail">
+                        {% if asset.asset_type == 'image' %}    
+                            <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="60" class="img-thumbnail">
+                        {% else %}
+                            <i class="glyphicon glyphicon-file" style="font-size: 60px;"></i>
+                        {% endif %}
                     </a></td>
                     <td>{{ asset.data_file_name }}</td>
                     <td>{{ asset.data_content_type }}</td>

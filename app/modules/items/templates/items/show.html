@@ -8,7 +8,7 @@
 
     <p>{{ item.slug }}</p>
     <p>{{ item['description_%s' %(g.current_lang)] }}</p>
-    <p>{{ item.price }}</p>
+    <p>{{ item.amount }}</p>
 
     <!-- ONE-TO-MANY -->
     <p> User :
@@ -44,7 +44,15 @@
     <p>
         {% if item.assets %}
             {% for asset in item.assets %}
-                <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="100" class="img-thumbnail"> {{ asset.data_file_name }}  
+                {% if asset.asset_type == 'image' %}    
+                    <a href="{{url_for('static', filename='uploads/' + asset.data_file_name)}}">
+                        <img src=" {{url_for('static', filename='uploads/' + asset.data_file_name)}}" width="100" class="img-thumbnail">
+                    </a>
+                {% else %}
+                    <a href="{{url_for('static', filename='uploads/' + asset.data_file_name)}}">
+                        <i class="glyphicon glyphicon-file" style="font-size: 100px;"></i>
+                    </a>
+                {% endif %}
             {% endfor %}
         {% else %}
             No assets

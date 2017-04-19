@@ -113,7 +113,7 @@ def new():
                     'description_en_US' : form.description_en_US.data,
                     'description_fr_FR' : form.description_fr_FR.data,
 
-                    'price' : decimal.Decimal(form.price.data),
+                    'amount' : decimal.Decimal(form.amount.data),
 
                     'user' : form.user.data,
 
@@ -179,7 +179,7 @@ def edit(id=1):
                     'description_en_US' : form.description_en_US.data,
                     'description_fr_FR' : form.description_fr_FR.data,
 
-                    'price' : decimal.Decimal(form.price.data),
+                    'amount' : decimal.Decimal(form.amount.data),
 
                     'user' : form.user.data,
 
@@ -209,7 +209,7 @@ def edit(id=1):
         form.description_en_US.data = item.description_en_US
         form.description_fr_FR.data = item.description_fr_FR
 
-        form.price.data = item.price
+        form.amount.data = item.amount
 
         if  item.user :
             form.user.data = item.user.id

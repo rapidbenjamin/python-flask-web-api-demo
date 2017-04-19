@@ -12,7 +12,7 @@
             <th>Id</th>
             <th>Type</th>
             <th>Title</th>
-            <th>Price</th>
+            <th>Amount</th>
             <th>User</th>
             <th>Item</th>
             <th>Guests</th>
@@ -33,7 +33,7 @@
                     <td>{{ event.id }}</td>
                     <td>{{ event.type }}</td>
                     <td><a href="{{ url_for('events_page.show', id = event.id) }}" >{{ event['title_%s' %(g.current_lang)] }}</a></td>
-                    <td>{{ event.price }}</td>
+                    <td>{{ event.amount }}</td>
 
                     <!-- ONE-TO-MANY -->
                     <td>

@@ -22,9 +22,9 @@
         {% if order.items %}
             {% for orderitem in order.orderitems %}
                 {{ orderitem.item.title_en_US }} | 
-                unit price : {{ orderitem.unit_price }} | 
+                unit amount : {{ orderitem.unit_amount }} | 
                 quantity : {{ orderitem.quantity }} | 
-                Amount :{{ orderitem.total_price }} <br/>
+                Amount :{{ orderitem.total_amount }} <br/>
             {% endfor %}
         {% else %}
             No items

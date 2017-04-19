@@ -42,7 +42,7 @@ def before_first_request():
 def init_db():
     """Initializes the database."""
     # not working with mysql : db.cursor() error
-    with app.open_resource('../data/schema_sqlite.sql', mode='r') as f:
+    with app.open_resource('../data/populate.sql', mode='r') as f:
         db.cursor().executescript(f.read())
     db.commit()
 

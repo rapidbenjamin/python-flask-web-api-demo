@@ -180,8 +180,8 @@ def new():
                     # image processing thumbnail 
                     infilename, ext = os.path.splitext(target)
 
-                    filewidth = ""
-                    fileheight = ""
+                    filewidth = 0
+                    fileheight = 0
 
                     if asset_type == "image" :
                         im = Image.open(target)
@@ -307,8 +307,8 @@ def edit(id=1):
 
                     
 
-                    filewidth = ""
-                    fileheight = ""
+                    filewidth = 0
+                    fileheight = 0
 
                     if asset_type == "image" :
                         im = Image.open(target)

@@ -35,11 +35,10 @@ class UserEvent(db.Model):
     # so you can do :
     # userevent1.append(User(username = 'test')))
     # or userevent1.append(user1)
-    # or UserEvent(user1, Event(title_en_US = 'test'), description_en_US="test")
+    # or UserEvent(user1, Event(title_en_US = 'test'), options="test")
 
     # Extra data
-    description_en_US = db.Column(db.Text())
-    description_fr_FR = db.Column(db.Text())
+    options = db.Column(db.Text())
 
     updated_at = db.Column(db.Integer, default=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()), onupdate=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()))
 
@@ -71,8 +70,8 @@ class Event(db.Model):
     title_fr_FR = db.Column(db.String(255),  index=True, unique=True)
 
 
-    # price in decimal , precision=10, scale=2 .
-    price = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
+    # amount in decimal , precision=10, scale=2 .
+    amount = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
 
     # MANY-TO-ONE relationship with the User model
     # the backref argument in the user field allows us to access events from the User model
@@ -154,7 +153,7 @@ class Event(db.Model):
                                 title_en_US=form['title_en_US'],
                                 title_fr_FR=form['title_fr_FR'],
 
-                                price = decimal.Decimal(form['price']),
+                                amount = decimal.Decimal(form['amount']),
 
                                 user = form['user'],
 
@@ -196,7 +195,7 @@ class Event(db.Model):
         event.title_en_US = form['title_en_US']
         event.title_fr_FR = form['title_fr_FR']
 
-        event.price = decimal.Decimal(form['price'])
+        event.amount = decimal.Decimal(form['amount'])
 
         event.user = form['user']
 

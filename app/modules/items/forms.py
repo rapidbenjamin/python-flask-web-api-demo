@@ -18,7 +18,7 @@ class Form_Record_Add(Form):
     slug = StringField('slug', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
 
-    price = DecimalField('price', default=0.00)
+    amount = DecimalField('amount', default=0.00)
 
     title_en_US = StringField('title_en_US', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])

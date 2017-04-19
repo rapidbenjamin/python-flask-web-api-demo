@@ -9,7 +9,7 @@ INSERT INTO `Section` (id,slug,parent_id,title_en_US,title_fr_FR,description_en_
 INSERT INTO `Order` (id,status,user_id,amount,is_active,updated_at,created_at) VALUES (1,'paid',2,10,1,1492472842,1492466400),
  (2,'pending',1,20,1,1492472842,1492466400);
 
-INSERT INTO `Item` (id,slug,title_en_US,title_fr_FR,description_en_US,description_fr_FR,price,user_id,is_active,updated_at,created_at) VALUES (1,'product1','Product 1','Produit 1','description_en_US','description_fr_FR',20,1,1,1492456877,1492293600),
+INSERT INTO `Item` (id,slug,title_en_US,title_fr_FR,description_en_US,description_fr_FR,amount,user_id,is_active,updated_at,created_at) VALUES (1,'product1','Product 1','Produit 1','description_en_US','description_fr_FR',20,1,1,1492456877,1492293600),
  (2,'product2','Product2','Produit 2','description_en_US','description_fr_FR',0,2,1,1492459454,1492293600),
  (3,'product3','product 3','produit 3','fdgdfgfdg','fdgdfgdfg',10,2,1,1492462741,1492466400);
 
@@ -21,7 +21,7 @@ INSERT INTO `sectionitem` (section_id,item_id,options,updated_at,created_at) VAL
  (2,2,NULL,1492466221,1492466221),
  (3,1,NULL,1492471963,1492471963);
 
-INSERT INTO `orderitem` (order_id,item_id,options,unit_price,quantity,total_price,updated_at,created_at) VALUES (1,2,NULL,0,1,0,1492472842,1492472842),
+INSERT INTO `orderitem` (order_id,item_id,options,unit_amount,quantity,total_amount,updated_at,created_at) VALUES (1,2,NULL,0,1,0,1492472842,1492472842),
  (1,3,NULL,10,1,10,1492472842,1492472842),
  (2,1,NULL,20,1,20,1492472842,1492472842);
 
