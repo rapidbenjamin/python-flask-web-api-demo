@@ -7,7 +7,7 @@
     <hr/>
 
     <p>{{ item.slug }}</p>
-    <p>{{ item['description_%s' %(g.current_lang)] }}</p>
+    <p>{{ item['description_%s' %(g.current_lang)] | parse_html}}</p>
     <p>{{ item.amount }}</p>
 
     <!-- ONE-TO-MANY -->

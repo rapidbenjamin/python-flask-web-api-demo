@@ -218,5 +218,26 @@
 
     </div>
 </div>
+<script>
 
+$('textarea').tinymce({
+  forced_root_block : "",
+  selector: 'textarea',
+  cleanup : true,
+  height: 200,
+  menubar: false,
+  images_upload_base_path: '{{url_for('static', filename='uploads/')}}',
+  images_reuse_filename: true,
+  plugins: [
+    'textcolor advlist autolink lists link image charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table contextmenu paste code'
+  ],
+  toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor | backcolor',
+  content_css: '//www.tinymce.com/css/codepen.min.css'
+});
+
+
+
+</script>
 {% endblock content %}

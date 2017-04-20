@@ -57,7 +57,7 @@ CREATE TABLE quickandcleandb.item (
 	`title_fr_FR`        varchar(255)    ,
 	`description_en_US`  text    ,
 	`description_fr_FR`  text    ,
-	amount                decimal(10,2)  NOT NULL  ,
+	amount               decimal(10,2)  NOT NULL  ,
 	user_id              int    ,
 	is_active            bit  NOT NULL  ,
 	updated_at           int    ,
@@ -95,9 +95,9 @@ CREATE TABLE quickandcleandb.orderitem (
 	order_id             int  NOT NULL  ,
 	item_id              int  NOT NULL  ,
 	options              text    ,
-	unit_amount           decimal(10,2)  NOT NULL  ,
+	unit_amount          decimal(10,2)  NOT NULL  ,
 	quantity             int  NOT NULL  ,
-	total_amount          decimal(10,2)  NOT NULL  ,
+	total_amount         decimal(10,2)  NOT NULL  ,
 	updated_at           int    ,
 	created_at           int    ,
 	CONSTRAINT pk_orderitem PRIMARY KEY ( order_id, item_id ),
@@ -125,7 +125,7 @@ CREATE TABLE quickandcleandb.event (
 	`type`               varchar(255)    ,
 	`title_en_US`        varchar(255)    ,
 	`title_fr_FR`        varchar(255)    ,
-	amount                decimal(10,2)  NOT NULL  ,
+	amount               decimal(10,2)  NOT NULL  ,
 	user_id              int    ,
 	item_id              int    ,
 	start                int    ,
@@ -164,10 +164,9 @@ CREATE INDEX user_id ON quickandcleandb.event ( user_id );
 CREATE TABLE quickandcleandb.userevent ( 
 	guest_id             int  NOT NULL  ,
 	in_event_id          int  NOT NULL  ,
-	`description_en_US`  text    ,
-	`description_fr_FR`  text    ,
 	updated_at           int    ,
 	created_at           int    ,
+	options              text    ,
 	CONSTRAINT pk_userevent PRIMARY KEY ( guest_id, in_event_id ),
 	CONSTRAINT userevent_ibfk_2 FOREIGN KEY ( in_event_id ) REFERENCES quickandcleandb.event( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
 	CONSTRAINT userevent_ibfk_1 FOREIGN KEY ( guest_id ) REFERENCES quickandcleandb.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -210,10 +209,9 @@ CREATE INDEX item_id ON quickandcleandb.sectionitem ( item_id );
 CREATE TABLE quickandcleandb.usersection ( 
 	user_id              int  NOT NULL  ,
 	section_id           int  NOT NULL  ,
-	`description_en_US`  text    ,
-	`description_fr_FR`  text    ,
 	updated_at           int    ,
 	created_at           int    ,
+	options              text    ,
 	CONSTRAINT pk_usersection PRIMARY KEY ( user_id, section_id )
  );
 

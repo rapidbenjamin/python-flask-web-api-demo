@@ -12,6 +12,7 @@ from forms import *
 from time import time
 from flask_login import login_required, current_user
 
+
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from app import app, logger
 from . import items_page
@@ -26,6 +27,7 @@ from app.modules.users.models import User
 
 
 # -------  ROUTINGS AND METHODS  ------- 
+
 
 
 # All items
@@ -110,8 +112,8 @@ def new():
                     'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
 
-                    'description_en_US' : form.description_en_US.data,
-                    'description_fr_FR' : form.description_fr_FR.data,
+                    'description_en_US' : sanitize_html(form.description_en_US.data),
+                    'description_fr_FR' : sanitize_html(form.description_fr_FR.data),
 
                     'amount' : decimal.Decimal(form.amount.data),
 
@@ -176,8 +178,8 @@ def edit(id=1):
                     'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
 
-                    'description_en_US' : form.description_en_US.data,
-                    'description_fr_FR' : form.description_fr_FR.data,
+                    'description_en_US' : sanitize_html(form.description_en_US.data),
+                    'description_fr_FR' : sanitize_html(form.description_fr_FR.data),
 
                     'amount' : decimal.Decimal(form.amount.data),
 

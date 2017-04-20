@@ -10,6 +10,9 @@ from jinja2 import Environment
 import os
 import binascii
 
+import bleach
+import jinja2
+
 # ------- IMPORT LOCAL DEPENDENCIES -------
 from threading import Thread
 from functools import wraps
@@ -71,6 +74,54 @@ def populate_db_with_random_data(db_model):
             db_model().add_data(k)
 
     return "done in %.3f  | database size: %s" % (time() - start, humanize.naturalsize(os.path.getsize("data/db.sqlite")))
+
+
+
+
+# ------- HTML SANITIZER  UTILS -------
+
+
+ALLOWED_TAGS = bleach.sanitizer.ALLOWED_TAGS + [
+    'div', 'span', 'p', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'code',
+    'dl', 'dt', 'dd', 'small', 'sup',
+    'img', 
+    'input',
+    'table', 'tbody', 'thead', 'tr', 'th', 'td',
+    'section', 'header', 'footer', 'nav', 'article', 'aside', 'figure',
+    'dialog', 'hgroup', 'mark', 'time', 'meter', 'command', 'output',
+    'progress', 'audio', 'video', 'details', 'datagrid', 'datalist', 'table',
+    'address'
+]
+ALLOWED_ATTRIBUTES = bleach.sanitizer.ALLOWED_ATTRIBUTES
+ALLOWED_ATTRIBUTES['div'] = ['class', 'id']
+ALLOWED_ATTRIBUTES['span'] = ['style', ]
+ALLOWED_ATTRIBUTES['img'] = ['src', 'id', 'align', 'alt', 'class', 'is', 'title', 'style']
+ALLOWED_ATTRIBUTES['a'] = ['id', 'class', 'href', 'title', ]
+ALLOWED_ATTRIBUTES.update(dict((x, ['style', ]) for x in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6')))
+ALLOWED_ATTRIBUTES.update(dict((x, ['id', ]) for x in (
+    'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'code', 'dl', 'dt', 'dd',
+    'section', 'header', 'footer', 'nav', 'article', 'aside', 'figure',
+    'dialog', 'hgroup', 'mark', 'time', 'meter', 'command', 'output',
+    'progress', 'audio', 'video', 'details', 'datagrid', 'datalist', 'table',
+    'address'
+)))
+
+ALLOWED_STYLES = bleach.sanitizer.ALLOWED_STYLES + ['color', 'background-color']
+
+
+def sanitize_html(text):
+    return bleach.clean(text, attributes=ALLOWED_ATTRIBUTES, tags=ALLOWED_TAGS, styles=ALLOWED_STYLES, strip_comments=False)
+
+
+def parse_html(text):
+    return jinja2.Markup(text)
+
+app.jinja_env.filters['parse_html'] = parse_html
+app.jinja_env.filters['sanitize_html'] = sanitize_html
+
+
+
+
 
 
 # ------- DATETIME UTILS -------

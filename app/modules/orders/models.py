@@ -6,6 +6,7 @@ import datetime
 import decimal
 from sqlalchemy import desc
 from sqlalchemy import or_
+from flask import session
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from ... import db
@@ -15,7 +16,7 @@ from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 from app.modules.users.models import User
 
-# from app.modules.items.models import Item
+from app.modules.items.models import Item
 # from app.modules.items.models import OrderItem
 
 
@@ -79,6 +80,75 @@ class Order(db.Model):
     created_at = db.Column(db.Integer, default=string_datetime_utc_to_string_timestamp_utc(datetime.utcnow()))
     # updated_at = db.Column(db.Integer, default=time.mktime(datetime.utcnow().timetuple()), onupdate=time.mktime(datetime.utcnow().timetuple())) 
     # created_at = db.Column(db.Integer, default=time.mktime(datetime.utcnow().timetuple())) 
+
+
+    def current_order(self):
+        if session.get('order_id') :
+            this_order = Order.query.filter(Order.id == int(session.get('order_id'))).first_or_404()
+            return this_order
+        else:
+            new_order = Order()
+            new_order.status = 'new'
+            new_order.is_active = True
+            db.session.add(new_order)
+            db.session.commit()
+            session['order_id'] = new_order.id
+            return new_order
+
+
+    def add_cart(self, item_id):
+        # MANY-TO-MANY Relationship
+
+        order =  self.current_order()
+
+        amount = decimal.Decimal(order.amount)
+        item = Item.query.filter(Item.id == item_id).first_or_404()
+
+        # if item already exist
+        if order.orderitems:
+            for orderitem in order.orderitems :
+                if orderitem.item_id == item.id:
+                    # Update amount
+                    orderitem.quantity = orderitem.quantity + 1
+                    order.amount = order.amount - orderitem.total_amount
+                    orderitem.total_amount = orderitem.unit_amount * orderitem.quantity
+                    order.amount = order.amount + orderitem.total_amount
+                    db.session.add(order)
+                    db.session.commit()
+                    return
+
+
+        
+        orderitem = OrderItem(order = order, item = item)
+        # Caculate amount
+        orderitem.unit_amount = item.amount
+        orderitem.quantity = 1
+        orderitem.total_amount = orderitem.unit_amount * orderitem.quantity
+        amount = amount +  orderitem.total_amount
+        order.orderitems.append(orderitem)
+        order.amount = amount
+        db.session.add(order)
+        db.session.commit()
+
+        
+
+    def remove_cart(self, item_id):
+        # MANY-TO-MANY Relationship
+        
+        order =  self.current_order()
+
+        amount = decimal.Decimal(order.amount)
+
+        item = Item.query.filter(Item.id == item_id).first_or_404()
+
+        # order.items.remove(item)
+
+        for orderitem in order.orderitems :
+            if orderitem.item.id == item.id:
+                order.amount = order.amount - orderitem.total_amount
+                order.orderitems.remove(orderitem)
+        db.session.commit()
+
 
 
     def all_data(self, page, LISTINGS_PER_PAGE):
@@ -147,6 +217,8 @@ class Order(db.Model):
 
     def destroy_data(self, some_id ):
         order = Order.query.get_or_404(some_id)
+        if order.status == 'new' and session.get('order_id'):
+            session.pop('order_id')
         db.session.delete(order)
         db.session.commit()
 

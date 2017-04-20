@@ -8,7 +8,7 @@ import os
 import json
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import CombinedMultiDict
-from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for
+from flask import request, render_template, flash, current_app, g, redirect, abort, jsonify, url_for, session
 from forms import *
 from time import time
 from flask_login import login_required, current_user
@@ -31,6 +31,46 @@ from app.modules.items.models import Item, OrderItem
 
 
 # -------  ROUTINGS AND METHODS  ------- 
+
+
+
+
+
+# Add to cart
+@orders_page.route('/add_cart/<int:item_id>', methods=['GET', 'POST'])
+def add_cart(item_id=1):
+    try:
+        m_orders = Order()
+        m_order = m_orders.add_cart(item_id)
+        # html or Json response
+        if request.is_xhr == True:
+            return jsonify(data = { message :"Item added successfully.", order: m_order }), 200, {'Content-Type': 'application/json'}
+        else : 
+            flash("Item added to cart successfully.", category="success")
+            return redirect("/orders")
+
+    except Exception, ex:
+        print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
+        abort(404)
+
+# Remove from cart
+@orders_page.route('/remove_cart/<int:item_id>', methods=['GET', 'POST'])
+def remove_cart(item_id=1):
+    try:
+        m_orders = Order()
+        m_order = m_orders.remove_cart(item_id)
+        # html or Json response
+        if request.is_xhr == True:
+            return jsonify(data = { message :"Item removed successfully.", order: m_order }), 200, {'Content-Type': 'application/json'}
+        else : 
+            flash("Item removed to cart successfully.", category="success")
+            return redirect("/orders")
+
+    except Exception, ex:
+        print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
+        abort(404)
 
 
 # All orders
@@ -158,6 +198,11 @@ def edit(id=1):
                 }
 
                 orders.update_data(order.id, sanitize_form)
+
+                # Remove current order
+                if order.status != 'new':
+                    session.pop('order_id')
+
                 logger.info("Editing a new record.")
                 
                 if request.is_xhr == True:
