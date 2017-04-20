@@ -7,6 +7,7 @@ import decimal
 from sqlalchemy import desc
 from sqlalchemy import or_
 from flask import session
+from flask_login import current_user
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from ... import db
@@ -103,7 +104,7 @@ class Order(db.Model):
 
         amount = decimal.Decimal(order.amount)
         item = Item.query.filter(Item.id == item_id).first_or_404()
-
+        
         # if item already exist
         if order.orderitems:
             for orderitem in order.orderitems :
@@ -120,6 +121,7 @@ class Order(db.Model):
 
         
         orderitem = OrderItem(order = order, item = item)
+        
         # Caculate amount
         orderitem.unit_amount = item.amount
         orderitem.quantity = 1
@@ -127,6 +129,8 @@ class Order(db.Model):
         amount = amount +  orderitem.total_amount
         order.orderitems.append(orderitem)
         order.amount = amount
+        if current_user and not order.user :
+            order.user = current_user
         db.session.add(order)
         db.session.commit()
 

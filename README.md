@@ -17,9 +17,9 @@ Python Flask WEB API DEMO
 	- Module Sample database RESOURCES : 
 								- ITEMS with images gallery,]
 								- ASSETS files and image processing with Pillow
-								- EVENTS (start/end datetime) [coming-soon]
+								- EVENTS (start/end datetime) 
 								- PLACES (geolocalization with latitude and longitude) [coming-soon]
-	- Module Sample database ORDERS and orderitem many-to-many relationship
+	- Module Sample database ORDERS and orderitem many-to-many relationship and add-to cart 
 	- Module sample ADMIN, backoffice member with authentication  and authorization powered by Flask-login plugin :
 			- User Registry, Login & Logout
 			- Session based authentication or Basic HTTP authentication or Token based authentication (with active SSL recommended in production environement)
