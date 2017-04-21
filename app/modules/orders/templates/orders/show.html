@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title_en_US %} {{ order.id }} - {{ order.data_file_name }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block title_en_US %} Order {{ order.id }} - {{ order.status }} - {{ app.config['APP_NAME'] }}{% endblock %}
 {% block content %}
 <div class="container">
-    <h3>{{ order.id }} - {{ order.data_file_name }}</h3>
-    <h4 class="text-right"><a href="/orders"><span class="glyphicon glyphicon-home"></span> Back</a></h4>
+    <h3>Order {{ order.id }} - {{ order.status }}</h3>
+    <h4 class="text-right"><a href="/orders"><span class="glyphicon glyphicon-chevron-left"></span> Back</a></h4>
     <hr/>
 
     <p>{{ order.status }}</p>
@@ -25,7 +25,11 @@
                 unit amount : {{ orderitem.unit_amount }} | 
                 quantity : {{ orderitem.quantity }} | 
                 Amount :{{ orderitem.total_amount }} | 
-                 <a href="{{ url_for('orders_page.remove_cart', item_id = orderitem.item.id) }}" onclick="return confirm('Are you sure you want to remove this item from cart ?');"><i class="glyphicon glyphicon-remove"></i> </a>                
+                {% if order.status == 'cart' %}
+                    <a class="btn btn-sm btn-primary" href="{{ url_for('orders_page.update_cart', item_id = orderitem.item.id, quantity=1) }}" ><i class="glyphicon glyphicon-plus"></i> </a> | 
+                    <a class="btn btn-sm btn-default" href="{{ url_for('orders_page.update_cart', item_id = orderitem.item.id, quantity=-1) }}" ><i class="glyphicon glyphicon-minus"></i> </a> | 
+                    <a class="btn btn-sm btn-danger" href="{{ url_for('orders_page.remove_cart', item_id = orderitem.item.id) }}" onclick="return confirm('Are you sure you want to remove this item from cart ?');"><i class="glyphicon glyphicon-remove"></i> </a>                
+                {% endif %}
                 <br/>
             {% endfor %}
         {% else %}

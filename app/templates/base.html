@@ -6,7 +6,7 @@
     {% set moment_version = '2.17.1' %}
     {% set modernizer_version = '2.8.3' %}
     {% set bootswatch_version = '3.3.2' %}
-    {% set bootswatch_theme = app.config['BOOTSWATCH_THEME'] %}
+    {% set bootswatch_theme = g.current_theme %}
 
 <head>
     <meta charset="utf-8">
@@ -54,7 +54,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <ul class="list-inline text-right">
+                    <ul class="list-inline text-right panel">
                         <li><a href="/home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li class="footer-menu-divider">|</li>
                         {% if current_user.is_authenticated %}
@@ -73,7 +73,7 @@
                             <li><a  href="{{ url_for('auth_page.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                         {% endif %}
                     </ul>
-                    <p class="text-center text-muted small">Copyright © 2017. All Rights Reserved</p>
+                    <p class="text-center text-muted small">Copyright © 2017 Systemaker.com -  All Rights Reserved</p>
                 </div>
             </div>
             

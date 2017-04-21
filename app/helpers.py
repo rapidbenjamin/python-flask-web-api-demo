@@ -95,7 +95,7 @@ ALLOWED_TAGS = bleach.sanitizer.ALLOWED_TAGS + [
 ALLOWED_ATTRIBUTES = bleach.sanitizer.ALLOWED_ATTRIBUTES
 ALLOWED_ATTRIBUTES['div'] = ['class', 'id']
 ALLOWED_ATTRIBUTES['span'] = ['style', ]
-ALLOWED_ATTRIBUTES['img'] = ['src', 'id', 'align', 'alt', 'class', 'is', 'title', 'style']
+ALLOWED_ATTRIBUTES['img'] = ['src', 'id', 'align', 'alt', 'class', 'is', 'title', 'style', 'width', 'height']
 ALLOWED_ATTRIBUTES['a'] = ['id', 'class', 'href', 'title', ]
 ALLOWED_ATTRIBUTES.update(dict((x, ['style', ]) for x in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6')))
 ALLOWED_ATTRIBUTES.update(dict((x, ['id', ]) for x in (

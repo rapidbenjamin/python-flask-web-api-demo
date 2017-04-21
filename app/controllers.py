@@ -61,10 +61,17 @@ def close_db(error):
 # CHANGE THEME
 @app.before_request
 def before_request():
-    if request.args and 'theme' in request.args:
-        app.config['BOOTSWATCH_THEME'] = request.args['theme']
-        print("********************** \n\n THEME CHANGE : " + request.args['theme'] + "\n\n ***************************\n\n")
+    if '/static/' not in request.path:
+        if request.args and 'theme' in request.args:
+            g.current_theme = request.args['theme']
+            session['current_theme'] = request.args['theme']
+            return
+        if session.get('current_theme') :
+            g.current_theme = session.get('current_theme')
+            return
 
+        g.current_theme = app.config['BOOTSWATCH_THEME']
+    
 
 # Maintenance - Coming soon page
 @app.route('/maintenance')

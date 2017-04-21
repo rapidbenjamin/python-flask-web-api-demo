@@ -161,6 +161,29 @@ body {
 }
 */
 
+
+/* --------------------------------------------- */
+
+/* Shopping cart badge */
+.badge {
+  padding-left: 9px;
+  padding-right: 9px;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+
+#cart-badge {
+    font-size: 14px;
+    background: #696969;
+    color: #fff;
+    padding: 0 5px;
+    vertical-align: top;
+    margin-left: -6px;
+    margin-top: -6px;
+}
+
+
 /* --------------------------------------------- */
 
 

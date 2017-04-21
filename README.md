@@ -9,17 +9,17 @@ Python Flask WEB API DEMO
 ### Features:
 	- configuration files, environment variables and sensitive variables (in private folder)
 	- Utils for server production setups
-	- Latest bootstrap, bootswatch, modernizer, jquery, moment.js, etc. served from content delivery networks.
+	- Latest bootstrap, bootswatch, modernizer, jquery, moment.js, tinymcs, etc. served from content delivery networks.
 	- Module Sample PAGES, with home page  full-screen layout
 	- Module Sample database SECTIONS with SQLALchemy, relational models and Pagination		
 	- Module Sample database USERS with SQLALchemy, relational models and Pagination
 	- Module Sample page MESSAGES with email form, recaptcha and Email service by SendGrid and Flash MESSAGE notification	
 	- Module Sample database RESOURCES : 
-								- ITEMS with images gallery,]
+								- ITEMS with images gallery and visual editor,]
 								- ASSETS files and image processing with Pillow
 								- EVENTS (start/end datetime) 
 								- PLACES (geolocalization with latitude and longitude) [coming-soon]
-	- Module Sample database ORDERS and orderitem many-to-many relationship and add-to cart 
+	- Module Sample database ORDERS and orderitem many-to-many relationship and shopping cart operations
 	- Module sample ADMIN, backoffice member with authentication  and authorization powered by Flask-login plugin :
 			- User Registry, Login & Logout
 			- Session based authentication or Basic HTTP authentication or Token based authentication (with active SSL recommended in production environement)

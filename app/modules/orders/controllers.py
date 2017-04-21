@@ -32,8 +32,12 @@ from app.modules.items.models import Item, OrderItem
 
 # -------  ROUTINGS AND METHODS  ------- 
 
-
-
+# Define current cart
+@app.before_request
+def before_request():
+    if '/static/' not in request.path:
+        if session.get('order_id') :
+            g.current_cart = Order.query.filter(Order.id == int(session.get('order_id'))).first()
 
 
 # Add to cart
@@ -41,18 +45,40 @@ from app.modules.items.models import Item, OrderItem
 def add_cart(item_id=1):
     try:
         m_orders = Order()
-        m_order = m_orders.add_cart(item_id)
+        m_order = m_orders.add_cart(item_id, request.args)
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = { message :"Item added successfully.", order: m_order }), 200, {'Content-Type': 'application/json'}
         else : 
-            flash("Item added to cart successfully.", category="success")
-            return redirect("/orders")
+            flash("Item added to cart successfully. <a href='" + url_for('orders_page.show', id = m_order.id) + "' >click here to see cart</a>", category="success")
+            # return render_template("orders/show.html", order=m_order, app = app)
+            return redirect(request.referrer)
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
         abort(404)
+
+# Update to cart
+@orders_page.route('/update_cart/<int:item_id>', methods=['GET', 'POST'])
+def update_cart(item_id=1):
+    try:
+        m_orders = Order()
+        m_order = m_orders.update_cart(item_id, request.args)
+
+        # html or Json response
+        if request.is_xhr == True:
+            return jsonify(data = { message :"Cart updated successfully.", order: m_order }), 200, {'Content-Type': 'application/json'}
+        else : 
+            flash("Cart updated successfully.", category="success")
+            # return render_template("orders/show.html", order=m_order, app = app)
+            return redirect(request.referrer)
+
+    except Exception, ex:
+        print("------------ ERROR  ------------\n" + str(ex.message))
+        flash(str(ex.message), category="warning")
+        abort(404)
+
 
 # Remove from cart
 @orders_page.route('/remove_cart/<int:item_id>', methods=['GET', 'POST'])
@@ -65,7 +91,8 @@ def remove_cart(item_id=1):
             return jsonify(data = { message :"Item removed successfully.", order: m_order }), 200, {'Content-Type': 'application/json'}
         else : 
             flash("Item removed to cart successfully.", category="success")
-            return redirect("/orders")
+            # return render_template("orders/show.html", order=m_order, app = app)
+            return redirect(request.referrer)
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
@@ -200,7 +227,7 @@ def edit(id=1):
                 orders.update_data(order.id, sanitize_form)
 
                 # Remove current order
-                if order.status != 'new':
+                if order.status != 'cart':
                     session.pop('order_id')
 
                 logger.info("Editing a new record.")

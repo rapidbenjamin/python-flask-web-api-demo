@@ -133,7 +133,7 @@
                     <td>{{ item.is_active }}</td>
                     <td>{{ item.updated_at | datetimeformat }}</td>
                     <td>{{ item.created_at | datetimeformat }}</td>
-                    <td><a href="{{ url_for('orders_page.add_cart', item_id = item.id) }}" ><i class="glyphicon glyphicon-shopping-cart"></i> </a></td>
+                    <td><a href="{{ url_for('orders_page.add_cart', item_id = item.id, quantity=1) }}" ><i class="glyphicon glyphicon-shopping-cart"></i> </a></td>
                     <td><a href="{{ url_for('items_page.show', id = item.id) }}" ><i class="glyphicon glyphicon-file"></i> </a></td>
                     <td><a href="{{ url_for('items_page.edit', id = item.id) }}" ><i class="glyphicon glyphicon-pencil"></i> </a></td>
                     <td><a href="{{ url_for('items_page.destroy', id = item.id) }}" onclick="return confirm('Are you sure you want to delete this item?');"><i class="glyphicon glyphicon-trash"></i> </a></td>

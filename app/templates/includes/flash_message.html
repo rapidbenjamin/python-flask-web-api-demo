@@ -11,7 +11,7 @@
             <div class="container alert alert-{{ category }}">
                 <span class="glyphicon glyphicon-flash"></span> <i class="{{ icon }}"></i>&nbsp;
                 <a class="close" data-dismiss="alert">×</a>
-                {{ message }}
+                {{ message | parse_html }}
             </div>
         {% endfor %}
     {% endif %}

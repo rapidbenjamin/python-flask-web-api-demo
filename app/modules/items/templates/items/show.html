@@ -3,7 +3,10 @@
 {% block content %}
 <div class="container">
     <h3>{{ item.id }} - {{ item['title_%s' %(g.current_lang)] }}</h3>
-    <h4 class="text-right"><a href="/items"><span class="glyphicon glyphicon-home"></span> Back</a></h4>
+    <h4 class="pull-right"><a href="{{ url_for('orders_page.add_cart', item_id = item.id, quantity=1) }}" ><i class="glyphicon glyphicon-shopping-cart"></i> Add to Cart</a></h4>
+    
+    <h4><a href="/items"><span class="glyphicon glyphicon-chevron-left"></span> Back</a></h4>
+    
     <hr/>
 
     <p>{{ item.slug }}</p>

@@ -85,11 +85,11 @@ class Order(db.Model):
 
     def current_order(self):
         if session.get('order_id') :
-            this_order = Order.query.filter(Order.id == int(session.get('order_id'))).first_or_404()
+            this_order = Order.query.filter(Order.id == int(session.get('order_id'))).first()
             return this_order
         else:
             new_order = Order()
-            new_order.status = 'new'
+            new_order.status = 'cart'
             new_order.is_active = True
             db.session.add(new_order)
             db.session.commit()
@@ -97,7 +97,7 @@ class Order(db.Model):
             return new_order
 
 
-    def add_cart(self, item_id):
+    def add_cart(self, item_id, request_args):
         # MANY-TO-MANY Relationship
 
         order =  self.current_order()
@@ -110,21 +110,28 @@ class Order(db.Model):
             for orderitem in order.orderitems :
                 if orderitem.item_id == item.id:
                     # Update amount
-                    orderitem.quantity = orderitem.quantity + 1
-                    order.amount = order.amount - orderitem.total_amount
-                    orderitem.total_amount = orderitem.unit_amount * orderitem.quantity
-                    order.amount = order.amount + orderitem.total_amount
+                    if request_args and 'quantity' in request_args:                    
+                        orderitem.quantity = orderitem.quantity + int(request_args['quantity'])
+                        if orderitem.quantity <= 0:
+                            orderitem.quantity = 1
+                        order.amount = order.amount - orderitem.total_amount
+                        orderitem.total_amount = orderitem.unit_amount * orderitem.quantity
+                        order.amount = order.amount + orderitem.total_amount
+                    
                     db.session.add(order)
                     db.session.commit()
-                    return
+                    return order
 
 
-        
+        # if new item
         orderitem = OrderItem(order = order, item = item)
         
         # Caculate amount
         orderitem.unit_amount = item.amount
-        orderitem.quantity = 1
+        if request_args and 'quantity' in request_args:
+            orderitem.quantity = int(request_args['quantity'])
+        else:
+            orderitem.quantity = 1
         orderitem.total_amount = orderitem.unit_amount * orderitem.quantity
         amount = amount +  orderitem.total_amount
         order.orderitems.append(orderitem)
@@ -133,7 +140,35 @@ class Order(db.Model):
             order.user = current_user
         db.session.add(order)
         db.session.commit()
+        return order
 
+
+
+    def update_cart(self, item_id, request_args):
+
+        # MANY-TO-MANY Relationship
+        order =  self.current_order()
+
+        amount = decimal.Decimal(order.amount)
+
+        item = Item.query.filter(Item.id == item_id).first_or_404()
+
+        # order.items.remove(item)
+
+        for orderitem in order.orderitems :
+            if orderitem.item.id == item.id:
+                # Update amount with request.args variables like quantity, options, unit_amount
+                if request_args and 'quantity' in request_args:                    
+                    orderitem.quantity = orderitem.quantity + int(request_args['quantity'])
+                    if orderitem.quantity <= 0:
+                        orderitem.quantity = 1
+                    order.amount = order.amount - orderitem.total_amount
+                    orderitem.total_amount = orderitem.unit_amount * orderitem.quantity
+                    order.amount = order.amount + orderitem.total_amount
+
+        db.session.add(order)
+        db.session.commit()
+        return order
         
 
     def remove_cart(self, item_id):
@@ -152,6 +187,10 @@ class Order(db.Model):
                 order.amount = order.amount - orderitem.total_amount
                 order.orderitems.remove(orderitem)
         db.session.commit()
+        return order
+
+
+
 
 
 
@@ -182,7 +221,10 @@ class Order(db.Model):
 
             # Caculate amount
             orderitem.unit_amount = item.amount
-            orderitem.quantity = 1
+            if 'orderitem_quantity' in form:
+                orderitem.quantity = int(form['orderitem_quantity'])
+            else :
+                orderitem.quantity = 1
             orderitem.total_amount = orderitem.unit_amount * orderitem.quantity
             amount = amount +  orderitem.total_amount
 
@@ -210,7 +252,10 @@ class Order(db.Model):
 
             # Caculate amount
             orderitem.unit_amount = item.amount
-            orderitem.quantity= 1 
+            if 'orderitem_quantity' in form:
+                orderitem.quantity = int(form['orderitem_quantity'])
+            else :
+                orderitem.quantity = 1
             orderitem.total_amount = orderitem.unit_amount * orderitem.quantity
             amount = amount +  orderitem.total_amount
 
@@ -221,7 +266,7 @@ class Order(db.Model):
 
     def destroy_data(self, some_id ):
         order = Order.query.get_or_404(some_id)
-        if order.status == 'new' and session.get('order_id'):
+        if order.status == 'cart' and session.get('order_id'):
             session.pop('order_id')
         db.session.delete(order)
         db.session.commit()
