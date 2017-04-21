@@ -44,7 +44,9 @@
                                 unit amount : {{ orderitem.unit_amount }} | 
                                 quantity : {{ orderitem.quantity }} | 
                                 Amount :{{ orderitem.total_amount }} |
-                                <a href="{{ url_for('orders_page.remove_cart', item_id = orderitem.item.id) }}" onclick="return confirm('Are you sure you want to remove this item from cart ?');"><i class="glyphicon glyphicon-remove"></i> </a>
+                                {% if order.status == 'new' %}
+                                    <a href="{{ url_for('orders_page.remove_cart', item_id = orderitem.item.id) }}" onclick="return confirm('Are you sure you want to remove this item from cart ?');"><i class="glyphicon glyphicon-remove"></i> </a>
+                                {% endif %}
                                 <br/>
                             {% endfor %}
                         {% else %}
