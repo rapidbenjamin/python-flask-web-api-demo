@@ -62,6 +62,7 @@ CREATE TABLE quickandcleandb.item (
 	is_active            bit  NOT NULL  ,
 	updated_at           int    ,
 	created_at           int    ,
+	`type`               varchar(255)    ,
 	CONSTRAINT pk_item PRIMARY KEY ( id ),
 	CONSTRAINT `ix_Item_slug` UNIQUE ( slug ) ,
 	CONSTRAINT `ix_Item_title_en_US` UNIQUE ( `title_en_US` ) ,
@@ -72,6 +73,8 @@ CREATE TABLE quickandcleandb.item (
 CREATE INDEX ix_Item_is_active ON quickandcleandb.item ( is_active );
 
 CREATE INDEX user_id ON quickandcleandb.item ( user_id );
+
+CREATE INDEX ix_Item_type ON quickandcleandb.item ( `type` );
 
 CREATE TABLE quickandcleandb.`order` ( 
 	id                   int  NOT NULL  AUTO_INCREMENT,
@@ -107,6 +110,65 @@ CREATE TABLE quickandcleandb.orderitem (
 
 CREATE INDEX item_id ON quickandcleandb.orderitem ( item_id );
 
+CREATE TABLE quickandcleandb.address ( 
+	id                   int  NOT NULL  AUTO_INCREMENT,
+	`type`               varchar(255)    ,
+	`title_en_US`        varchar(255)    ,
+	`title_fr_FR`        varchar(255)    ,
+	address_line1        varchar(255)    ,
+	address_line2        varchar(255)    ,
+	city                 varchar(255)    ,
+	postal_code          varchar(255)    ,
+	state_region         varchar(255)    ,
+	country              varchar(255)    ,
+	full                 varchar(255)    ,
+	time_zone            varchar(255)    ,
+	latitude             decimal(9,6)  NOT NULL  ,
+	longitude            decimal(9,6)  NOT NULL  ,
+	amount               decimal(10,2)  NOT NULL  ,
+	user_id              int    ,
+	item_id              int    ,
+	status               varchar(255)    ,
+	is_active            bit  NOT NULL  ,
+	updated_at           int    ,
+	created_at           int    ,
+	CONSTRAINT pk_address PRIMARY KEY ( id ),
+	CONSTRAINT `ix_Address_title_en_US` UNIQUE ( `title_en_US` ) ,
+	CONSTRAINT `ix_Address_title_fr_FR` UNIQUE ( `title_fr_FR` ) ,
+	CONSTRAINT address_ibfk_2 FOREIGN KEY ( item_id ) REFERENCES quickandcleandb.item( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	CONSTRAINT address_ibfk_1 FOREIGN KEY ( user_id ) REFERENCES quickandcleandb.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
+ );
+
+CREATE INDEX item_id ON quickandcleandb.address ( item_id );
+
+CREATE INDEX ix_Address_address_line1 ON quickandcleandb.address ( address_line1 );
+
+CREATE INDEX ix_Address_address_line2 ON quickandcleandb.address ( address_line2 );
+
+CREATE INDEX ix_Address_city ON quickandcleandb.address ( city );
+
+CREATE INDEX ix_Address_country ON quickandcleandb.address ( country );
+
+CREATE INDEX ix_Address_full ON quickandcleandb.address ( full );
+
+CREATE INDEX ix_Address_is_active ON quickandcleandb.address ( is_active );
+
+CREATE INDEX ix_Address_latitude ON quickandcleandb.address ( latitude );
+
+CREATE INDEX ix_Address_longitude ON quickandcleandb.address ( longitude );
+
+CREATE INDEX ix_Address_postal_code ON quickandcleandb.address ( postal_code );
+
+CREATE INDEX ix_Address_state_region ON quickandcleandb.address ( state_region );
+
+CREATE INDEX ix_Address_status ON quickandcleandb.address ( status );
+
+CREATE INDEX ix_Address_time_zone ON quickandcleandb.address ( time_zone );
+
+CREATE INDEX ix_Address_type ON quickandcleandb.address ( `type` );
+
+CREATE INDEX user_id ON quickandcleandb.address ( user_id );
+
 CREATE TABLE quickandcleandb.assetitem ( 
 	asset_id             int  NOT NULL  ,
 	item_id              int  NOT NULL  ,
@@ -136,11 +198,15 @@ CREATE TABLE quickandcleandb.event (
 	is_active            bit  NOT NULL  ,
 	updated_at           int    ,
 	created_at           int    ,
+	`description_en_US`  text    ,
+	`description_fr_FR`  text    ,
+	address_id           int    ,
 	CONSTRAINT pk_event PRIMARY KEY ( id ),
 	CONSTRAINT `ix_Event_title_en_US` UNIQUE ( `title_en_US` ) ,
 	CONSTRAINT `ix_Event_title_fr_FR` UNIQUE ( `title_fr_FR` ) ,
 	CONSTRAINT event_ibfk_2 FOREIGN KEY ( item_id ) REFERENCES quickandcleandb.item( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
-	CONSTRAINT event_ibfk_1 FOREIGN KEY ( user_id ) REFERENCES quickandcleandb.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
+	CONSTRAINT event_ibfk_1 FOREIGN KEY ( user_id ) REFERENCES quickandcleandb.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	CONSTRAINT event_ibfk_3 FOREIGN KEY ( address_id ) REFERENCES quickandcleandb.address( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
  );
 
 CREATE INDEX item_id ON quickandcleandb.event ( item_id );
@@ -160,6 +226,21 @@ CREATE INDEX ix_Event_status ON quickandcleandb.event ( status );
 CREATE INDEX ix_Event_type ON quickandcleandb.event ( `type` );
 
 CREATE INDEX user_id ON quickandcleandb.event ( user_id );
+
+CREATE INDEX address_id ON quickandcleandb.event ( address_id );
+
+CREATE TABLE quickandcleandb.useraddress ( 
+	guest_id             int  NOT NULL  ,
+	in_address_id        int  NOT NULL  ,
+	options              text    ,
+	updated_at           int    ,
+	created_at           int    ,
+	CONSTRAINT pk_useraddress PRIMARY KEY ( guest_id, in_address_id ),
+	CONSTRAINT useraddress_ibfk_2 FOREIGN KEY ( in_address_id ) REFERENCES quickandcleandb.address( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	CONSTRAINT useraddress_ibfk_1 FOREIGN KEY ( guest_id ) REFERENCES quickandcleandb.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
+ );
+
+CREATE INDEX in_address_id ON quickandcleandb.useraddress ( in_address_id );
 
 CREATE TABLE quickandcleandb.userevent ( 
 	guest_id             int  NOT NULL  ,
