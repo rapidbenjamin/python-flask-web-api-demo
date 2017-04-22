@@ -22,7 +22,7 @@
                                     <select class="form-control" id="item_userid" name="item_userid" >
                                         <option value="" ></option>
                                         {% for user in users %}
-                                            <option value="{{ user.id }}" {% if user.id == request.form['item_userid'] %} selected="selected"{% endif %} >{{user.username}}</option>
+                                            <option value="{{ user.id }}" {% if user.id.__str__() == request.form['item_userid'] %} selected="selected"{% endif %} >{{user.username}}</option>
                                         {% endfor %}
                                     </select>
                             </div>
@@ -32,7 +32,7 @@
                                     <select class="form-control" id="item_sectionid" name="item_sectionid" >
                                         <option value="" ></option>
                                         {% for section in sections %}
-                                            <option value="{{ section.id }}" {% if section.id == request.form['item_sectionid'] %} selected="selected"{% endif %} >{{section.slug}}</option>
+                                            <option value="{{ section.id }}" {% if section.id.__str__() == request.form['item_sectionid'] %} selected="selected"{% endif %} >{{section.slug}}</option>
                                         {% endfor %}
                                     </select>
                             </div>

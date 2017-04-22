@@ -231,6 +231,11 @@
 
     </div>
 </div>
+
+{% endblock content %}
+
+
+{% block tail_script %}
 <script>
 
 $('textarea').tinymce({
@@ -250,7 +255,5 @@ $('textarea').tinymce({
   content_css: '//www.tinymce.com/css/codepen.min.css'
 });
 
-
-
 </script>
-{% endblock content %}
+ {% endblock tail_script %}
