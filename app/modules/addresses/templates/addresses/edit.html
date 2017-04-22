@@ -221,27 +221,6 @@
                             </div>
                         </div>
 
-                        <!-- ONE-TO-MANY RELATIONSHIP -->
-                        <div class="form-group">
-                            <label for="address_events" class="col-lg-4 control-label">{{ form.events.label }}</label>
-                            <div class="col-lg-6">
-                               <select class="form-control" id="events" name="events" multiple="" >
-                                   <option value="" >None</option>
-                                    {% for event in events %}
-                                        <option value="{{ event.id }}"
-                                        {% if form.events.data %}
-                                            {% for event2 in form.events.data %}
-                                                {% if event.id == event2.id %}
-                                                    selected="selected"
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
-                                        >
-                                        {{event.id}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
 
                         <!-- MANY-TO-MANY RELATIONSHIP -->
                         <div class="form-group">

@@ -120,6 +120,24 @@
 
                         <!-- ONE-TO-MANY -->
                         <div class="form-group">
+                            <label for="event_address" class="col-lg-4 control-label">{{ form.address.label }}</label>
+                            <div class="col-lg-6">
+                                <select class="form-control" id="address" name="address" >
+                                    <option value="" >None</option>
+                                    {% for address in addresses %}
+                                        <option value="{{ address.id }}" {% if form.address.data == address.id %} selected="selected"{% endif %} >{{address.title_en_US}}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.errors.address %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- ONE-TO-MANY -->
+                        <div class="form-group">
                             <label for="event_item" class="col-lg-4 control-label">{{ form.item.label }}</label>
                             <div class="col-lg-6">
                                 <select class="form-control" id="item" name="item" >

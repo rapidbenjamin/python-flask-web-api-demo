@@ -94,7 +94,7 @@ class Event(db.Model):
     # as simple as address.events in our controllers.
     address_id = db.Column(db.Integer, db.ForeignKey('Address.id'))
     # a bidirectional relationship in many-to-one. Return object
-    address = db.relationship('Address', back_populates='address')
+    address = db.relationship('Address', back_populates='events')
 
     # MANY-TO-MANY relationship with with EXTRA_DATA association and the User model as Guest
     # the cascade will delete orphaned userevents

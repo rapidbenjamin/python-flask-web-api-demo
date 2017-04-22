@@ -15,6 +15,7 @@
             <th>Description</th>
             <th>Amount</th>
             <th>User</th>
+            <th>Address</th>
             <th>Item</th>
             <th>Address</th>
             <th>Guests</th>
@@ -44,6 +45,14 @@
                             {{ event.user.username }}
                         {% else %}
                             No User
+                        {% endif %}
+                    </td>
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if event.address %}
+                            {{ event.address.title_en_US }}
+                        {% else %}
+                            No address
                         {% endif %}
                     </td>
 

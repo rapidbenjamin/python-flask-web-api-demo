@@ -20,6 +20,15 @@
     </p>
 
     <!-- ONE-TO-MANY -->
+    <p>
+        {% if event.address %}
+            {{ event.address.title_en_US }}
+        {% else %}
+            No address
+        {% endif %}
+    </p>
+
+    <!-- ONE-TO-MANY -->
     <p> Item :
         {% if event.item %}
             {{ event.item.slug }}

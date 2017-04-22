@@ -16,7 +16,7 @@ from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 from app.modules.users.models import User
 from app.modules.items.models import Item
-from app.modules.events.models import Event
+
 
 
 
@@ -76,7 +76,9 @@ class Address(db.Model):
     postal_code = db.Column(db.String(255),  index=True)
     state_region = db.Column(db.String(255),  index=True)
     country = db.Column(db.String(255),  index=True)
+    full = db.Column(db.String(255),  index=True)
     time_zone = db.Column(db.String(255),  index=True)
+
 
     latitude = db.Column(db.Numeric(9,6), index=True, nullable=False, default=000.000000)
     longitude = db.Column(db.Numeric(9,6), index=True, nullable=False, default=000.000000)
@@ -99,7 +101,7 @@ class Address(db.Model):
     item = db.relationship('Item', back_populates='addresses')
 
     # one-to-many relationship with the Event model
-    events = db.relationship('Event', back_populates='item')
+    events = db.relationship('Event', back_populates='address')
 
     # MANY-TO-MANY relationship with with EXTRA_DATA association and the User model as Guest
     # the cascade will delete orphaned useraddresses
@@ -148,24 +150,29 @@ class Address(db.Model):
 
 
     def create_data(self, form):
-        
-        place = ""
+
+        full = ""
         if form['address_line1']:
-            place += form['address_line1'] + ', '
+            full += form['address_line1'] + ', '
         if form['address_line2']:
-            place += form['address_line2']  + ', '
+            full += form['address_line2']  + ', '
         if form['city']:
-            place += form['city']  + ', '
+            full += form['city']  + ', '
         if form['postal_code']:
-            place += form['postal_code']  + ', '
+            full += form['postal_code']  + ', '
         if form['state_region']:
-            place += form['state_region']  + ', '
+            full += form['state_region']  + ', '
         if form['country']:
-            place += form['country']
+            full += form['country']
 
-        g = geocoder.google(place)
+        geoc = geocoder.google(full)
 
-        (latitude, longitude) = g.latlng
+        # If request denied : Missing api key google map
+        if geoc.latlng:
+            latitude, longitude = geoc.latlng
+        else:
+            latitude = decimal.Decimal(form['latitude'])
+            longitude = decimal.Decimal(form['longitude'])
 
         address = Address(
                                 type = form['type'],
@@ -179,13 +186,15 @@ class Address(db.Model):
                                 postal_code = form['postal_code'],
                                 state_region = form['state_region'],
                                 country = form['country'],
+                                # full = form['full'],
+                                full = full,
                                 time_zone = form['time_zone'],
 
                                 # latitude = decimal.Decimal(form['latitude']),
                                 # longitude = decimal.Decimal(form['longitude']),
 
-                                latitude = decimal.Decimal(latitude),
-                                longitude = decimal.Decimal(longitude),
+                                latitude = latitude,
+                                longitude = longitude,
 
                                 amount = decimal.Decimal(form['amount']),
 
@@ -209,24 +218,31 @@ class Address(db.Model):
 
     def update_data(self, some_id, form ):
 
-        place = ""
+        full = ""
         if form['address_line1']:
-            place += form['address_line1'] + ', '
+            full += form['address_line1'] + ', '
         if form['address_line2']:
-            place += form['address_line2']  + ', '
+            full += form['address_line2']  + ', '
         if form['city']:
-            place += form['city']  + ', '
+            full += form['city']  + ', '
         if form['postal_code']:
-            place += form['postal_code']  + ', '
+            full += form['postal_code']  + ', '
         if form['state_region']:
-            place += form['state_region']  + ', '
+            full += form['state_region']  + ', '
         if form['country']:
-            place += form['country']
+            full += form['country']
 
-        g = geocoder.google(place)
+        geoc = geocoder.google(full)
 
-        (latitude, longitude) = g.latlng
 
+        # If request denied : Missing api key google map
+        if geoc.latlng:
+            latitude, longitude = geoc.latlng
+        else:
+            latitude = decimal.Decimal(form['latitude'])
+            longitude = decimal.Decimal(form['longitude'])
+        
+        
 
 
         address = Address.query.get_or_404(some_id)
@@ -243,13 +259,14 @@ class Address(db.Model):
         address.postal_code = form['postal_code']
         address.state_region = form['state_region']
         address.country = form['country']
+        address.full = full
         address.time_zone = form['time_zone']
 
         #address.latitude = decimal.Decimal(form['latitude'])
         #address.longitude = decimal.Decimal(form['longitude'])
 
-        address.latitude = decimal.Decimal(latitude)
-        address.longitude = decimal.Decimal(longitude)
+        address.latitude = latitude
+        address.longitude = longitude
 
         address.amount = decimal.Decimal(form['amount'])
 

@@ -8,7 +8,7 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleF
 
 from app.modules.users.models import User
 from app.modules.items.models import Item
-from app.modules.events.models import Event
+
 
 # from app.modules.items.assetitem_model import AssetItem
 
@@ -24,16 +24,15 @@ class Form_Record_Add(Form):
 
     address_line1 = StringField('address_line1', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
-    address_line2 = StringField('address_line2', validators=[validators.DataRequired(),
-                                             validators.Length(max=255, message='max 255 characters')])
+    address_line2 = StringField('address_line2', validators=[validators.Length(max=255, message='max 255 characters')])
     city = StringField('city', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
     postal_code = StringField('postal_code', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
-    state_region = StringField('state_region', validators=[validators.DataRequired(),
-                                             validators.Length(max=255, message='max 255 characters')])
+    state_region = StringField('state_region', validators=[validators.Length(max=255, message='max 255 characters')])
     country = StringField('country', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
+
     time_zone = StringField('time_zone', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
 
@@ -46,12 +45,6 @@ class Form_Record_Add(Form):
     
     item = QuerySelectField(query_factory=lambda: Item.query.filter(Item.is_active == True).all(), get_label="slug", allow_blank=True)
 
-
-    # ONE-TO-MANY
-    events = QuerySelectMultipleField('Select Events',
-                             query_factory=lambda : Event.query.filter(Event.is_active == True).all(),
-                             get_label=lambda u: u.id,
-                             allow_blank=True)
 
     # MANY-TO-MANY
     guests = QuerySelectMultipleField('Select Guests',
