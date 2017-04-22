@@ -55,6 +55,8 @@ class BaseConfig(object):
     THUMBNAIL_SIZE = 128, 128
     MAX_SIZE = 1600
 
+    # google map api key
+    GOOGLE_MAP_API_KEY = ''
 
     # session
     SESSION_TYPE = 'filesystem'

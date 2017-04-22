@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# from app import app
+
 UPLOAD_FOLDER = '.app/static/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx', 'csv', 'xls', 'xlsx'])
 # limit the maximum allowed payload to 16 megabytes. 
@@ -17,13 +19,3 @@ MAX_SIZE = 1600
 # app.config['MAX_SIZE'] = MAX_SIZE
 
 
-
-# Localization I18N and l10n
-BABEL_DEFAULT_LOCALE = "en_US"
-BABEL_DEFAULT_TIMEZONE = "UTC"
-# change path of messages.mo file
-BABEL_TRANSLATION_DIRECTORIES = "app;static;localization"
-ALLOWED_LANGUAGES = {
-    'en_US': 'English',
-    'fr_FR': 'French',
-}

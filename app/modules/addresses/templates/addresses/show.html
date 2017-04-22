@@ -6,13 +6,16 @@
     <h4 class="text-right"><a href="/addresses"><span class="glyphicon glyphicon-chevron-left"></span> Back</a></h4>
     <hr/>
 
+    <p>{{ address.full }}</p>
+    <div id="map1" class="map"></div>
+
     <p>{{ address.type }}</p>
 
     <p>{{ address.address_line1 }}</p>
     <p>{{ address.address_line2 }}</p>
     <p>{{ address.city }}</p>
     <p>{{ address.postal_code }}</p>
-    <p>{{ address.state_province }}</p>
+    <p>{{ address.state_region }}</p>
     <p>{{ address.country }}</p>
     <p>{{ address.time_zone }}</p>
 
@@ -67,5 +70,28 @@
     <p>{{ address.updated_at | datetimeformat }}</p>
     <p>{{ address.created_at | datetimeformat }}</p>
 </div>
+<style>
+    .map {
+        display: block;
+        width: 100%;
+        height: 300px;
+    }
+</style>
+ <script>
+    $('#map1')
+      .gmap3({
+        center:[{{ address.latitude }}, {{ address.longitude }}],
+        zoom:4
+      })
+      .marker([
+        {position:[{{ address.latitude }}, {{ address.longitude }}]},
+        {address:"{{ address.full }}"},
+        {address: "{{ address.full }}", icon: "http://maps.google.com/mapfiles/marker_grey.png"}
+      ])
+      .on('click', function (marker) {
+        marker.setIcon('http://maps.google.com/mapfiles/marker_green.png');
+      });
+  </script>
+
 {% endblock content %}
 

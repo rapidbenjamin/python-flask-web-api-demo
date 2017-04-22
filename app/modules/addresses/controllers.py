@@ -99,7 +99,7 @@ def new():
                     'address_line2' : form.address_line2.data,
                     'city' : form.city.data,
                     'postal_code' : form.postal_code.data,
-                    'state_province' : form.state_province.data,
+                    'state_region' : form.state_region.data,
                     'country' : form.country.data,
                     'time_zone' : form.time_zone.data,
 
@@ -177,7 +177,7 @@ def edit(id=1):
                     'address_line2' : form.address_line2.data,
                     'city' : form.city.data,
                     'postal_code' : form.postal_code.data,
-                    'state_province' : form.state_province.data,
+                    'state_region' : form.state_region.data,
                     'country' : form.country.data,
                     'time_zone' : form.time_zone.data,
 

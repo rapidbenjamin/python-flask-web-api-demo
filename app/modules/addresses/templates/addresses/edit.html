@@ -107,11 +107,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="address_state_province" class="col-lg-4 control-label">{{ form.state_province.label }}</label>
+                            <label for="address_state_region" class="col-lg-4 control-label">{{ form.state_region.label }}</label>
                             <div class="col-lg-6">
-                                {{ form.state_province (class="form-control") }}
-                                <!-- <input class="form-control" id="address_state_province" name="address_state_province" required="" value="" type="text"> -->
-                                {% for error in form.errors.state_province %} <br/>
+                                {{ form.state_region (class="form-control") }}
+                                <!-- <input class="form-control" id="address_state_region" name="address_state_region" required="" value="" type="text"> -->
+                                {% for error in form.errors.state_region %} <br/>
                                     <div class="alert alert-danger" style="display: inline-block">
                                         {{ error }}
                                     </div>

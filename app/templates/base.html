@@ -79,9 +79,11 @@
             
         </div><!-- /footer -->
     </footer>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery.min.js"></script> -->
     <script src="//netdna.bootstrapcdn.com/bootstrap/{{ bootstrap_version }}/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/{{ moment_version }}/moment.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ app.config['GOOGLE_MAP_API_KEY'] }}"></script>
+    <script src="https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js"></script>
     <script src="/static/scripts/main.js"></script>
     {% block tail_script %}
         <!-- defer-capable JS block -->

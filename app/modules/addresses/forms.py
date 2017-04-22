@@ -30,7 +30,7 @@ class Form_Record_Add(Form):
                                              validators.Length(max=255, message='max 255 characters')])
     postal_code = StringField('postal_code', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
-    state_province = StringField('state_province', validators=[validators.DataRequired(),
+    state_region = StringField('state_region', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
     country = StringField('country', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])

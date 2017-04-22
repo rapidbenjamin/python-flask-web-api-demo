@@ -4,6 +4,7 @@
 # ------- IMPORT DEPENDENCIES ------- 
 import datetime
 import decimal
+import geocoder
 from sqlalchemy import desc
 from sqlalchemy import or_
 
@@ -73,7 +74,7 @@ class Address(db.Model):
     address_line2 = db.Column(db.String(255),  index=True)
     city = db.Column(db.String(255),  index=True)
     postal_code = db.Column(db.String(255),  index=True)
-    state_province = db.Column(db.String(255),  index=True)
+    state_region = db.Column(db.String(255),  index=True)
     country = db.Column(db.String(255),  index=True)
     time_zone = db.Column(db.String(255),  index=True)
 
@@ -147,6 +148,24 @@ class Address(db.Model):
 
 
     def create_data(self, form):
+        
+        place = ""
+        if form['address_line1']:
+            place += form['address_line1'] + ', '
+        if form['address_line2']:
+            place += form['address_line2']  + ', '
+        if form['city']:
+            place += form['city']  + ', '
+        if form['postal_code']:
+            place += form['postal_code']  + ', '
+        if form['state_region']:
+            place += form['state_region']  + ', '
+        if form['country']:
+            place += form['country']
+
+        g = geocoder.google(place)
+
+        (latitude, longitude) = g.latlng
 
         address = Address(
                                 type = form['type'],
@@ -158,12 +177,15 @@ class Address(db.Model):
                                 address_line2 = form['address_line2'],
                                 city = form['city'],
                                 postal_code = form['postal_code'],
-                                state_province = form['state_province'],
+                                state_region = form['state_region'],
                                 country = form['country'],
                                 time_zone = form['time_zone'],
 
-                                latitude = decimal.Decimal(form['latitude']),
-                                longitude = decimal.Decimal(form['longitude']),
+                                # latitude = decimal.Decimal(form['latitude']),
+                                # longitude = decimal.Decimal(form['longitude']),
+
+                                latitude = decimal.Decimal(latitude),
+                                longitude = decimal.Decimal(longitude),
 
                                 amount = decimal.Decimal(form['amount']),
 
@@ -186,6 +208,27 @@ class Address(db.Model):
         db.session.commit()
 
     def update_data(self, some_id, form ):
+
+        place = ""
+        if form['address_line1']:
+            place += form['address_line1'] + ', '
+        if form['address_line2']:
+            place += form['address_line2']  + ', '
+        if form['city']:
+            place += form['city']  + ', '
+        if form['postal_code']:
+            place += form['postal_code']  + ', '
+        if form['state_region']:
+            place += form['state_region']  + ', '
+        if form['country']:
+            place += form['country']
+
+        g = geocoder.google(place)
+
+        (latitude, longitude) = g.latlng
+
+
+
         address = Address.query.get_or_404(some_id)
 
 
@@ -198,12 +241,15 @@ class Address(db.Model):
         address.address_line2 = form['address_line2']
         address.city = form['city']
         address.postal_code = form['postal_code']
-        address.state_province = form['state_province']
+        address.state_region = form['state_region']
         address.country = form['country']
         address.time_zone = form['time_zone']
 
-        address.latitude = decimal.Decimal(form['latitude'])
-        address.longitude = decimal.Decimal(form['longitude'])
+        #address.latitude = decimal.Decimal(form['latitude'])
+        #address.longitude = decimal.Decimal(form['longitude'])
+
+        address.latitude = decimal.Decimal(latitude)
+        address.longitude = decimal.Decimal(longitude)
 
         address.amount = decimal.Decimal(form['amount'])
 

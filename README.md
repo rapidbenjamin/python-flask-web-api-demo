@@ -18,7 +18,7 @@ Python Flask WEB API DEMO
 								- ITEMS with images gallery and visual editor,]
 								- ASSETS files and image processing with Pillow
 								- EVENTS (start/end datetime) 
-								- PLACES (geolocalization with latitude and longitude) [coming-soon]
+								- ADDRESSES (google map and geocoding with latitude and longitude)
 	- Module Sample database ORDERS and orderitem many-to-many relationship and shopping cart operations
 	- Module sample ADMIN, backoffice member with authentication  and authorization powered by Flask-login plugin :
 			- User Registry, Login & Logout
