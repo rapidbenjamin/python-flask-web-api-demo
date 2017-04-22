@@ -134,6 +134,8 @@ class Item(db.Model):
 
     slug = db.Column(db.String(255), index=True, unique=True)
 
+    type = db.Column(db.String(255),  index=True)
+
     title_en_US = db.Column(db.String(255),  index=True, unique=True)
     title_fr_FR = db.Column(db.String(255),  index=True, unique=True)
 
@@ -143,7 +145,10 @@ class Item(db.Model):
     # amount in decimal , precision=10, scale=2 .
     amount = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
 
-    # one-to-many relationship with the Asset model
+    # one-to-many relationship with the Event model
+    addresses = db.relationship('Address', back_populates='item')
+
+    # one-to-many relationship with the Event model
     events = db.relationship('Event', back_populates='item')
 
     # MANY-TO-ONE relationship with the User model
@@ -251,6 +256,8 @@ class Item(db.Model):
         item = Item(
                                 slug=form['slug'],
 
+                                type=form['type'],
+
                                 title_en_US=form['title_en_US'],
                                 title_fr_FR=form['title_fr_FR'],
 
@@ -289,6 +296,8 @@ class Item(db.Model):
 
         item.slug = form['slug']
 
+        item.type = form['type']
+
         item.title_en_US = form['title_en_US']
         item.title_fr_FR = form['title_fr_FR']
 
@@ -318,12 +327,9 @@ class Item(db.Model):
         for order in form['orders']:
             # DO not calculate again quantity and total amount for order.amount, no updates when order already exist 
             orderitem = OrderItem(order = order, item = item)
-
-
-
             item.orderitems.append(orderitem)
 
-        
+
         db.session.commit()
 
     def destroy_data(self, some_id ):

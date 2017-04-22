@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h4 class="pull-right"><a href="/addresses/new"><span class="glyphicon glyphicon-plus"></span> New</a></h4>
+    <h3>Addresses</h3>
+    <hr/>
+
+    <div class="text-left">{{ list_addresses.query.count() }} results</div>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Type</th>
+            <th>Title</th>
+
+            <th>Address line1</th>
+            <th>Address line2</th>
+            <th>City</th>
+            <th>Postal code</th>
+            <th>State/Province</th>
+            <th>Country</th>
+            <th>Time zone</th>
+
+            <th>Latitude</th>
+            <th>Longitude</th>
+
+            <th>Amount</th>
+            <th>User</th>
+            <th>Item</th>
+            <th>Events</th>
+            <th>Guests</th>
+
+            <th>Status</th>
+            <th>Active</th>
+            <th>Updated Date</th>
+            <th>Created Date</th>
+            <th colspan="3">Actions</th>
+        </tr>
+        </thead>
+        {% if list_addresses.items %}
+            {% for address in list_addresses.items %}
+                <tr>
+                    <td>{{ address.id }}</td>
+                    <td>{{ address.type }}</td>
+                    <td><a href="{{ url_for('addresses_page.show', id = address.id) }}" >{{ address['title_%s' %(g.current_lang)] }}</a></td>
+
+                    <td>{{ address.address_line1 }}</td>
+                    <td>{{ address.address_line2 }}</td>
+                    <td>{{ address.city }}</td>
+                    <td>{{ address.postal_code }}</td>
+                    <td>{{ address.state_province }}</td>
+                    <td>{{ address.country }}</td>
+                    <td>{{ address.time_zone }}</td>
+
+                    <td>{{ address.latitude }}</td>
+                    <td>{{ address.longitude }}</td>
+
+                    <td>{{ address.amount }}</td>
+
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if address.user %}
+                            {{ address.user.username }}
+                        {% else %}
+                            No User
+                        {% endif %}
+                    </td>
+
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if address.item %}
+                            {{ address.item.slug }}
+                        {% else %}
+                            No Item
+                        {% endif %}
+                    </td>
+
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if address.events %}
+                            {% for event in address.events %}
+                               {{ event.title_en_US }}
+                            {% endfor %}
+                        {% else %}
+                            No Event
+                        {% endif %}
+                    </td>
+
+                    <!-- MANY-TO-MANY -->
+                    <td>
+                        {% if address.guests %}
+                            {% for guest in address.guests %}
+                                {{ guest.username }}, 
+                            {% endfor %}
+                        {% else %}
+                            No guests
+                        {% endif %}
+                    </td>
+
+                    <td>{{ address.status }}</td>
+
+                    <td>{{ address.is_active }}</td>
+                    <td>{{ address.updated_at | datetimeformat }}</td>
+                    <td>{{ address.created_at | datetimeformat }}</td>
+                    <td><a href="{{ url_for('addresses_page.show', id = address.id) }}" ><i class="glyphicon glyphicon-file"></i> </a></td>
+                    <td><a href="{{ url_for('addresses_page.edit', id = address.id) }}" ><i class="glyphicon glyphicon-pencil"></i> </a></td>
+                    <td><a href="{{ url_for('addresses_page.destroy', id = address.id) }}" onclick="return confirm('Are you sure you want to delete this address?');"><i class="glyphicon glyphicon-trash"></i> </a></td>
+
+                </tr>
+            {% endfor %}
+        {% else %}
+          <tr style="text-align: center">
+              <td colspan="9">
+            <h4> No addresses for this search. </h4>
+            </td>
+         </tr>
+        {% endif %}
+    </table>
+
+    <ul class="pagination">
+        {%- for page in list_addresses.iter_pages() %}
+            {% if page %}
+                {% if page != list_addresses.page %}
+                    <li><a href="{{ url_for('addresses_page.addresses', page = page) }}">{{ page }}</a></li>
+                {% else %}
+                    <li class="active"><a href="#"><strong>{{ page }}</strong></a></li>
+                {% endif %}
+            {% else %}
+                <li><span class=ellipsis>…</span></li>
+            {% endif %}
+        {%- endfor %}
+    </ul>
+
+</div>
+{% endblock content %}

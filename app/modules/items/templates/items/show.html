@@ -10,6 +10,7 @@
     <hr/>
 
     <p>{{ item.slug }}</p>
+    <p>{{ item.type }}</p>
     <p>{{ item['description_%s' %(g.current_lang)] | parse_html}}</p>
     <p>{{ item.amount }}</p>
 
@@ -19,6 +20,17 @@
             {{ item.user.username }}
         {% else %}
             No User
+        {% endif %}
+    </p>
+
+    <!-- ONE-TO-MANY -->
+    <p>
+        {% if item.addresses %}
+            {% for address in item.addresses %}
+                {{ address.title_en_US }}
+            {% endfor %}
+        {% else %}
+            None
         {% endif %}
     </p>
 

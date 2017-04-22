@@ -55,6 +55,7 @@
         <tr>
             <th>Id</th>
             <th>Slug</th>
+            <th>Type</th>
             <th>Title</th>
             <th>Description</th>
             <th>Amount</th>
@@ -73,9 +74,10 @@
             {% for item in list_items.items %}
                 <tr>
                     <td>{{ item.id }}</td>
-                    <td><a href="{{ url_for('items_page.show', id = item.id) }}" >{{ item.slug }}</a></td>
+                    <td>{{ item.slug }}</td>
+                    <td>{{ item.type }}</td>
                     <td><a href="{{ url_for('items_page.show', id = item.id) }}" >{{ item['title_%s' %(g.current_lang)] }}</a></td>
-                    <td>{{ item['description_%s' %(g.current_lang)] | parse_html }}</td>
+                    <td>{{ item['description_%s' %(g.current_lang)] | parse_html | striptags | truncate(100) }}</td>
                     <td>{{ item.amount }}</td>
 
                     <!-- ONE-TO-MANY -->
@@ -84,6 +86,16 @@
                             {{ item.user.username }}
                         {% else %}
                             No User
+                        {% endif %}
+                    </td>
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if item.addresses %}
+                            {% for address in item.addresses %}
+                               {{ address.title_en_US }}
+                            {% endfor %}
+                        {% else %}
+                            None
                         {% endif %}
                     </td>
                     <!-- ONE-TO-MANY -->

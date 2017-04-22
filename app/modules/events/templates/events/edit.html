@@ -57,6 +57,36 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="event_description_en_US" class="col-lg-4 control-label">{{ form.description_en_US.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.description_en_US (cols="35", rows="5", class="form-control") }}
+                                <!-- <textarea class="form-control" id="event_description_en_US" name="event_description_en_US">form.description_en_US.data</textarea> -->
+                                {% for error in form.errors.description_en_US %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="event_description_fr_FR" class="col-lg-4 control-label">{{ form.description_fr_FR.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.description_fr_FR (cols="35", rows="5", class="form-control") }}
+                                <!-- <textarea class="form-control" id="event_description_fr_FR" name="event_description_fr_FR">form.description_fr_FR.data</textarea> -->
+                                {% for error in form.errors.description_fr_FR %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="event_amount" class="col-lg-4 control-label">{{ form.amount.label }}</label>
                             <div class="col-lg-6">
                                 {{ form.amount (class="form-control") }}
@@ -241,6 +271,29 @@
              language: 'fr-FR',
              dateFormat: "yyyy-mm-dd"
         });
+
+
+</script>
+
+<script>
+
+$('textarea').tinymce({
+  forced_root_block : "",
+  selector: 'textarea',
+  cleanup : true,
+  height: 200,
+  menubar: false,
+  images_upload_base_path: '{{url_for('static', filename='uploads/')}}',
+  images_reuse_filename: true,
+  plugins: [
+    'textcolor advlist autolink lists link image charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table contextmenu paste code'
+  ],
+  toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | forecolor | backcolor',
+  content_css: '//www.tinymce.com/css/codepen.min.css'
+});
+
 
 
 </script>

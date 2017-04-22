@@ -8,8 +8,8 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleF
 
 from app.modules.users.models import User
 from app.modules.items.models import Item
+from app.modules.addresses.models import Address
 
-# from app.modules.items.assetitem_model import AssetItem
 
 class Form_Record_Add(Form):
 
@@ -21,11 +21,19 @@ class Form_Record_Add(Form):
     title_fr_FR = StringField('title_fr_FR', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
 
+    description_en_US = TextAreaField('description_en_US',
+                                validators=[validators.Length(max=200, message='max 200 characters')])
+    description_fr_FR = TextAreaField('description_fr_FR',
+                                validators=[validators.Length(max=200, message='max 200 characters')])
+
     amount = DecimalField('amount', default=0.0)
 
     user = QuerySelectField(query_factory=lambda: User.query.filter(User.is_active == True).all(), get_label="username", allow_blank=True)
     
-    item = QuerySelectField(query_factory=lambda: Item.query.filter(Item.is_active == True).all(), get_label="slug", allow_blank=True)
+    item = QuerySelectField(query_factory=lambda: Item.query.filter(Item.is_active == True).all(), get_label="item", allow_blank=True)
+
+    address = QuerySelectField(query_factory=lambda: Address.query.filter(Address.is_active == True).all(), get_label="address", allow_blank=True)
+
 
      # MANY-TO-MANY
     guests = QuerySelectMultipleField('Select Guests',

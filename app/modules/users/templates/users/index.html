@@ -13,8 +13,10 @@
             <th>User name</th>
             <th>Assets</th>
             <th>Items</th>
+            <th>Addresses</th>
             <th>Events</th>
             <th>Orders</th>
+            <th>In addresses</th>
             <th>In events</th>
             <th>Sections</th>
             <th>Locale</th>
@@ -58,6 +60,16 @@
                     </td>
                     <!-- ONE-TO-MANY -->
                     <td>
+                        {% if user.addresses %}
+                            {% for address in user.addresses %}
+                                {{ address.title_en_US }} 
+                            {% endfor %}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
+                    <!-- ONE-TO-MANY -->
+                    <td>
                         {% if user.events %}
                             {% for event in user.events %}
                                 {{ event.title_en_US }} 
@@ -74,6 +86,16 @@
                             {% endfor %}
                         {% else %}
                             None
+                        {% endif %}
+                    </td>
+                    <!-- MANY-TO-MANY -->
+                    <td>
+                        {% if user.in_addresses %}
+                            {% for in_address in user.in_addresses %}
+                                {{ in_address.title_en_US }}, 
+                            {% endfor %}
+                        {% else %}
+                            No in_address
                         {% endif %}
                     </td>
                     <!-- MANY-TO-MANY -->

@@ -26,6 +26,19 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="item_type" class="col-lg-4 control-label">{{ form.type.label }}</label>
+                            <div class="col-lg-6">
+                                {{ form.type (class="form-control") }}
+                                <!-- <input class="form-control" id="item_type" name="item_type" required="" value="" type="text"> -->
+                                {% for error in form.errors.type %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="item_title_en_US" class="col-lg-4 control-label">{{ form.title_en_US.label }}</label>
 
                             <div class="col-lg-6">
@@ -181,6 +194,50 @@
                                         {% endif %}
                                         >
                                         {{order.id}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- ONE-TO-MANY RELATIONSHIP -->
+                        <div class="form-group">
+                            <label for="item_addresses" class="col-lg-4 control-label">{{ form.addresses.label }}</label>
+                            <div class="col-lg-6">
+                               <select class="form-control" id="addresses" name="addresses" multiple="" >
+                                   <option value="" >None</option>
+                                    {% for address in addresses %}
+                                        <option value="{{ address.id }}"
+                                        {% if form.addresses.data %}
+                                            {% for address2 in form.addresses.data %}
+                                                {% if address.id == address2.id %}
+                                                    selected="selected"
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        >
+                                        {{address.id}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- ONE-TO-MANY RELATIONSHIP -->
+                        <div class="form-group">
+                            <label for="item_events" class="col-lg-4 control-label">{{ form.events.label }}</label>
+                            <div class="col-lg-6">
+                               <select class="form-control" id="events" name="events" multiple="" >
+                                   <option value="" >None</option>
+                                    {% for event in events %}
+                                        <option value="{{ event.id }}"
+                                        {% if form.events.data %}
+                                            {% for event2 in form.events.data %}
+                                                {% if event.id == event2.id %}
+                                                    selected="selected"
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        >
+                                        {{event.id}}</option>
                                     {% endfor %}
                                 </select>
                             </div>

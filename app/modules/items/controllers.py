@@ -96,8 +96,6 @@ def new():
         assets = Asset.query.filter(Asset.is_active == True).all()
         orders = Order.query.filter(Order.is_active == True).all()
         users = User.query.filter(User.is_active == True).all()
-        
-
 
         form = Form_Record_Add(request.form)
 
@@ -108,6 +106,8 @@ def new():
                 sanitize_form = {
 
                     'slug' : form.slug.data,
+
+                    'type' : form.type.data,
 
                     'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
@@ -124,6 +124,7 @@ def new():
                     'assets' : form.assets.data,
 
                     'orders' : form.orders.data,
+
 
                     'is_active' : form.is_active.data
                 }
@@ -164,6 +165,7 @@ def edit(id=1):
         # users = User.query.all()
         users = User.query.filter(User.is_active == True).all()
 
+
         items = Item()
         item = Item.query.get_or_404(id)
 
@@ -174,6 +176,8 @@ def edit(id=1):
 
                 sanitize_form = {
                     'slug' : form.slug.data,
+
+                    'type' : form.type.data,
 
                     'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
@@ -188,6 +192,7 @@ def edit(id=1):
                     'sections' : form.sections.data,
                     'assets' : form.assets.data,
                     'orders' : form.orders.data,
+
 
                     'is_active' : form.is_active.data
                 }
@@ -204,6 +209,8 @@ def edit(id=1):
         form.action = url_for('items_page.edit', id = item.id)
 
         form.slug.data = item.slug
+
+        form.type.data = item.type
 
         form.title_en_US.data = item.title_en_US
         form.title_fr_FR.data = item.title_fr_FR
@@ -224,6 +231,7 @@ def edit(id=1):
 
         if  item.orders :
             form.orders.data = item.orders
+
 
         form.is_active.data = item.is_active
 

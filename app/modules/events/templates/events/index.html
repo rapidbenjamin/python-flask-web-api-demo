@@ -12,9 +12,11 @@
             <th>Id</th>
             <th>Type</th>
             <th>Title</th>
+            <th>Description</th>
             <th>Amount</th>
             <th>User</th>
             <th>Item</th>
+            <th>Address</th>
             <th>Guests</th>
             <th>Start</th>
             <th>End</th>
@@ -33,6 +35,7 @@
                     <td>{{ event.id }}</td>
                     <td>{{ event.type }}</td>
                     <td><a href="{{ url_for('events_page.show', id = event.id) }}" >{{ event['title_%s' %(g.current_lang)] }}</a></td>
+                    <td>{{ event['description_%s' %(g.current_lang)] | parse_html | striptags | truncate(100) }}</td>
                     <td>{{ event.amount }}</td>
 
                     <!-- ONE-TO-MANY -->
@@ -49,9 +52,19 @@
                         {% if event.item %}
                             {{ event.item.slug }}
                         {% else %}
-                            No Item
+                            No item
                         {% endif %}
                     </td>
+                    
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if event.address %}
+                            {{ event.address['title_%s' %(g.current_lang)] }}
+                        {% else %}
+                            No adddress
+                        {% endif %}
+                    </td>
+
                      <!-- MANY-TO-MANY -->
                     <td>
                         {% if event.guests %}

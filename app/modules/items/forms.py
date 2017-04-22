@@ -11,6 +11,7 @@ from app.modules.assets.models import Asset
 from app.modules.orders.models import Order
 from app.modules.users.models import User
 
+
 # from app.modules.items.assetitem_model import AssetItem
 
 class Form_Record_Add(Form):
@@ -19,6 +20,9 @@ class Form_Record_Add(Form):
                                              validators.Length(max=255, message='max 255 characters')])
 
     amount = DecimalField('amount', default=0.00)
+
+    type = StringField('type', validators=[validators.DataRequired(),
+                                             validators.Length(max=255, message='max 255 characters')])
 
     title_en_US = StringField('title_en_US', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])

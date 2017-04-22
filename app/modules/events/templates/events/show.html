@@ -7,6 +7,7 @@
     <hr/>
 
     <p>{{ event.type }}</p>
+    <p>{{ event['description_%s' %(g.current_lang)] | parse_html}}</p>
     <p>{{ event.amount }}</p>
 
     <!-- ONE-TO-MANY -->
@@ -26,6 +27,16 @@
             No Item
         {% endif %}
     </p>
+
+    <!-- ONE-TO-MANY -->
+    <p> Address :
+        {% if event.address %}
+            {{ event.address['title_%s' %(g.current_lang)]  }}
+        {% else %}
+            No address
+        {% endif %}
+    </p>
+
     <!-- MANY-TO-MANY -->
     <p>
         {% if event.guests %}

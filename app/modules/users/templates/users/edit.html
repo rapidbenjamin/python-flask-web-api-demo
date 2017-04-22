@@ -42,7 +42,29 @@
 
                         <!-- MANY-TO-MANY RELATIONSHIP -->
                         <div class="form-group">
-                            <label for="user_dates" class="col-lg-4 control-label">{{ form.in_events.label }}</label>
+                            <label for="in_addresses" class="col-lg-4 control-label">{{ form.in_addresses.label }}</label>
+                            <div class="col-lg-6">
+                                <select class="form-control" id="in_addresses" name="in_addresses" multiple="" >
+                                    <option value="" >None</option>
+                                    {% for in_address in in_addresses %}
+                                        <option value="{{ in_address.id }}"
+                                        {% if form.in_addresses.data %}
+                                            {% for in_address2 in form.in_addresses.data %}
+                                                {% if in_address.id == in_address2.id %}
+                                                    selected="selected"
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        >
+                                        {{in_address.title_en_US}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- MANY-TO-MANY RELATIONSHIP -->
+                        <div class="form-group">
+                            <label for="in_events" class="col-lg-4 control-label">{{ form.in_events.label }}</label>
                             <div class="col-lg-6">
                                 <select class="form-control" id="in_events" name="in_events" multiple="" >
                                     <option value="" >None</option>

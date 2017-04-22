@@ -38,6 +38,16 @@
     </p>
     <!-- ONE-TO-MANY -->
     <p>
+        {% if user.addresses %}
+            {% for address in user.addresses %}
+                {{ address.title_en_US }} 
+            {% endfor %}
+        {% else %}
+            None
+        {% endif %}
+    </p>
+    <!-- ONE-TO-MANY -->
+    <p>
         {% if user.events %}
             {% for event in user.events %}
                 {{ event.title_en_US }}
@@ -57,6 +67,19 @@
         {% endif %}
     </p>
     
+
+    <!-- MANY-TO-MANY -->
+    <p>
+        {% if user.in_addresses %}
+            {% for in_address in user.in_addresses %}
+                {{ in_address.title_en_US }}, 
+            {% endfor %}
+        {% else %}
+            No in_address
+        {% endif %}
+    </p>
+
+
     <!-- MANY-TO-MANY -->
     <p>
         {% if user.in_events %}
@@ -68,6 +91,7 @@
         {% endif %}
     </p>
 
+    
 
     <!-- MANY-TO-MANY -->
     <p>

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title_en_US %} {{ address.id }} - {{ address['title_%s' %(g.current_lang)] }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>{{ address.id }} - {{ address['title_%s' %(g.current_lang)] }}</h3>
+    <h4 class="text-right"><a href="/addresses"><span class="glyphicon glyphicon-chevron-left"></span> Back</a></h4>
+    <hr/>
+
+    <p>{{ address.type }}</p>
+
+    <p>{{ address.address_line1 }}</p>
+    <p>{{ address.address_line2 }}</p>
+    <p>{{ address.city }}</p>
+    <p>{{ address.postal_code }}</p>
+    <p>{{ address.state_province }}</p>
+    <p>{{ address.country }}</p>
+    <p>{{ address.time_zone }}</p>
+
+    <p>{{ address.latitude }}</p>
+    <p>{{ address.longitude }}</p>
+
+    <p>{{ address.amount }}</p>
+
+    <!-- ONE-TO-MANY -->
+    <p> User :
+        {% if address.user %}
+            {{ address.user.username }}
+        {% else %}
+            No user
+        {% endif %}
+    </p>
+
+    <!-- ONE-TO-MANY -->
+    <p> Item :
+        {% if address.item %}
+            {{ address.item.slug }}
+        {% else %}
+            No item
+        {% endif %}
+    </p>
+
+    <!-- ONE-TO-MANY -->
+    <p>
+        {% if address.events %}
+            {% for event in address.events %}
+                {{ event.type }}-{{ event.id }} 
+            {% endfor %}
+        {% else %}
+            No events
+        {% endif %}
+    </p>
+
+    <!-- MANY-TO-MANY -->
+    <p>
+        {% if address.guests %}
+            {% for guest in address.guests %}
+                {{ guest.username }}, 
+            {% endfor %}
+        {% else %}
+            No guests
+        {% endif %}
+    </p>
+
+    <p>{{ address.status }}</p>
+    
+    <p>{{ address.is_active }}</p>
+    <p>{{ address.updated_at | datetimeformat }}</p>
+    <p>{{ address.created_at | datetimeformat }}</p>
+</div>
+{% endblock content %}
+

@@ -41,11 +41,20 @@ class User(UserMixin, db.Model):
     # one-to-many relationship with the Item model
     items = db.relationship('Item', back_populates='user')
 
+    # one-to-many relationship with the Address model
+    addresses = db.relationship('Address', back_populates='user')
+
     # one-to-many relationship with the Event model
     events = db.relationship('Event', back_populates='user')
 
     # one-to-many relationship with the Order model
     orders = db.relationship('Order', back_populates='user')
+
+    # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Address model
+    # the cascade will delete orphaned useraddresses
+    useraddresses = db.relationship('UserAddress', back_populates='guest', lazy='dynamic',  cascade="all, delete-orphan")
+    # or  Get all events in view only mode
+    in_addresses = db.relationship('Address', secondary='useraddress', viewonly=True, back_populates='guests', lazy='dynamic')
 
     # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Event model
     # the cascade will delete orphaned userevents
@@ -156,18 +165,22 @@ class User(UserMixin, db.Model):
                         
                         is_active = form['is_active']
                     )
+        
+        # MANY-TO-MANY Relationship 
+        for in_address in form['in_addresses']:
+            useraddress = UserAddress(guest = user, in_address = in_address)
+            user.useraddresses.append(useraddress)
 
         # MANY-TO-MANY Relationship 
         for in_event in form['in_events']:
             userevent = UserEvent(guest = user, in_event = in_event)
             user.userevents.append(userevent)
 
-
         # MANY-TO-MANY Relationship 
         for section in form['sections']:
             usersection = UserSection(user = user, section = section)
             user.usersections.append(usersection)
-        
+
         db.session.add(user)
         db.session.commit()
 
@@ -177,7 +190,7 @@ class User(UserMixin, db.Model):
 
         user.email = form['email']
         user.username = form['username']
-        
+
         user.is_active = form['is_active']
 
 
@@ -186,6 +199,12 @@ class User(UserMixin, db.Model):
         for section in form['sections']:
             usersection = UserSection(section = section)
             user.usersections.append(usersection)
+
+        # MANY-TO-MANY Relationship
+        user.useraddresses = []
+        for in_address in form['in_addresses']:
+            useraddress = UserAddress(in_event = in_address)
+            user.useraddresses.append(useraddress)
 
         # MANY-TO-MANY Relationship
         user.userevents = []
@@ -214,3 +233,5 @@ class User(UserMixin, db.Model):
 from app.modules.sections.models import UserSection
 
 from app.modules.events.models import UserEvent
+
+from app.modules.addresses.models import UserAddress

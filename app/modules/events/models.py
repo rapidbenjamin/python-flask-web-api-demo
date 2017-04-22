@@ -15,7 +15,7 @@ from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 from app.modules.users.models import User
 from app.modules.items.models import Item
-
+from app.modules.addresses.models import Address
 
 
 
@@ -69,6 +69,8 @@ class Event(db.Model):
     title_en_US = db.Column(db.String(255),  index=True, unique=True)
     title_fr_FR = db.Column(db.String(255),  index=True, unique=True)
 
+    description_en_US = db.Column(db.Text())
+    description_fr_FR = db.Column(db.Text())
 
     # amount in decimal , precision=10, scale=2 .
     amount = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
@@ -86,6 +88,13 @@ class Event(db.Model):
     item_id = db.Column(db.Integer, db.ForeignKey('Item.id'))
     # a bidirectional relationship in many-to-one. Return object
     item = db.relationship('Item', back_populates='events')
+
+    # MANY-TO-ONE relationship with the Address model
+    # the backref argument in the address field allows us to access events from the Address model
+    # as simple as address.events in our controllers.
+    address_id = db.Column(db.Integer, db.ForeignKey('Address.id'))
+    # a bidirectional relationship in many-to-one. Return object
+    address = db.relationship('Address', back_populates='address')
 
     # MANY-TO-MANY relationship with with EXTRA_DATA association and the User model as Guest
     # the cascade will delete orphaned userevents
@@ -153,11 +162,16 @@ class Event(db.Model):
                                 title_en_US=form['title_en_US'],
                                 title_fr_FR=form['title_fr_FR'],
 
+                                description_en_US=form['description_en_US'],
+                                description_fr_FR=form['description_fr_FR'],
+
                                 amount = decimal.Decimal(form['amount']),
 
                                 user = form['user'],
 
                                 item = form['item'],
+
+                                address = form['address'],
 
                                 # convert string to integer format
                                 start = int(timestamp_start),
@@ -187,7 +201,6 @@ class Event(db.Model):
     def update_data(self, some_id, form ):
         event = Event.query.get_or_404(some_id)
 
-
         calculate_days = (form['end'] - form['start']).days
 
         event.type = form['type']
@@ -195,11 +208,16 @@ class Event(db.Model):
         event.title_en_US = form['title_en_US']
         event.title_fr_FR = form['title_fr_FR']
 
+        event.description_en_US = form['description_en_US']
+        event.description_fr_FR = form['description_fr_FR']
+
         event.amount = decimal.Decimal(form['amount'])
 
         event.user = form['user']
 
         event.item = form['item']
+
+        event.address = form['address']
 
         # dateTime conversion to timestamp
         timestamp_start = string_datetime_utc_to_string_timestamp_utc(form['start'])

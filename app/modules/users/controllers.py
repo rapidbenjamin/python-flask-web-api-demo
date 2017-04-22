@@ -18,7 +18,7 @@ from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 
 from app.modules.sections.models import Section, UserSection
-
+from app.modules.addresses.models import Address, UserAddress
 from app.modules.events.models import Event, UserEvent
 
 # -------  ROUTINGS AND METHODS  ------- 
@@ -65,11 +65,13 @@ def show(id=1):
 @users_page.route('/new', methods=['GET', 'POST'])
 @login_required
 def new():
-    try : 
+    try :
         form = Form_Record_Add(request.form)
         #  form = request.form
-        
+
         sections = Section.query.filter(Section.is_active == True).all()
+
+        in_addresses = Address.query.filter(Address.is_active == True).all()
         in_events = Event.query.filter(Event.is_active == True).all()
 
         if request.method == 'POST':
@@ -79,7 +81,8 @@ def new():
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
-                    
+
+                    'in_addresses' : form.in_addresses.data,
                     'in_events' : form.in_events.data,
                     'sections' : form.sections.data,
                     'is_active' : form.is_active.data
@@ -89,7 +92,7 @@ def new():
                 logger.info("Adding a new record.")
                 if request.is_xhr == True:
                     return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
-                else : 
+                else :
                     flash("Record added successfully.", category="success")
                     return redirect("/users")
 
@@ -100,7 +103,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form, in_events = in_events, sections = sections, title_en_US='New', app = app)
+            return render_template("users/edit.html", form=form, in_addresses = in_addresses, in_events = in_events, sections = sections, title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -115,6 +118,8 @@ def edit(id=1):
         # check_admin()
 
         sections = Section.query.filter(Section.is_active == True).all()
+
+        in_addresses = Address.query.filter(Address.is_active == True).all()
         in_events = Event.query.filter(Event.is_active == True).all()
 
         user = User.query.get_or_404(id)
@@ -130,7 +135,10 @@ def edit(id=1):
                 sanitize_form = {
                     'email' : form.email.data,
                     'username' : form.username.data,
+
+                    'in_addresses' : form.in_addresses.data,
                     'in_events' : form.in_events.data,
+
                     'sections' : form.sections.data,
                     'is_active' : form.is_active.data
                 }
@@ -152,6 +160,9 @@ def edit(id=1):
         if  user.sections :
             form.sections.data = user.sections
 
+        if  user.in_addresses :
+            form.in_addresses.data = user.in_addresses
+
         if  user.in_events :
             form.in_events.data = user.in_events
 
@@ -162,7 +173,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("users/edit.html", form=form,  in_events = in_events, sections = sections, title_en_US='Edit', app = app)
+            return render_template("users/edit.html", form=form,  in_addresses = in_addresses, in_events = in_events, sections = sections, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")

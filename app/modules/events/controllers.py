@@ -21,6 +21,7 @@ from app.modules.localization.controllers import get_locale, get_timezone
 
 from app.modules.users.models import User
 from app.modules.items.models import Item
+from app.modules.addresses.models import Address
 
 # -------  ROUTINGS AND METHODS  ------- 
 
@@ -33,8 +34,8 @@ def index(page=1):
         
         users = User.query.filter(User.is_active == True).all()
         guests = users
-        items = Event.query.filter(Item.is_active == True).all()
-
+        items = Item.query.filter(Item.is_active == True).all()
+        addresses = Address.query.filter(Address.is_active == True).all()
 
         m_events = Event()
         list_events = m_events.all_data(page, app.config['LISTINGS_PER_PAGE'])
@@ -44,7 +45,7 @@ def index(page=1):
         if request.is_xhr == True:
             return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_events.items])
         else:
-            return render_template("events/index.html", items = items, users = users, guests = guests, list_events=list_events, app = app)
+            return render_template("events/index.html", addresses = addresses, items = items, users = users, guests = guests, list_events=list_events, app = app)
 
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
@@ -79,6 +80,7 @@ def new():
         guests = users
 
         items = Item.query.filter(Item.is_active == True).all()
+        addresses = Address.query.filter(Address.is_active == True).all()
 
         form = Form_Record_Add(request.form)
 
@@ -93,11 +95,16 @@ def new():
                     'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
 
+                    'description_en_US' : sanitize_html(form.description_en_US.data),
+                    'description_fr_FR' : sanitize_html(form.description_fr_FR.data),
+
                     'amount' : decimal.Decimal(form.amount.data),
 
                     'user' : form.user.data,
 
                     'item' : form.item.data,
+
+                    'address' : form.address.data,
 
                     'guests' : form.guests.data,
 
@@ -136,7 +143,7 @@ def new():
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("events/edit.html", form=form, items=items, users = users, guests = guests, title_en_US='New', app = app)
+            return render_template("events/edit.html", form=form, addresses = addresses, items=items, users = users, guests = guests, title_en_US='New', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
@@ -155,6 +162,7 @@ def edit(id=1):
         users = User.query.filter(User.is_active == True).all()
         guests = users
         items = Item.query.filter(Item.is_active == True).all()
+        addresses = Address.query.filter(Address.is_active == True).all()
 
         events = Event()
         event = Event.query.get_or_404(id)
@@ -170,11 +178,16 @@ def edit(id=1):
                     'title_en_US' : form.title_en_US.data,
                     'title_fr_FR' : form.title_fr_FR.data,
 
+                    'description_en_US' : sanitize_html(form.description_en_US.data),
+                    'description_fr_FR' : sanitize_html(form.description_fr_FR.data),
+
                     'amount' : decimal.Decimal(form.amount.data),
 
                     'user' : form.user.data,
 
                     'item' : form.item.data,
+
+                    'address' : form.address.data,
 
                     'guests' : form.guests.data,
 
@@ -206,6 +219,9 @@ def edit(id=1):
         form.title_en_US.data = event.title_en_US
         form.title_fr_FR.data = event.title_fr_FR
 
+        form.description_en_US.data = event.description_en_US
+        form.description_fr_FR.data = event.description_fr_FR
+
         form.amount.data = event.amount
 
         if  event.user :
@@ -213,6 +229,9 @@ def edit(id=1):
 
         if  event.item :
             form.item.data = event.item.id
+
+        if  event.address :
+            form.address.data = event.address.id
 
         if  event.guests :
             form.guests.data = event.guests
@@ -234,7 +253,7 @@ def edit(id=1):
         if request.is_xhr == True:
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
-            return render_template("events/edit.html", form=form, items = items, users = users, guests = guests, title_en_US='Edit', app = app)
+            return render_template("events/edit.html", form=form, addresses = addresses, items = items, users = users, guests = guests, title_en_US='Edit', app = app)
     except Exception, ex:
         print("------------ ERROR  ------------\n" + str(ex.message))
         flash(str(ex.message), category="warning")
