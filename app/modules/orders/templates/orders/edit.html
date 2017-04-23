@@ -7,7 +7,7 @@
         <div class="col-lg-8 col-centered">
             <div class="well">
                 <form method="POST" action="{{ form.action }}" enctype="multipart/form-data" role="form" class="form-horizontal" accept-charset="utf-8">
-                    
+
                     <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
                     <fieldset>
                         <legend>Form order</legend>
@@ -71,7 +71,20 @@
                             </div>
                         </div>
 
-                        
+                        <div class="form-group">
+                            <label for="order_comments" class="col-lg-4 control-label">{{ form.comments.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.comments (cols="35", rows="5", class="form-control") }}
+                                <!-- <textarea class="form-control" id="order_comments" name="order_comments">form.comments.data</textarea> -->
+                                {% for error in form.errors.comments %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label for="order_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>

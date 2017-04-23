@@ -10,7 +10,7 @@ from app.modules.auth import auth_page
 from app import app
 from app import db
 from app.modules.users.models import User
-
+from app.modules.orders.models import Order
 
 
 # AUTHENTICATION PAGE
@@ -28,12 +28,14 @@ def logout():
         # redirect to the login page
         if request.is_xhr == True :
             # Remove classic session
+            logout_user()
             if 'email' in session:
                 session.pop('email')
                 session.pop('current_lang')
-                if session.get('order_id') :
-                    session.pop('order_id') 
-                session.clear()
+            if session.get('order_id') :
+                Order().destroy_data(session.get('order_id'))
+                session.pop('order_id')             
+            session.clear()
             return jsonify(data = {message:"You have successfully been logged out"}), 200, {'Content-Type': 'application/json'}
         else:
             # Remove flask login session
@@ -41,7 +43,7 @@ def logout():
             session.pop('email')
             session.pop('current_lang')
             if session.get('order_id') :
-                session.pop('order_id')
+                Order().destroy_data(session.get('order_id'))            
             session.clear()
             flash('You have successfully been logged out', 'info')
             return redirect(url_for('auth_page.login'))

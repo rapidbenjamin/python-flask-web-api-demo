@@ -72,6 +72,10 @@ class Order(db.Model):
     # amount in decimal , precision=10, scale=2 .
     amount = db.Column(db.Numeric(10,2), nullable=False, default=0.0)
 
+    params =  db.Column(db.Text())
+
+    comments = db.Column(db.Text())
+
     # is_active usually returns True. 
     # This should return False only in cases where we have disabled order. 
     is_active = db.Column(db.Boolean, index=True, default=True)

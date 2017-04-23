@@ -165,6 +165,8 @@ def new():
 
                     'items' : form.items.data,
 
+                    'comments' : form.comments.data,
+
                     'is_active' : form.is_active.data
                 }
 
@@ -221,14 +223,16 @@ def edit(id=1):
 
                     'items' : form.items.data,
 
+                    'comments' : form.comments.data,
+
                     'is_active' : form.is_active.data
                 }
 
                 orders.update_data(order.id, sanitize_form)
 
                 # Remove current order
-                if order.status != 'cart' and session.get('order_id'):
-                    session.pop('order_id')
+                #if order.status != 'cart' and session.get('order_id'):
+                    #session.pop('order_id')
 
                 logger.info("Editing a new record.")
                 
@@ -247,6 +251,8 @@ def edit(id=1):
 
         if  order.items :
             form.items.data = order.items
+
+        form.comments.data = order.comments
 
         form.is_active.data = order.is_active
 

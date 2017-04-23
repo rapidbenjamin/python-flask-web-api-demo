@@ -21,5 +21,8 @@ class Form_Record_Add(Form):
                              query_factory=lambda : Item.query.filter(Item.is_active == True).all(),
                              get_label=lambda s: s.title_en_US,
                              allow_blank=True)
+    
+    comments = TextAreaField('comments', validators=[validators.Length(max=200, message='max 200 characters')])
+
 
     is_active = BooleanField('is_active', default=True)

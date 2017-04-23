@@ -15,6 +15,8 @@
             <th>User</th>
             <th>Items</th>
             <th>Amount</th>
+            <th>Params</th>
+            <th>Comments</th>
             <th>Active</th>
             <th>Updated Date</th>
             <th>Created Date</th>
@@ -59,6 +61,8 @@
                     <td>
                         {{ order.amount }}
                     </td>
+                    <td>{{ order.params }}</td>
+                    <td>{{ order.comments }}</td>
                     <td>{{ order.is_active }}</td>
                     <td>{{ order.updated_at | datetimeformat }}</td>
                     <td>{{ order.created_at | datetimeformat }}</td>
