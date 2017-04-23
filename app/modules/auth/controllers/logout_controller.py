@@ -31,7 +31,8 @@ def logout():
             if 'email' in session:
                 session.pop('email')
                 session.pop('current_lang')
-                session.pop('order_id')
+                if session.get('order_id') :
+                    session.pop('order_id') 
                 session.clear()
             return jsonify(data = {message:"You have successfully been logged out"}), 200, {'Content-Type': 'application/json'}
         else:
@@ -39,7 +40,8 @@ def logout():
             logout_user()
             session.pop('email')
             session.pop('current_lang')
-            session.pop('order_id')
+            if session.get('order_id') :
+                session.pop('order_id')
             session.clear()
             flash('You have successfully been logged out', 'info')
             return redirect(url_for('auth_page.login'))

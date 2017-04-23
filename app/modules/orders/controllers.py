@@ -227,7 +227,7 @@ def edit(id=1):
                 orders.update_data(order.id, sanitize_form)
 
                 # Remove current order
-                if order.status != 'cart':
+                if order.status != 'cart' and session.get('order_id'):
                     session.pop('order_id')
 
                 logger.info("Editing a new record.")
