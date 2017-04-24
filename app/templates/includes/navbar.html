@@ -25,21 +25,28 @@
                     <a class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         <span class="glyphicon glyphicon-file"></span> Products <b class="caret"></b>
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">                        
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                         <li><a class="{{ 'active' if 'items_page.index' in request.endpoint else '' }}" href="/items"><span class="glyphicon glyphicon-file"></span> Items</a></li>
                         <li><a class="{{ 'active' if 'assets_page.index' in request.endpoint else '' }}" href="/assets"><span class="glyphicon glyphicon-picture"></span> Assets</a></li>
                         <li><a class="{{ 'active' if 'events_page.index' in request.endpoint else '' }}" href="/events"><span class="glyphicon glyphicon-time"></span> Events</a></li>
                         <li><a class="{{ 'active' if 'addresses_page.index' in request.endpoint else '' }}" href="/addresses"><span class="glyphicon glyphicon-map-marker"></span> Addresses</a></li>
                     </ul>
+                </li>                
+                <li class="btn-group dropdown" >
+                    <a class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                        <span class="glyphicon glyphicon-shopping-cart"></span> 
+                        {% if g.current_cart %} 
+                            <lavel id="cart-badge" class="badge badge-warning"> {{ g.current_cart.items.count() }}</lavel>
+                        {% endif %}
+                        Orders <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <li><a class="{{ 'active' if 'orders_page.index' in request.endpoint else '' }}" href="/orders"><span class="glyphicon glyphicon-shopping-cart"></span> Orders</a></li>
+                        <li><a class="{{ 'active' if 'payments_page.index' in request.endpoint else '' }}" href="/payments"><span class="glyphicon glyphicon-usd"></span> Payments</a></li>
+                        <li><a class="{{ 'active' if 'creditcards_page.index' in request.endpoint else '' }}" href="/creditcards"><span class="glyphicon glyphicon-credit-card"></span> Credit cards</a></li>
+                    </ul>
                 </li>
-                <li>
-                    <a class="{{ 'active' if 'orders_page.index' in request.endpoint else '' }}" href="/orders"><span class="glyphicon glyphicon-shopping-cart"></span>
-                    {% if g.current_cart %} 
-                        <lavel id="cart-badge" class="badge badge-warning"> {{ g.current_cart.items.count() }}</lavel>
-                    {% endif %} 
-                    Orders</a>
-                </li>
-                
+
                 <li class="btn-group dropdown" >
                     <a class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                         <span class="glyphicon glyphicon-envelope"></span> Messages <b class="caret"></b>

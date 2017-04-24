@@ -11,19 +11,20 @@ Python Flask WEB API DEMO
 	- Utils for server production setups
 	- Latest bootstrap, bootswatch, modernizer, jquery, moment.js, tinymcs, etc. served from content delivery networks.
 	- Module Sample PAGES, with home page  full-screen layout
-	- Module Sample database SECTIONS with SQLALchemy, relational models and Pagination		
+	- Module Sample database SECTIONS with SQLALchemy, relational models and Pagination
 	- Module Sample database USERS with SQLALchemy, relational models and Pagination
-	- Module Sample page MESSAGES with email form, recaptcha and Email service by SendGrid and Flash MESSAGE notification	
-	- Module Sample database RESOURCES : 
-								- ITEMS with images gallery and visual editor,]
+	- Module Sample page MESSAGES with email form, recaptcha and Email service by SendGrid and Flash MESSAGE notifications
+	- Module Sample database RESOURCES :
+								- ITEMS with images gallery and wysiwyg visual editor,
 								- ASSETS files and image processing with Pillow
-								- EVENTS (start/end datetime) 
+								- EVENTS (start/end datetime and timestamp operations)
 								- ADDRESSES (google map and geocoding with latitude and longitude)
 	- Module Sample database ORDERS and orderitem many-to-many relationship and shopping cart operations
-	- Module sample ADMIN, backoffice member with authentication  and authorization powered by Flask-login plugin :
+	- Module Sample database PAYMENTS, credit cards, cryptography and transaction operations via paypal API Restful.
+	- Module sample ADMIN, backoffice member with authentication  and authorization, and hash password powered by Flask-login and Werkzeug.security plugin :
 			- User Registry, Login & Logout
 			- Session based authentication or Basic HTTP authentication or Token based authentication (with active SSL recommended in production environement)
-			- Password encryption and password-check with werkzeug.security (bcrypt-like approach) (with active SSL recommended in production environment)
+			- Password hash and password-check with werkzeug.security (bcrypt-like approach) (with active SSL recommended in production environment)
 			- password base64 encoding for remote ajax-based app client (optional)
 			- Role management (is_admin, is_owner, is_member), control access and Dashboard sample page
 	- SQLite or MySQL database configuration option

@@ -84,6 +84,9 @@ app.register_blueprint(orders_page, url_prefix='/orders')
 from modules.payments import payments_page
 app.register_blueprint(payments_page, url_prefix='/payments')
 
+from modules.payments import creditcards_page
+app.register_blueprint(creditcards_page, url_prefix='/creditcards')
+
 from modules.localization import localization_service
 app.register_blueprint(localization_service, url_prefix='/localization')
 

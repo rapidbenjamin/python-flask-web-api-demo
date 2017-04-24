@@ -40,6 +40,8 @@ class Order(db.Model):
     # a bidirectional relationship in many-to-one. Return object
     user = db.relationship('User', back_populates='orders')
 
+    # one-to-many relationship with the Payment model
+    payments = db.relationship('Payment', back_populates='order')
 
     # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Item model
     # the cascade will delete orphaned orderitems

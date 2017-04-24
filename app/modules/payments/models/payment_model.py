@@ -18,7 +18,6 @@ from app.modules.localization.controllers import get_locale, get_timezone
 
 from app.modules.users.models import User
 from app.modules.orders.models import Order
-from app.modules.payments.models.creditcard_model import Creditcard
 
 
 

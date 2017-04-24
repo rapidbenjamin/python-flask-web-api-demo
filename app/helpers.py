@@ -7,13 +7,17 @@ from dateutil import *
 from dateutil import tz
 import time
 from jinja2 import Environment
-import os
-import binascii
+
 
 import bleach
 import jinja2
 
+# security 
+import os
+import binascii
 from cryptography.fernet import Fernet
+from werkzeug.security import generate_password_hash, check_password_hash
+import base64
 
 # ------- IMPORT LOCAL DEPENDENCIES -------
 from threading import Thread
@@ -48,40 +52,60 @@ def ssl_required(fn):
     return decorated_controller
 
 
-# ------- RANDOM TOKEN GENERATOR -------
-def generate_token():
-    # a secret key should be as random as possible.
-    token = binascii.hexlify(os.urandom(24))
-    return token
 
 
-# ------- CRYPTOGRAPHY : FERNET KEY GENERATOR -------
 
-class EncryptTool(object):
+# ------- SECURITY TOOL : ENCODE, ENCRYPT, HASH, KEY GENERATOR -------
+
+class SecurityTool(object):
     """
-    Security tool : secret key generator and encrypt tool
+    Security tool : secret key generator and encode, encrypt, hash tools
     """
-    def __init__(self):
+    __fernet_key = Fernet.generate_key()
+    __cipher_suite  = Fernet(__fernet_key)
+
+    #def __init__(self):
+        # Fernet : symmetric encryption
         # Fernet.generate_key : Generates a fresh fernet key. This must be kept secret. Keep this some place safe!
         # If you lose it you’ll no longer be able to decrypt messages;
         # Anyone with this key is able to create and read messages.
-        self.__fernet_key = Fernet.generate_key()
-        self.__cipher_suite = Fernet(self.__fernet_key)
-        # override to prevent peeking
-        self.__dict__ = {}
 
-    def to_encrypt(self, plain_text):
+        # override to prevent peeking
+        # self.__dict__ = {}
+
+    # ------- ENCRYPTION WITH A KEY -------
+    def encrypt(self, plain_text):
         # Fernet token : A secure message that cannot be read or altered without the key.
         # It is URL-safe base64-encoded.
-        fernet_token = self.__cipher_suite.encrypt(plain_text)
-        return fernet_token
+        return self.__cipher_suite.encrypt(plain_text)
 
-    def to_decrypt(self, fernet_token):
-        plain_text = self.__cipher_suite.decrypt(fernet_token)
-        return plain_text
+    def decrypt(self, fernet_token):
+        return self.__cipher_suite.decrypt(fernet_token)
 
 
-# ------- HASH (PASSWORD -------
+    # ------- HASH STRING AND CHECK HASHED -------
+    def hash(self, password):
+        return generate_password_hash(password)
+
+    def check_hashed(self, hashed, input_password):
+        return check_password_hash(hashed, input_password)
+
+
+    # ------- BASE64 ENCODING AND DECODING -------
+    def encode(self, data):
+        return base64.b64encode(data)
+
+    def decode(self, encoded):
+        return base64.b64decode(encoded)
+
+    # ------- RANDOM TOKEN KEY GENERATOR -------
+    def generate_token_key(self):
+        # a secret key should be as random as possible.
+        token = binascii.hexlify(os.urandom(24))
+        return token
+
+
+
 
 
 # ------- RANDOM POPULATE DATABASE -------

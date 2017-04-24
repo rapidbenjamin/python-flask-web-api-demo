@@ -9,7 +9,7 @@ import json
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import CombinedMultiDict
 from flask import request, render_template, flash, current_app, g, redirect, abort, jsonify, url_for, session
-from forms import *
+
 from time import time
 from flask_login import login_required, current_user
 
@@ -24,8 +24,8 @@ from app.modules.users.models import User
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 from app import config_name
-from constants import *
-
+from app.modules.payments.constants import *
+from app.modules.payments.forms.payment_form import *
 from app.modules.orders.models import Order
 from app.modules.payments.models.creditcard_model import Creditcard
 

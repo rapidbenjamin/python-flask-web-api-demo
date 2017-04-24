@@ -53,6 +53,13 @@ class User(UserMixin, db.Model):
     # one-to-many relationship with the Order model
     orders = db.relationship('Order', back_populates='user')
 
+    # one-to-many relationship with the Payment model
+    payments = db.relationship('Payment', back_populates='user')
+
+    # one-to-many relationship with the Creditcard model
+    creditcards = db.relationship('Creditcard', back_populates='user')
+
+
     # MANY-TO-MANY relationship with EXTRA_DATA columns association and the Address model
     # the cascade will delete orphaned useraddresses
     useraddresses = db.relationship('UserAddress', back_populates='guest', lazy='dynamic',  cascade="all, delete-orphan")

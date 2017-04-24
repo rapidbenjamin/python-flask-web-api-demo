@@ -18,7 +18,6 @@ from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 
 from app.modules.users.models import User
-from app.modules.payments.models.payment_model import Payment
 
 
 class Creditcard(db.Model):
@@ -44,7 +43,7 @@ class Creditcard(db.Model):
 
     type  = db.Column(db.String(255), index=True)
     # Always encrypt credit card number
-    encrypted_number  = db.Column(db.Text())
+    encrypted_number  = db.Column(db.Binary())
     expire_month  = db.Column(db.Integer, index=True)
     expire_year  = db.Column(db.Integer, index=True)
     # Do not save cvv2 anywhere
@@ -68,7 +67,7 @@ class Creditcard(db.Model):
     # created_at = db.Column(db.Integer, default=time.mktime(datetime.utcnow().timetuple()))
 
     # Cryptography tool
-    __encryptool = EncryptTool()
+    __encryptool = SecurityTool()
 
     def all_data(self, page, LISTINGS_PER_PAGE):
         return Creditcard.query.order_by(desc(Creditcard.created_at)).paginate(page, LISTINGS_PER_PAGE, False)

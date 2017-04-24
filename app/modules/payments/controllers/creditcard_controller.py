@@ -9,7 +9,7 @@ import json
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import CombinedMultiDict
 from flask import request, render_template, flash, current_app, g, redirect, abort, jsonify, url_for, session
-from forms import *
+
 from time import time
 from flask_login import login_required, current_user
 
@@ -24,7 +24,8 @@ from app.modules.users.models import User
 from app.helpers import *
 from app.modules.localization.controllers import get_locale, get_timezone
 from app import config_name
-from constants import *
+from app.modules.payments.constants import *
+from app.modules.payments.forms.creditcard_form import *
 
 from app.modules.orders.models import Order
 from app.modules.payments.models.payment_model import Payment
@@ -35,7 +36,7 @@ from app.modules.payments.models.payment_model import Payment
 # -------  ROUTINGS AND METHODS  ------- 
 
 # Encrypt secret data
-encrypTool = EncryptTool()
+securityTool = SecurityTool()
 
 # All creditcards
 @creditcards_page.route('/')
@@ -87,11 +88,13 @@ def new():
 
         users = User.query.filter(User.is_active == True).all()
 
+        
+
         if request.method == 'POST':
 
             if form.validate():
 
-                payments = Creditcard()
+                creditcards = Creditcard()
 
                 sanitize_form = {
 
@@ -102,7 +105,7 @@ def new():
                     'user' : form.user.data,
 
                     'type' : form.type.data,
-                    'encrypted_number'  : encrypTool.to_encrypt(form.encrypted_number.data),
+                    'encrypted_number'  : securityTool.encrypt(str(form.encrypted_number.data)),
                     'expire_month'  : form.expire_month.data,
                     'expire_year'  : form.expire_year.data,
                     'first_name'  : form.first_name.data,
@@ -151,8 +154,6 @@ def edit(id=1):
 
         # users = User.query.all()
         users = User.query.filter(User.is_active == True).all()
-        orders = Order.query.filter(Order.is_active == True).all()
-        creditcards = Creditcard.query.filter(Creditcard.is_active == True).all()
 
         # request.form only contains form input data. request.files contains file upload data. 
         # You need to pass the combination of both to the form. 
@@ -170,7 +171,8 @@ def edit(id=1):
                     'user' : form.user.data,
 
                     'type' : form.type.data,
-                    'encrypted_number'  : encrypTool.to_encrypt(form.encrypted_number.data),
+                    # 'encrypted_number'  : securityTool.encrypt(str(form.encrypted_number.data)),
+                    'encrypted_number'  : form.encrypted_number.data,
                     'expire_month'  : form.expire_month.data,
                     'expire_year'  : form.expire_year.data,
                     'first_name'  : form.first_name.data,
@@ -207,7 +209,8 @@ def edit(id=1):
             form.user.data = creditcard.user.id
 
         form.type.data = creditcard.type
-        form.encrypted_number.data = encrypTool.to_decrypt(creditcard.encrypted_number)
+        # form.encrypted_number.data = securityTool.decrypt(creditcard.encrypted_number)
+        form.encrypted_number.data = creditcard.encrypted_number
         form.expire_month.data = creditcard.expire_month
         form.expire_year.data = creditcard.expire_year
         form.first_name.data = creditcard.first_name

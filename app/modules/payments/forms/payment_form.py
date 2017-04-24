@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # import dependencies
-from wtforms import Form, StringField, FileField, TextAreaField, validators, BooleanField
+from wtforms import Form, StringField, FileField, TextAreaField, validators, BooleanField, DecimalField
 from wtforms.fields.html5 import DateField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 
