@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h3>{{ title_en_US }}</h3>
+    <hr/>
+    <div class="row">
+        <div class="col-lg-8 col-centered">
+            <div class="well">
+                <form method="POST" action="{{ form.action }}" enctype="multipart/form-data" role="form" class="form-horizontal" accept-charset="utf-8">
+
+                    <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
+                    <fieldset>
+                        <legend>Form payment</legend>
+
+
+                        <div class="form-group">
+                            <label for="payment_status" class="col-lg-4 control-label">{{ form.status.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.status (class="form-control") }}
+                                <!-- <input class="form-control" id="payment_status" name="payment_status" required="" value="" type="text"> -->
+                                {% for error in form.errors.status %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="payment_key_id" class="col-lg-4 control-label">{{ form.key_id.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.key_id (class="form-control") }}
+                                <!-- <input class="form-control" id="payment_key_id" name="payment_key_id" required="" value="" type="text"> -->
+                                {% for error in form.errors.key_id %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="payment_amount" class="col-lg-4 control-label">{{ form.amount.label }}</label>
+                            <div class="col-lg-6">
+                                {{ form.amount (class="form-control") }}
+                                <!-- <input class="form-control" id="payment_amount" name="payment_amount" required="" value="" type="text"> -->
+                                {% for error in form.errors.amount %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- ONE-TO-MANY -->
+                        <div class="form-group">
+                            <label for="payment_user" class="col-lg-4 control-label">{{ form.user.label }}</label>
+                            <div class="col-lg-6">
+                                <select class="form-control" id="user" name="user" >
+                                    <option value="" >None</option>
+                                    {% for user in users %}
+                                        <option value="{{ user.id }}" {% if form.user.data == user.id %} selected="selected"{% endif %} >{{user.username}}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.errors.user %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- ONE-TO-MANY -->
+                        <div class="form-group">
+                            <label for="payment_order" class="col-lg-4 control-label">{{ form.order.label }}</label>
+                            <div class="col-lg-6">
+                                <select class="form-control" id="order" name="order" >
+                                    <option value="" >None</option>
+                                    {% for order in orders %}
+                                        <option value="{{ order.id }}" {% if form.order.data == order.id %} selected="selected"{% endif %} >{{order.id}}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.errors.order %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- ONE-TO-MANY -->
+                        <div class="form-group">
+                            <label for="payment_creditcard" class="col-lg-4 control-label">{{ form.creditcard.label }}</label>
+                            <div class="col-lg-6">
+                                <select class="form-control" id="creditcard" name="creditcard" >
+                                    <option value="" >None</option>
+                                    {% for creditcard in creditcards %}
+                                        <option value="{{ creditcard.id }}" {% if form.creditcard.data == creditcard.id %} selected="selected"{% endif %} >{{creditcard.id}}</option>
+                                    {% endfor %}
+                                </select>
+                                {% for error in form.errors.creditcard %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="payment_params" class="col-lg-4 control-label">{{ form.params.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.params (cols="35", rows="5", class="form-control") }}
+                                <!-- <textarea class="form-control" id="payment_params" name="payment_params">form.params.data</textarea> -->
+                                {% for error in form.errors.params %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="payment_comments" class="col-lg-4 control-label">{{ form.comments.label }}</label>
+
+                            <div class="col-lg-6">
+                                {{ form.comments (cols="35", rows="5", class="form-control") }}
+                                <!-- <textarea class="form-control" id="payment_comments" name="payment_comments">form.comments.data</textarea> -->
+                                {% for error in form.errors.comments %} <br/>
+
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="payment_is_active" class="col-lg-4 control-label">{{ form.is_active.label }}</label>
+                            <div class="col-lg-6">
+                                {{ form.is_active (class="form-control") }}
+                                <!-- <input type="checkbox" name="check" value="{{ form.is_active.data }}"> -->
+                                {% for error in form.errors.is_active %} <br/>
+                                    <div class="alert alert-danger" style="display: inline-block">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-lg-4  col-lg-offset-4">
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    </div>
+</div>
+
+
+{% endblock content %}

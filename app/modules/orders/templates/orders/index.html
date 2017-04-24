@@ -13,6 +13,7 @@
             <th>Id</th>
             <th>Status</th>
             <th>User</th>
+            <th>Payments</th>
             <th>Items</th>
             <th>Amount</th>
             <th>Params</th>
@@ -34,10 +35,19 @@
                         {% if order.user %}
                             {{ order.user.username }}
                         {% else %}
-                            No User
+                            No user
                         {% endif %}
                     </td>
-                    
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if order.payments %}
+                            {% for payment in order.payments %}
+                                {{ payment.id }}
+                            {% endfor %}
+                        {% else %}
+                            No payments
+                        {% endif %}
+                    </td>
                     <!-- MANY-TO-MANY -->
                     <td>
                         {% if order.items %}

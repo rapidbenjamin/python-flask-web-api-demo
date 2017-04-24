@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title_en_US %} Payment {{ payment.id }} - {{ payment.status }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>Payment {{ payment.id }} - {{ payment.status }}</h3>
+    <h4 class="text-right"><a href="/payments"><span class="glyphicon glyphicon-chevron-left"></span> Back</a></h4>
+    <hr/>
+
+    <p>{{ payment.status }}</p>
+    <p>{{ payment.key_id }}</p>
+    <p>{{ payment.amount }}</p>
+    <!-- ONE-TO-MANY -->
+    <p> User :
+        {% if payment.user %}
+            {{ payment.user.username }}
+        {% else %}
+            No User
+        {% endif %}
+    </p>
+    <!-- ONE-TO-MANY -->
+    <p>
+        {% if payment.order %}
+            {{ payment.order.id }}
+        {% else %}
+            No order
+        {% endif %}
+    </p>
+
+        <!-- ONE-TO-MANY -->
+    <p>
+        {% if payment.creditcard %}
+            {{ payment.creditcard.id }}
+        {% else %}
+            No credit card
+        {% endif %}
+    </p>
+
+    <p>{{ payment.params }}</p>
+    <p>{{ payment.comments }}</p>
+    <p>{{ payment.is_active }}</p>
+    <p>{{ payment.updated_at }}</p>
+    <p>{{ payment.created_at }}</p>
+</div>
+{% endblock content %}
+

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h4 class="pull-right"><a href="/creditcards/new"><span class="glyphicon glyphicon-plus"></span> New</a></h4>
+    <h3>Credit card</h3>
+    <hr/>
+
+    <div class="text-left">{{ list_creditcards.query.count() }} results</div>
+
+    <table class="table table-striped table-bcreditcarded table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Status</th>
+            <th>Key id</th>
+            <th>User</th>
+            <th>Payments</th>
+            <th>Type</th>
+            <th>Encrypted number</th>
+            <th>Expire month</th>
+            <th>Expire year</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Params</th>
+            <th>Comments</th>
+            <th>Active</th>
+            <th>Updated Date</th>
+            <th>Created Date</th>
+            <th colspan="3">Actions</th>
+        </tr>
+        </thead>
+        {% if list_creditcards.items %}
+            {% for creditcard in list_creditcards.items %}
+                <tr>
+                    <td><a href="{{ url_for('creditcards_page.show', id = creditcard.id) }}" >{{ creditcard.id }}</a></td>
+                    <td>{{ creditcard.status }}</td>
+                    <td>{{ creditcard.key_id }}</td>
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if creditcard.user %}
+                            {{ creditcard.user.username }}
+                        {% else %}
+                            No user
+                        {% endif %}
+                    </td>
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if creditcard.payments %}
+                            {% for payment in creditcard.payments %}
+                                {{ payment.id }} 
+                            {% endfor %}
+                        {% else %}
+                            No payments
+                        {% endif %}
+                    </td>
+                    <td> {{ creditcard.type }} </td>
+                    <td> {{ creditcard.encrypted_number }} </td>
+                    <td> {{ creditcard.expire_month }} </td>
+                    <td> {{ creditcard.expire_year }} </td>
+                    <td> {{ creditcard.first_name }} </td>
+                    <td> {{ creditcard.last_name }} </td>
+
+
+                    <td>{{ creditcard.params }}</td>
+                    <td>{{ creditcard.comments }}</td>
+                    <td>{{ creditcard.is_active }}</td>
+                    <td>{{ creditcard.updated_at | datetimeformat }}</td>
+                    <td>{{ creditcard.created_at | datetimeformat }}</td>
+                    <td><a href="{{ url_for('creditcards_page.show', id = creditcard.id) }}" ><i class="glyphicon glyphicon-file"></i> </a></td>
+                    <td><a href="{{ url_for('creditcards_page.edit', id = creditcard.id) }}" ><i class="glyphicon glyphicon-pencil"></i> </a></td>
+                    <td><a href="{{ url_for('creditcards_page.destroy', id = creditcard.id) }}" onclick="return confirm('Are you sure you want to delete this item?');"><i class="glyphicon glyphicon-trash"></i> </a></td>
+
+                </tr>
+            {% endfor %}
+        {% else %}
+          <tr style="text-align: center">
+              <td colspan="14">
+            <h4> No creditcards have been added. </h4>
+            </td>
+         </tr>
+        {% endif %}
+    </table>
+
+    <ul class="pagination">
+        {%- for page in list_creditcards.iter_pages() %}
+            {% if page %}
+                {% if page != list_creditcards.page %}
+                    <li><a href="{{ url_for('creditcards_page.creditcards', page = page) }}">{{ page }}</a></li>
+                {% else %}
+                    <li class="active"><a href="#"><strong>{{ page }}</strong></a></li>
+                {% endif %}
+            {% else %}
+                <li><span class=ellipsis>…</span></li>
+            {% endif %}
+        {%- endfor %}
+    </ul>
+</div>
+
+{% endblock content %}

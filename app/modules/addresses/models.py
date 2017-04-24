@@ -76,6 +76,7 @@ class Address(db.Model):
     postal_code = db.Column(db.String(255),  index=True)
     state_region = db.Column(db.String(255),  index=True)
     country = db.Column(db.String(255),  index=True)
+    country_code = db.Column(db.String(255),  index=True)
     full = db.Column(db.String(255),  index=True)
     time_zone = db.Column(db.String(255),  index=True)
 
@@ -186,6 +187,7 @@ class Address(db.Model):
                                 postal_code = form['postal_code'],
                                 state_region = form['state_region'],
                                 country = form['country'],
+                                country_code = form['country_code'],
                                 # full = form['full'],
                                 full = full,
                                 time_zone = form['time_zone'],
@@ -259,6 +261,7 @@ class Address(db.Model):
         address.postal_code = form['postal_code']
         address.state_region = form['state_region']
         address.country = form['country']
+        address.country_code = form['country_code']
         address.full = full
         address.time_zone = form['time_zone']
 

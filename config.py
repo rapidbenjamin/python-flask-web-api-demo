@@ -46,7 +46,7 @@ class BaseConfig(object):
     SECURITY_PASSWORD_SALT = 'add_salt_123_hard_one-or-in-the-instance-secret-config-folder'
     SECURITY_CONFIRMABLE = True
 
-    # asset files
+    # Asset files
     UPLOAD_FOLDER = 'app/static/uploads'
     ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
     # limit the maximum allowed payload to 16 megabytes. 
@@ -55,17 +55,22 @@ class BaseConfig(object):
     THUMBNAIL_SIZE = 128, 128
     MAX_SIZE = 1600
 
-    # google map api key
+    # Google map api key
     GOOGLE_MAP_API_KEY = ''
 
-    # session
+    # Paypal config
+    PAYPAL_MODE = "sandbox" # sandbox or live
+    PAYPAL_CLIENT_ID = "ATcNxfmVFttFZG3v6mnrjkdfjgkfGG9RzZqBZxxxxxxxxxxxxxxxxxxxxxxx"
+    PAYPAL_CLIENT_SECRET = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+    # Session
     SESSION_TYPE = 'filesystem'
     SESSION_FILE_DIR =  'sessions'
     SESSION_PERMANENT = False
     # SESSION_FILE_THRESHOLD = 500
     # SESSION_FILE_MODE = 600
 
-    # SendGrid example.
+    # SendGrid Mail example.
     MAIL_SERVER = 'smtp.sendgrid.net'
     MAIL_PORT = 587
     MAIL_USE_SSL = False

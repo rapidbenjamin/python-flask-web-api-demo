@@ -35,6 +35,9 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(60), index=True, unique=True)
     password_hash = db.Column(db.String(128))
 
+    first_name = db.Column(db.String(128), index=True)
+    last_name = db.Column(db.String(128), index=True)
+
     # one-to-many relationship with the Asset model
     assets = db.relationship('Asset', back_populates='user')
 

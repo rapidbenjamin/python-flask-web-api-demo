@@ -13,6 +13,8 @@ import binascii
 import bleach
 import jinja2
 
+from cryptography.fernet import Fernet
+
 # ------- IMPORT LOCAL DEPENDENCIES -------
 from threading import Thread
 from functools import wraps
@@ -51,6 +53,36 @@ def generate_token():
     # a secret key should be as random as possible.
     token = binascii.hexlify(os.urandom(24))
     return token
+
+
+# ------- CRYPTOGRAPHY : FERNET KEY GENERATOR -------
+
+class EncryptTool(object):
+    """
+    Security tool : secret key generator and encrypt tool
+    """
+    def __init__(self):
+        # Fernet.generate_key : Generates a fresh fernet key. This must be kept secret. Keep this some place safe!
+        # If you lose it you’ll no longer be able to decrypt messages;
+        # Anyone with this key is able to create and read messages.
+        self.__fernet_key = Fernet.generate_key()
+        self.__cipher_suite = Fernet(self.__fernet_key)
+        # override to prevent peeking
+        self.__dict__ = {}
+
+    def to_encrypt(self, plain_text):
+        # Fernet token : A secure message that cannot be read or altered without the key.
+        # It is URL-safe base64-encoded.
+        fernet_token = self.__cipher_suite.encrypt(plain_text)
+        return fernet_token
+
+    def to_decrypt(self, fernet_token):
+        plain_text = self.__cipher_suite.decrypt(fernet_token)
+        return plain_text
+
+
+# ------- HASH (PASSWORD -------
+
 
 # ------- RANDOM POPULATE DATABASE -------
 def populate_db_with_random_data(db_model):

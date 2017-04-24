@@ -9,7 +9,7 @@
     <p>{{ user.username }}</p>
 
     <!-- ONE-TO-MANY -->
-    <p> Assets : 
+    <p>Assets : 
         {% if user.assets %}
             {% for asset in user.assets %}
                 {% if asset.asset_type == 'image' %}    
@@ -27,7 +27,7 @@
         {% endif %}
     </p>
     <!-- ONE-TO-MANY -->
-    <p>
+    <p>Items : 
         {% if user.items %}
             {% for item in user.items %}
                 {{ item.slug }} 
@@ -37,7 +37,7 @@
         {% endif %}
     </p>
     <!-- ONE-TO-MANY -->
-    <p>
+    <p>Addresses :
         {% if user.addresses %}
             {% for address in user.addresses %}
                 {{ address.title_en_US }} 
@@ -47,7 +47,7 @@
         {% endif %}
     </p>
     <!-- ONE-TO-MANY -->
-    <p>
+    <p>Events : 
         {% if user.events %}
             {% for event in user.events %}
                 {{ event.title_en_US }}
@@ -57,7 +57,7 @@
         {% endif %}
     </p>
     <!-- ONE-TO-MANY -->
-    <p>
+    <p>Orders : 
         {% if user.orders %}
             {% for order in user.orders %}
                 {{ order.id }} 
@@ -66,10 +66,30 @@
             None
         {% endif %}
     </p>
-    
+
+    <!-- ONE-TO-MANY -->
+    <p>Credit cards : 
+        {% if user.creditcards %}
+            {% for creditcard in user.creditcards %}
+                {{ creditcard.id }}
+            {% endfor %}
+        {% else %}
+            None
+        {% endif %}
+    </p>
+    <!-- ONE-TO-MANY -->
+    <p>Payments : 
+        {% if user.payments %}
+            {% for payment in user.payments %}
+                {{ payment.id }}
+            {% endfor %}
+        {% else %}
+            None
+        {% endif %}
+    </p>
 
     <!-- MANY-TO-MANY -->
-    <p>
+    <p>In addresses :
         {% if user.in_addresses %}
             {% for in_address in user.in_addresses %}
                 {{ in_address.title_en_US }}, 
@@ -81,7 +101,7 @@
 
 
     <!-- MANY-TO-MANY -->
-    <p>
+    <p>In events : 
         {% if user.in_events %}
             {% for in_event in user.in_events %}
                 {{ in_event.title_en_US }}, 
@@ -94,7 +114,7 @@
     
 
     <!-- MANY-TO-MANY -->
-    <p>
+    <p>Sections :
         {% if user.sections %}
             {% for section in user.sections %}
                 {{ section.title_en_US }}, 

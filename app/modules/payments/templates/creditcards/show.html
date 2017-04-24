@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title_en_US %} Credit card {{ creditcard.id }} - {{ creditcard.status }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>Credit card {{ creditcard.id }} - {{ creditcard.status }}</h3>
+    <h4 class="text-right"><a href="/creditcards"><span class="glyphicon glyphicon-chevron-left"></span> Back</a></h4>
+    <hr/>
+
+    <p>{{ creditcard.status }}</p>
+    <p>{{ creditcard.key_id }}</p>
+
+    <!-- ONE-TO-MANY -->
+    <p> User :
+        {% if creditcard.user %}
+            {{ creditcard.user.username }}
+        {% else %}
+            No User
+        {% endif %}
+    </p>
+    <!-- ONE-TO-MANY -->
+    <p> Payments :
+        {% if creditcard.payments %}
+            {% for payment in creditcard.payments %}
+                {{ payment.id }} 
+            {% endfor %}
+        {% else %}
+            No payments
+        {% endif %}
+    </p>
+    <p> {{ creditcard.type }} </p>
+    <p> {{ creditcard.encrypted_number }} </p>
+    <p> {{ creditcard.expire_month }} </p>
+    <p> {{ creditcard.expire_year }} </p>
+    <p> {{ creditcard.first_name }} </p>
+    <p> {{ creditcard.last_name }} </p>
+
+    <p>{{ creditcard.params }}</p>
+    <p>{{ creditcard.comments }}</p>
+    <p>{{ creditcard.is_active }}</p>
+    <p>{{ creditcard.updated_at }}</p>
+    <p>{{ creditcard.created_at }}</p>
+</div>
+{% endblock content %}
+

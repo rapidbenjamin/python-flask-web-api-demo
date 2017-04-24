@@ -32,6 +32,8 @@ class Form_Record_Add(Form):
     state_region = StringField('state_region', validators=[validators.Length(max=255, message='max 255 characters')])
     country = StringField('country', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])
+    country_code = StringField('country_code', validators=[
+                                             validators.Length(max=255, message='max 255 characters')])
 
     time_zone = StringField('time_zone', validators=[validators.DataRequired(),
                                              validators.Length(max=255, message='max 255 characters')])

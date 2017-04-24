@@ -16,6 +16,8 @@
             <th>Addresses</th>
             <th>Events</th>
             <th>Orders</th>
+            <th>Credit cards</th>
+            <th>Payments</th>
             <th>In addresses</th>
             <th>In events</th>
             <th>Sections</th>
@@ -88,11 +90,31 @@
                             None
                         {% endif %}
                     </td>
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if user.creditcards %}
+                            {% for creditcard in user.creditcards %}
+                                {{ creditcard.id }}
+                            {% endfor %}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
+                    <!-- ONE-TO-MANY -->
+                    <td>
+                        {% if user.payments %}
+                            {% for payment in user.payments %}
+                                {{ payment.id }}
+                            {% endfor %}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </td>
                     <!-- MANY-TO-MANY -->
                     <td>
                         {% if user.in_addresses %}
                             {% for in_address in user.in_addresses %}
-                                {{ in_address.title_en_US }}, 
+                                {{ in_address.title_en_US }},
                             {% endfor %}
                         {% else %}
                             No in_address

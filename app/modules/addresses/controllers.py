@@ -99,6 +99,7 @@ def new():
                     'postal_code' : form.postal_code.data,
                     'state_region' : form.state_region.data,
                     'country' : form.country.data,
+                    'country_code' : form.country_code.data,
                     'time_zone' : form.time_zone.data,
 
                     'latitude' : decimal.Decimal(form.latitude.data),
@@ -174,6 +175,7 @@ def edit(id=1):
                     'postal_code' : form.postal_code.data,
                     'state_region' : form.state_region.data,
                     'country' : form.country.data,
+                    'country_code' : form.country_code.data,
                     'time_zone' : form.time_zone.data,
 
                     'latitude' : decimal.Decimal(form.latitude.data),
@@ -215,6 +217,7 @@ def edit(id=1):
         form.postal_code.data = address.postal_code
         form.state_region.data = address.state_region
         form.country.data = address.country
+        form.country_code.data = address.country_code
         form.time_zone.data = address.time_zone
 
         form.latitude.data = address.latitude

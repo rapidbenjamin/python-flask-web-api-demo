@@ -17,6 +17,17 @@
         {% endif %}
     </p>
 
+    <!-- ONE-TO-MANY -->
+    <p> Payments :
+        {% if order.payments %}
+            {% for payment in order.payments %}
+                {{ payment.id }}
+            {% endfor %}
+        {% else %}
+            No Payments
+        {% endif %}
+    </p>
+
     <!-- MANY-TO-MANY -->
     <p>
         {% if order.items %}

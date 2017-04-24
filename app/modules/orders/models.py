@@ -214,6 +214,8 @@ class Order(db.Model):
 
                             user = form['user'],
 
+                            comments = form['comments'],
+
                             is_active = form['is_active']
 
                         )
@@ -241,9 +243,11 @@ class Order(db.Model):
     def update_data(self, some_id, form ):
         order = Order.query.get_or_404(some_id)
 
-        order.status =form['status']
+        order.status = form['status']
 
         order.user = form['user']
+
+        order.comments = form['comments']
 
         order.is_active = form['is_active']
 

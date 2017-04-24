@@ -210,7 +210,7 @@ def edit(id=1):
 
         # request.form only contains form input data. request.files contains file upload data. 
         # You need to pass the combination of both to the form. 
-        form = Form_Record_Add(CombinedMultiDict((request.files, request.form)))
+        form = Form_Record_Add(request.form)
 
         if request.method == 'POST':
             if form.validate():
