@@ -43,7 +43,7 @@ class Creditcard(db.Model):
 
     type  = db.Column(db.String(255), index=True)
     # Always encrypt credit card number
-    encrypted_number  = db.Column(db.Binary())
+    encrypted_number  = db.Column(db.Text())
     expire_month  = db.Column(db.Integer, index=True)
     expire_year  = db.Column(db.Integer, index=True)
     # Do not save cvv2 anywhere

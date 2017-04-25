@@ -18,7 +18,7 @@
         {% endif %}
     </p>
     <!-- ONE-TO-MANY -->
-    <p>
+    <p> Order :
         {% if payment.order %}
             {{ payment.order.id }}
         {% else %}
@@ -27,7 +27,7 @@
     </p>
 
         <!-- ONE-TO-MANY -->
-    <p>
+    <p> Credit card :
         {% if payment.creditcard %}
             {{ payment.creditcard.id }}
         {% else %}
@@ -38,8 +38,8 @@
     <p>{{ payment.params }}</p>
     <p>{{ payment.comments }}</p>
     <p>{{ payment.is_active }}</p>
-    <p>{{ payment.updated_at }}</p>
-    <p>{{ payment.created_at }}</p>
+    <p>{{ payment.updated_at | datetimeformat }}</p>
+    <p>{{ payment.created_at | datetimeformat }}</p>
 </div>
 {% endblock content %}
 

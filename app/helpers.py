@@ -27,7 +27,12 @@ from . import app
 
 
 
-
+# ------- TO JSON -------
+def to_json(func):
+    def wrapper(*args, **kwargs):
+        get_fun = func(*args, **kwargs)
+        return json.dumps(get_fun)
+    return wrapper
 
 
 # ------- DECORATORS -------

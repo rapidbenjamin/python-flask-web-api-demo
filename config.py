@@ -98,6 +98,9 @@ class ProductionConfig(BaseConfig):
     # CSRF_ENABLED = True
     # WTF_CSRF_ENABLED = True
 
+    # useful for paypal return_url and cancel_url config
+    APP_URL = "quickandclean.org"
+
     PORT = 80
     DEBUG = False
     # Allow SQLAlchemy to log errors
@@ -113,6 +116,8 @@ class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data/db.sqlite')
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
+    # useful for paypal return_url and cancel_url config
+    APP_URL = "localhost:5000"
     
     PORT = 5000
     DEBUG = True
@@ -124,6 +129,8 @@ class TestingConfig(BaseConfig):
     """
     Testing configurations
     """
+    # useful for paypal return_url and cancel_url config
+    APP_URL = "localhost:5000"
 
     SECRET_CONFIG = 'test-config.py'
 

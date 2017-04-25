@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title_en_US %} Checkout {{ payment.id }} - {{ payment.status }} - {{ app.config['APP_NAME'] }}{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>Checkout {{ payment.id }} - {{ payment.status }}</h3>
+    <h4 class="text-right"><a href="/payments"><span class="glyphicon glyphicon-chevron-left"></span> Back</a></h4>
+    <hr/>
+
+    <div class="row">
+        <div class="col-lg-8 col-centered">
+            <div class="well">
+                <form method="POST"  action="{{ form.action }}" enctype="multipart/form-data" role="form" class="form-horizontal" accept-charset="utf-8">
+                    <input id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" type="hidden">
+                    <fieldset>
+                        <legend><h2>Check out with PayPal</h2></legend>
+                        
+
+                       <div class="col-lg-8">
+                            <div class="form-group">     
+                            <p>{{ payment.status }}</p>
+                            <p>{{ payment.key_id }}</p>
+                            <p>{{ payment.amount }}</p>
+                            <!-- ONE-TO-MANY -->
+                            <p> User :
+                                {% if payment.user %}
+                                    {{ payment.user.username }}
+                                {% else %}
+                                    No User
+                                {% endif %}
+                            </p>
+                            <!-- ONE-TO-MANY -->
+                            <p> Order :
+                                {% if payment.order %}
+                                    {{ payment.order.id }}
+                                {% else %}
+                                    No order
+                                {% endif %}
+                            </p>
+
+                                <!-- ONE-TO-MANY -->
+                            <p> Credit card :
+                                {% if payment.creditcard %}
+                                    {{ payment.creditcard.id }}
+                                {% else %}
+                                    No credit card
+                                {% endif %}
+                            </p>
+
+                            <p>{{ payment.params }}</p>
+                            <p>{{ payment.comments }}</p>
+                            <p>{{ payment.is_active }}</p>
+                            <p>{{ payment.updated_at | datetimeformat }}</p>
+                            <p>{{ payment.created_at | datetimeformat }}</p>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <button class="btn btn-primary btn-lg" type="submit"><img class="img-responsive" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="Check out with PayPal" /></button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}
+

@@ -15,6 +15,8 @@ CREATE TABLE quickandcleandb.`user` (
 	created_at           int    ,
 	locale               varchar(30)    ,
 	timezone             varchar(60)    ,
+	first_name           varchar(128)    ,
+	last_name            varchar(128)    ,
 	CONSTRAINT pk_user PRIMARY KEY ( id ),
 	CONSTRAINT `ix_User_email` UNIQUE ( email ) ,
 	CONSTRAINT `ix_User_username` UNIQUE ( username ) 
@@ -25,6 +27,10 @@ CREATE INDEX ix_User_is_active ON quickandcleandb.`user` ( is_active );
 CREATE INDEX ix_User_locale ON quickandcleandb.`user` ( locale );
 
 CREATE INDEX ix_User_timezone ON quickandcleandb.`user` ( timezone );
+
+CREATE INDEX ix_User_first_name ON quickandcleandb.`user` ( first_name );
+
+CREATE INDEX ix_User_last_name ON quickandcleandb.`user` ( last_name );
 
 CREATE TABLE quickandcleandb.asset ( 
 	id                   int  NOT NULL  AUTO_INCREMENT,
@@ -49,6 +55,44 @@ CREATE INDEX ix_Asset_asset_type ON quickandcleandb.asset ( asset_type );
 CREATE INDEX ix_Asset_is_active ON quickandcleandb.asset ( is_active );
 
 CREATE INDEX user_id ON quickandcleandb.asset ( user_id );
+
+CREATE TABLE quickandcleandb.creditcard ( 
+	id                   int  NOT NULL  AUTO_INCREMENT,
+	status               varchar(30)    ,
+	key_id               varchar(255)    ,
+	user_id              int    ,
+	`type`               varchar(255)    ,
+	encrypted_number     text    ,
+	expire_month         int    ,
+	expire_year          int    ,
+	first_name           varchar(255)    ,
+	last_name            varchar(255)    ,
+	params               text    ,
+	comments             text    ,
+	is_active            bit    ,
+	updated_at           int    ,
+	created_at           int    ,
+	CONSTRAINT pk_creditcard PRIMARY KEY ( id ),
+	CONSTRAINT creditcard_ibfk_1 FOREIGN KEY ( user_id ) REFERENCES quickandcleandb.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
+ );
+
+CREATE INDEX ix_Creditcard_expire_month ON quickandcleandb.creditcard ( expire_month );
+
+CREATE INDEX ix_Creditcard_expire_year ON quickandcleandb.creditcard ( expire_year );
+
+CREATE INDEX ix_Creditcard_first_name ON quickandcleandb.creditcard ( first_name );
+
+CREATE INDEX ix_Creditcard_is_active ON quickandcleandb.creditcard ( is_active );
+
+CREATE INDEX ix_Creditcard_key_id ON quickandcleandb.creditcard ( key_id );
+
+CREATE INDEX ix_Creditcard_last_name ON quickandcleandb.creditcard ( last_name );
+
+CREATE INDEX ix_Creditcard_status ON quickandcleandb.creditcard ( status );
+
+CREATE INDEX ix_Creditcard_type ON quickandcleandb.creditcard ( `type` );
+
+CREATE INDEX user_id ON quickandcleandb.creditcard ( user_id );
 
 CREATE TABLE quickandcleandb.item ( 
 	id                   int  NOT NULL  AUTO_INCREMENT,
@@ -84,6 +128,8 @@ CREATE TABLE quickandcleandb.`order` (
 	is_active            bit    ,
 	updated_at           int    ,
 	created_at           int    ,
+	params               text    ,
+	comments             text    ,
 	CONSTRAINT pk_order PRIMARY KEY ( id ),
 	CONSTRAINT order_ibfk_1 FOREIGN KEY ( user_id ) REFERENCES quickandcleandb.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
  );
@@ -110,6 +156,43 @@ CREATE TABLE quickandcleandb.orderitem (
 
 CREATE INDEX item_id ON quickandcleandb.orderitem ( item_id );
 
+CREATE TABLE quickandcleandb.payment ( 
+	id                   int  NOT NULL  AUTO_INCREMENT,
+	status               varchar(30)    ,
+	key_id               varchar(255)    ,
+	user_id              int    ,
+	order_id             int    ,
+	creditcard_id        int    ,
+	ip_address           varchar(255)    ,
+	intent               varchar(255)    ,
+	return_url           varchar(255)    ,
+	cancel_url           varchar(255)    ,
+	payment_method       varchar(255)    ,
+	amount               decimal(10,2)  NOT NULL  ,
+	currency             varchar(255)    ,
+	params               text    ,
+	comments             text    ,
+	is_active            bit    ,
+	updated_at           int    ,
+	created_at           int    ,
+	CONSTRAINT pk_payment PRIMARY KEY ( id ),
+	CONSTRAINT payment_ibfk_3 FOREIGN KEY ( creditcard_id ) REFERENCES quickandcleandb.creditcard( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	CONSTRAINT payment_ibfk_2 FOREIGN KEY ( order_id ) REFERENCES quickandcleandb.`order`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION,
+	CONSTRAINT payment_ibfk_1 FOREIGN KEY ( user_id ) REFERENCES quickandcleandb.`user`( id ) ON DELETE NO ACTION ON UPDATE NO ACTION
+ );
+
+CREATE INDEX creditcard_id ON quickandcleandb.payment ( creditcard_id );
+
+CREATE INDEX ix_Payment_is_active ON quickandcleandb.payment ( is_active );
+
+CREATE INDEX ix_Payment_key_id ON quickandcleandb.payment ( key_id );
+
+CREATE INDEX ix_Payment_status ON quickandcleandb.payment ( status );
+
+CREATE INDEX order_id ON quickandcleandb.payment ( order_id );
+
+CREATE INDEX user_id ON quickandcleandb.payment ( user_id );
+
 CREATE TABLE quickandcleandb.address ( 
 	id                   int  NOT NULL  AUTO_INCREMENT,
 	`type`               varchar(255)    ,
@@ -132,6 +215,7 @@ CREATE TABLE quickandcleandb.address (
 	is_active            bit  NOT NULL  ,
 	updated_at           int    ,
 	created_at           int    ,
+	country_code         varchar(255)    ,
 	CONSTRAINT pk_address PRIMARY KEY ( id ),
 	CONSTRAINT `ix_Address_title_en_US` UNIQUE ( `title_en_US` ) ,
 	CONSTRAINT `ix_Address_title_fr_FR` UNIQUE ( `title_fr_FR` ) ,
@@ -168,6 +252,8 @@ CREATE INDEX ix_Address_time_zone ON quickandcleandb.address ( time_zone );
 CREATE INDEX ix_Address_type ON quickandcleandb.address ( `type` );
 
 CREATE INDEX user_id ON quickandcleandb.address ( user_id );
+
+CREATE INDEX ix_Address_country_code ON quickandcleandb.address ( country_code );
 
 CREATE TABLE quickandcleandb.assetitem ( 
 	asset_id             int  NOT NULL  ,

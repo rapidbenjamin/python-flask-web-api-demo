@@ -53,6 +53,7 @@
     <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
+            <th>Cart</th>
             <th>Id</th>
             <th>Slug</th>
             <th>Type</th>
@@ -74,6 +75,7 @@
         {% if list_items.items %}
             {% for item in list_items.items %}
                 <tr>
+                    <td><a href="{{ url_for('orders_page.add_cart', item_id = item.id, quantity=1) }}" ><i class="glyphicon glyphicon-shopping-cart"></i> </a></td>
                     <td>{{ item.id }}</td>
                     <td>{{ item.slug }}</td>
                     <td>{{ item.type }}</td>

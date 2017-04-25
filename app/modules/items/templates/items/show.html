@@ -2,13 +2,14 @@
 {% block title_en_US %} {{ item.id }} - {{ item['title_%s' %(g.current_lang)] }} - {{ app.config['APP_NAME'] }}{% endblock %}
 {% block content %}
 <div class="container">
+    <div class="well well-reverse col-lg-10 col-centered">
     <h3>{{ item.id }} - {{ item['title_%s' %(g.current_lang)] }}</h3>
-    <h4 class="pull-right"><a href="{{ url_for('orders_page.add_cart', item_id = item.id, quantity=1) }}" ><i class="glyphicon glyphicon-shopping-cart"></i> Add to Cart</a></h4>
+    <h4 class="text-right"><a href="/items"><span class="glyphicon glyphicon-chevron-left"></span> Back</a></h4>
     
-    <h4><a href="/items"><span class="glyphicon glyphicon-chevron-left"></span> Back</a></h4>
-    
-    <hr/>
+    <h4 class="btn btn-primary btn-lg"><a href="{{ url_for('orders_page.add_cart', item_id = item.id, quantity=1) }}" ><i class="glyphicon glyphicon-shopping-cart"></i> Add to Cart</a></h4>
 
+    <hr/>
+    
     <p>{{ item.slug }}</p>
     <p>{{ item.type }}</p>
     <p>{{ item['description_%s' %(g.current_lang)] | parse_html}}</p>
@@ -86,6 +87,7 @@
     <p>{{ item.is_active }}</p>
     <p>{{ item.updated_at }}</p>
     <p>{{ item.created_at }}</p>
+    </div>
 </div>
 {% endblock content %}
 

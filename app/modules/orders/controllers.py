@@ -27,9 +27,6 @@ from constants import *
 from app.modules.items.models import Item, OrderItem
 
 
-
-
-
 # -------  ROUTINGS AND METHODS  ------- 
 
 # Define current cart
@@ -42,6 +39,7 @@ def before_request():
 
 # Add to cart
 @orders_page.route('/add_cart/<int:item_id>', methods=['GET', 'POST'])
+@login_required
 def add_cart(item_id=1):
     try:
         m_orders = Order()
@@ -61,6 +59,7 @@ def add_cart(item_id=1):
 
 # Update to cart
 @orders_page.route('/update_cart/<int:item_id>', methods=['GET', 'POST'])
+@login_required
 def update_cart(item_id=1):
     try:
         m_orders = Order()
@@ -82,6 +81,7 @@ def update_cart(item_id=1):
 
 # Remove from cart
 @orders_page.route('/remove_cart/<int:item_id>', methods=['GET', 'POST'])
+@login_required
 def remove_cart(item_id=1):
     try:
         m_orders = Order()

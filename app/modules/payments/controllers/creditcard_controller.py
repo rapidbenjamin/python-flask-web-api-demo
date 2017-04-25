@@ -66,6 +66,9 @@ def show(id=1):
         m_creditcards = Creditcard()
         m_creditcard = m_creditcards.read_data(id)
 
+        if m_creditcard.encrypted_number :
+            m_creditcard.encrypted_number = securityTool.decrypt(securityTool.decode(m_creditcard.encrypted_number))
+
         # html or Json response
         if request.is_xhr == True:
             return jsonify(data = m_creditcard)
@@ -105,7 +108,7 @@ def new():
                     'user' : form.user.data,
 
                     'type' : form.type.data,
-                    'encrypted_number'  : securityTool.encrypt(str(form.encrypted_number.data)),
+                    'encrypted_number'  : securityTool.encode(securityTool.encrypt(str(form.encrypted_number.data))),
                     'expire_month'  : form.expire_month.data,
                     'expire_year'  : form.expire_year.data,
                     'first_name'  : form.first_name.data,
@@ -171,8 +174,8 @@ def edit(id=1):
                     'user' : form.user.data,
 
                     'type' : form.type.data,
-                    # 'encrypted_number'  : securityTool.encrypt(str(form.encrypted_number.data)),
-                    'encrypted_number'  : form.encrypted_number.data,
+                    'encrypted_number'  : securityTool.encode(securityTool.encrypt(str(form.encrypted_number.data))),
+                    # 'encrypted_number'  : form.encrypted_number.data,
                     'expire_month'  : form.expire_month.data,
                     'expire_year'  : form.expire_year.data,
                     'first_name'  : form.first_name.data,
@@ -209,8 +212,9 @@ def edit(id=1):
             form.user.data = creditcard.user.id
 
         form.type.data = creditcard.type
-        # form.encrypted_number.data = securityTool.decrypt(creditcard.encrypted_number)
-        form.encrypted_number.data = creditcard.encrypted_number
+        if creditcard.encrypted_number :
+            form.encrypted_number.data = securityTool.decrypt(securityTool.decode(creditcard.encrypted_number))
+        # form.encrypted_number.data = creditcard.encrypted_number
         form.expire_month.data = creditcard.expire_month
         form.expire_year.data = creditcard.expire_year
         form.first_name.data = creditcard.first_name
