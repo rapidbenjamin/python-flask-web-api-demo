@@ -70,14 +70,14 @@ Python Flask WEB API DEMO
 
 #### PRODUCTION CONFIG with GUNICORN : Use it for production with GUNICORN Upstart script and NGINX config from utils directory :
 
-	- set environment to production with `export FLASK_CONFIG=development` 
-		or on Windows systems shell script `set FLASK_CONFIG=development`   
+	- set environment to production with `export FLASK_CONFIG=development`
+		or on Windows systems shell script `set FLASK_CONFIG=development`
 	- active your Python virtual environment
-	- GUNICORN : on shell command type  `gunicorn --bind 0.0.0.0:5000 run:app` 
+	- GUNICORN : on shell command type  `gunicorn --bind 0.0.0.0:5000 run:app`
 		'run' is the name of your main application file 'run.py'  which serve as the entry point for your application
-		'app' is here the name of your defined application in app/__init__.py 
+		'app' is here the name of your defined application in app/__init__.py
 	- If you visit your server's domain name or IP address with :5000 appended to the end in your web browser, you should see the homepage of your application
-	- Create an Upstart script which will allow server to automatically start Gunicorn and serve our Flask application whenever the server boots : 
+	- Create an Upstart script which will allow server to automatically start Gunicorn and serve our Flask application whenever the server boots :
 					- create Gunicorn Upstart script : `sudo nano /etc/init/myproject_gunicorn.conf`
 					or customize Upstart script file (see example in file 'myproject_gunicorn.conf' in utils directory) (replace user keyword by your chosen server user name ) and place it in /etc/init/myproject_gunicorn.conf
 					- then type `sudo start myproject_gunicorn` (replace myproject with your application folder name)
@@ -95,12 +95,6 @@ Python Flask WEB API DEMO
 	- todo
 
 
-#### IMPORT SQL SCHEMA DATABASE SAMPLE IN MYSQL: 
-	`mysql -u root -p DB_NAME < /home/myproject_path/data/schema_mysql.sql`
-
-#### EXPORT SQL SCHEMA DATABASE FROM MYSQL:
-	`mysqldump -u root -p --databases DB_NAME > /home/myproject_path/data/schema_mysql.sql`
-
 #### COMMON SQL SCRIPT ON DATABASE FROM MYSQL SERVER :	
 	- Signin  in first with `mysql -u root -p`
 	- Create a database : `CREATE DATABASE my_database;`
@@ -108,8 +102,17 @@ Python Flask WEB API DEMO
 	- Select my database :  `USE my_database;`
 	- Execute script on my database, for example  insert data into a mysql table : 
 		`INSERT INTO table_name (field1, field2, ...) VALUES (value1, value2, ...);`
+	- Import and execute sql script file :
+		`source /home/myproject_path/data/schema_mysql.sql;`
 	- View current database : `SELECT database();`
 	- Delete my database : `DROP DATABASE my_database;`
+
+
+#### IMPORT SQL SCHEMA DATABASE SAMPLE IN MYSQL: 
+	`mysql -u root -p DB_NAME < /home/myproject_path/data/schema_mysql.sql`
+
+#### EXPORT SQL SCHEMA DATABASE FROM MYSQL:
+	`mysqldump -u root -p --databases DB_NAME > /home/myproject_path/data/schema_mysql.sql`
 
 #### About python virtual environment : how to manage it in local project directory:
 

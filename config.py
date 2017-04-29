@@ -140,7 +140,7 @@ class TestingConfig(BaseConfig):
 
 
 app_config = {  
-    'default': DevelopmentConfig,  
+    'default': ProductionConfig,  
     'production': ProductionConfig,
     'development': DevelopmentConfig,
     'testing': TestingConfig,
