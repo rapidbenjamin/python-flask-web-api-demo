@@ -66,15 +66,14 @@ class SecurityTool(object):
     """
     Security tool : secret key generator and encode, encrypt, hash tools
     """
-    __fernet_key = Fernet.generate_key()
-    __cipher_suite  = Fernet(__fernet_key)
 
-    #def __init__(self):
+    __cipher_suite  = Fernet(app.config['FERNET_SECRET_KEY'])
+
+    # def __init__(self):
         # Fernet : symmetric encryption
-        # Fernet.generate_key : Generates a fresh fernet key. This must be kept secret. Keep this some place safe!
-        # If you lose it you’ll no longer be able to decrypt messages;
-        # Anyone with this key is able to create and read messages.
-
+        # FERNET SECRET KEY for encryption : This must be kept secret. Keep this some place safe!
+        # If you lose it you’ll no longer be able to decrypt messages and anyone with this key is able to create and read messages.
+        # __cipher_suite  = Fernet(app.config['FERNET_SECRET_KEY'])
         # override to prevent peeking
         # self.__dict__ = {}
 

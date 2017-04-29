@@ -36,6 +36,8 @@ class BaseConfig(object):
     # secret key used also for csrf_token
     SECRET_KEY = 'write-a-secret-string-here-or-in-the-instance-secret-folder'
 
+    # Fernet key for encryption must be 32 url-safe base64-encoded bytes
+    FERNET_SECRET_KEY = 'write-a-secret-string-here-or-in-the-instance-secret-folder'
     
     LISTINGS_PER_PAGE = 5
 
