@@ -12,7 +12,7 @@ from app import app
 from app.modules.auth.forms.registration_form import RegistrationForm
 from app import db
 from app.modules.users.models import User
-
+from app.helpers import *
 
 
 # AUTHENTICATION PAGE
@@ -40,7 +40,7 @@ def register():
             # Check validations
             if existing_username and existing_email :                
                 # redirect to the login page or Json response
-                if request.is_xhr == True :
+                if request_wants_json() :
                     return jsonify(data = {message : "This username or email has been already taken. Try another one.", form : form}), 422, {'Content-Type': 'application/json'}
                 else:
                     flash('This username has been already taken. Try another one.', 'warning')
@@ -49,7 +49,7 @@ def register():
             # Check form errors
             if form.errors :                
                 # redirect to the login page or Json response
-                if request.is_xhr == True :
+                if request_wants_json() :
                     return jsonify(data = {message : form.errors, form : form}), 422, {'Content-Type': 'application/json'}
                 else:
                     flash(form.errors, 'danger')
@@ -57,7 +57,7 @@ def register():
 
             
              # password decoding  when remote app client
-            if request.is_xhr == True :
+            if request_wants_json() :
                 form.password.data = base64.b64decode(form.password.data).decode('UTF-8')
 
             # create user
@@ -70,13 +70,13 @@ def register():
             db.session.commit()
 
             # redirect to the login page or Json response
-            if request.is_xhr == True :
+            if request_wants_json() :
                 return jsonify(data = {message : "You have successfully registered! You may now login", user : user}), 200, {'Content-Type': 'application/json'}
             else:
                 flash('You have successfully registered! You may now login.', 'success')
                 return redirect(url_for('auth_page.login'))
         # load registration template
-        if request.is_xhr == True :
+        if request_wants_json() :
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template('auth/register.html', form=form, title_en_US='Register', app = app)

@@ -30,8 +30,8 @@ def index(page=1):
         m_sections = Section()
         list_sections = m_sections.all_data(page, app.config['LISTINGS_PER_PAGE'])
         # html or Json response
-        if request.is_xhr == True:
-            return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_sections.items])
+        if request_wants_json():
+            return jsonify([{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_sections.items])
         else:
             return render_template("sections/index.html", list_sections=list_sections, app = app)
 
@@ -47,7 +47,7 @@ def show(id=1):
         m_sections = Section()
         m_section = m_sections.read_data(id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = m_section)
         else:
             return render_template("sections/show.html", section=m_section, app = app)
@@ -94,7 +94,7 @@ def new():
                 Section().create_data(sanitize_form)
                 logger.info("Adding a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record added successfully.", category="success")
@@ -103,7 +103,7 @@ def new():
         form.action = url_for('sections_page.new')
 
          # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("sections/edit.html", form=form, sections = sections, items = items, users=users,  title_en_US='New', app = app)
@@ -157,7 +157,7 @@ def edit(id=1):
                 Section().update_data(section.id, sanitize_form)
                 logger.info("Editing a new record.")
 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record updated successfully.", category="success")
@@ -186,7 +186,7 @@ def edit(id=1):
         form.is_active.data = section.is_active
         
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("sections/edit.html", form=form, sections = sections, items = items, users=users, title_en_US='Edit', app = app)
@@ -207,7 +207,7 @@ def destroy(id=1):
 
         if section.children:
             # html or Json response
-            if request.is_xhr == True :
+            if request_wants_json() :
                     return jsonify(data =  {message:"Unauthorized : Must delete child's section' first"}), 422, {'Content-Type': 'application/json'}
             else:
                 flash("Unauthorized : Must delete child's section first.", category="danger")
@@ -216,7 +216,7 @@ def destroy(id=1):
         else :
             sections.destroy_data(section.id)
             # html or Json response
-            if request.is_xhr == True:
+            if request_wants_json():
                 return jsonify(data = {message:"Record deleted successfully.", section : m_section})
             else:
                 flash("Record deleted successfully.", category="success")

@@ -13,7 +13,7 @@ import base64
 from . import login_controller, register_controller, logout_controller, dashboard_controller, profile_controller, settings_controller
 from app.modules.users.models import User
 from app.modules.auth import auth_page, login_manager
-
+from app.helpers import *
 
 
 
@@ -51,7 +51,7 @@ def load_user_from_request(request):
         username,password = token.split(":") # naive token
 
          # password decoding  when remote app client
-        if request.is_xhr == True :
+        if request_wants_json() :
             form.password.data = base64.b64decode(form.password.data).decode('UTF-8')
             
         user = User.query.filter_by(username=username).first()

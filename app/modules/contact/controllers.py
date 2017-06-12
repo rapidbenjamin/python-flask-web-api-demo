@@ -58,7 +58,7 @@ def index():
 
 
         # html or Json response
-        if request.is_xhr == True :
+        if request_wants_json() :
             return jsonify(data = post), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("contact/contact.html", RECAPTCHA_SITE_KEY=recaptcha, users = users, email_sent=email_sent, post = post, app = app)

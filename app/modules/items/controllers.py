@@ -58,8 +58,8 @@ def index(page=1):
             list_items = filter_items.order_by(desc(Item.created_at)).paginate(page, app.config['LISTINGS_PER_PAGE'], False)
         
         # html or Json response
-        if request.is_xhr == True:
-            return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_items.items])
+        if request_wants_json():
+            return jsonify([{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_items.items])
         else:
             return render_template("items/index.html", sections = sections, users = users, list_items=list_items, app = app)
 
@@ -75,7 +75,7 @@ def show(id=1):
         m_items = Item()
         m_item = m_items.read_data(id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = m_item)
         else:
             return render_template("items/show.html", item=m_item, app = app)
@@ -132,7 +132,7 @@ def new():
                 items.create_data(sanitize_form)
                 logger.info("Adding a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record added successfully.", category="success")
@@ -141,7 +141,7 @@ def new():
         form.action = url_for('items_page.new')
 
          # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("items/edit.html", form=form, sections=sections, users = users, assets=assets, orders=orders,  title_en_US='New', app = app)
@@ -200,7 +200,7 @@ def edit(id=1):
                 items.update_data(item.id, sanitize_form)
                 logger.info("Editing a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record updated successfully.", category="success")
@@ -236,7 +236,7 @@ def edit(id=1):
         form.is_active.data = item.is_active
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("items/edit.html", form=form, users = users, sections=sections, assets=assets, orders=orders, title_en_US='Edit', app = app)
@@ -256,7 +256,7 @@ def destroy(id=1):
         item = items.query.get_or_404(id)
         items.destroy_data(item.id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = {message:"Record deleted successfully.", item : m_item})
         else:
             flash("Record deleted successfully.", category="success")

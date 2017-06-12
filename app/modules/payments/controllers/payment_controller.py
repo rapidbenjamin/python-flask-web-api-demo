@@ -128,7 +128,7 @@ def payment_checkout(id=None, order_id=None):
             # Create Payment and return status
             if paypal_payment.create():
                 print("Payment[%s] created successfully" % (paypal_payment.id))
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Payment[%s] created successfully" % (paypal_payment.id) }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Payment[%s] created successfully" % (paypal_payment.id), category="success")
@@ -140,14 +140,14 @@ def payment_checkout(id=None, order_id=None):
                         # https://github.com/paypal/rest-api-sdk-python/pull/58
                         redirect_url = str(link.href)
 
-                        if request.is_xhr == True:
+                        if request_wants_json():
                             return jsonify(data = { message :"Redirect for approval: %s" % (redirect_url)}), 200, {'Content-Type': 'application/json'}
                         else:
                             flash("Redirect for approval: %s" % (redirect_url), category="success")
                             return redirect(redirect_url)
             else:
   
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Error while creating payment"}), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Error while creating payment: %s" %(paypal_payment.error), category="danger")
@@ -158,7 +158,7 @@ def payment_checkout(id=None, order_id=None):
 
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = payment)
         else:
             return render_template("payments/checkout.html", payment=payment, form=form, title_en_US='Checkout', app = app)
@@ -190,7 +190,7 @@ def payment_return(id=None, order_id=None):
             if session.get('order_id'):
                 session.pop('order_id')
 
-            if request.is_xhr == True:
+            if request_wants_json():
                 return jsonify(data = { message :"Payment[%s] execute successfully" % (paypal_payment.id) }), 200, {'Content-Type': 'application/json'}
             else : 
                 flash("Payment[%s] execute successfully" % (paypal_payment.id), category="success")
@@ -215,8 +215,8 @@ def index(page=1):
         m_payments = Payment()
         list_payments = m_payments.all_data(page, app.config['LISTINGS_PER_PAGE'])
         # html or Json response
-        if request.is_xhr == True:
-            return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_payments.items])
+        if request_wants_json():
+            return jsonify([{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_payments.items])
         else:
             return render_template("payments/index.html", list_payments=list_payments, app = app)
 
@@ -234,7 +234,7 @@ def show(id=1):
         m_payments = Payment()
         m_payment = m_payments.read_data(id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = m_payment)
         else:
             return render_template("payments/show.html", payment=m_payment, app = app)
@@ -287,7 +287,7 @@ def new():
                 payments.create_data(sanitize_form)
                 logger.info("Adding a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record added successfully.", category="success")
@@ -296,7 +296,7 @@ def new():
         form.action = url_for('payments_page.new')
 
          # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("payments/edit.html", form=form,  creditcards = creditcards, orders = orders, users = users, title_en_US='New', app = app)
@@ -358,7 +358,7 @@ def edit(id=1):
 
                 logger.info("Editing a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record updated successfully.", category="success")
@@ -385,7 +385,7 @@ def edit(id=1):
         form.is_active.data = payment.is_active
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("payments/edit.html", form=form,   creditcards = creditcards, orders = orders, users = users, title_en_US='Edit', app = app)
@@ -406,7 +406,7 @@ def destroy(id=1):
 
         payments.destroy_data(payment.id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = {message:"Record deleted successfully.", payment : m_payment})
         else:
             flash("Record deleted successfully.", category="success")

@@ -9,6 +9,7 @@ from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_session import Session
 from flask_wtf.csrf import CSRFProtect
+from flask_cors import CORS, cross_origin
 
 # ------- IMPORT LOCAL DEPENDENCIES ------- 
 import os
@@ -40,6 +41,7 @@ csrf = CSRFProtect(app)
 # REGISTER SESSION
 Session(app)
 
+
 # REGISTER LOGGING
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -47,6 +49,11 @@ logger.setLevel(logging.INFO)
 # REGISTER BOOTSTRAP
 Bootstrap(app)
 
+# REGISTER CORS
+# CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+# CORS(app, resources={r"/*": {"origins": "*"}})
+# CORS(app) # then add @cross_origin() in specific route controller
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 # ------- IMPORT LOCAL DEPENDENCIES AFTER REGISTERING -------  

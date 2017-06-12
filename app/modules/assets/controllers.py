@@ -79,8 +79,8 @@ def index(page=1):
         m_assets = Asset()
         list_assets = m_assets.all_data(page, app.config['LISTINGS_PER_PAGE'])
         # html or Json response
-        if request.is_xhr == True:
-            return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_assets.items])
+        if request_wants_json():
+            return jsonify([{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_assets.items])
         else:
             return render_template("assets/index.html", list_assets=list_assets, app = app)
 
@@ -100,7 +100,7 @@ def show(id=1):
         m_assets = Asset()
         m_asset = m_assets.read_data(id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = m_asset)
         else:
             return render_template("assets/show.html", asset=m_asset, app = app)
@@ -130,7 +130,7 @@ def new():
                 # check if the post request has the file part
                 if 'data_file_name' not in request.files :
                     # redirect to the form page or Json response
-                    if request.is_xhr == True :
+                    if request_wants_json() :
                         return jsonify(data = {message : "No file part", form : form}), 422, {'Content-Type': 'application/json'}
                     else:
                         flash("No file part", category="danger")
@@ -142,7 +142,7 @@ def new():
                 # if user does not select file, browser also submit a empty part without filename
                 if file.filename == '' :
                     # redirect to the form page or Json response
-                    if request.is_xhr == True :
+                    if request_wants_json() :
                         return jsonify(data = {message : "No selected file", form : form}), 422, {'Content-Type': 'application/json'}
                     else:
                         flash("No selected file", category="danger")
@@ -217,7 +217,7 @@ def new():
                     assets.create_data(sanitize_form)
                     logger.info("Adding a new record.")
                     
-                    if request.is_xhr == True:
+                    if request_wants_json():
                         return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                     else : 
                         flash("Record added successfully.", category="success")
@@ -226,7 +226,7 @@ def new():
         form.action = url_for('assets_page.new')
 
          # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("assets/edit.html", form=form,  users = users, items = items, title_en_US='New', app = app)
@@ -351,7 +351,7 @@ def edit(id=1):
                 assets.update_data(asset.id, sanitize_form)
                 logger.info("Editing a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record updated successfully.", category="success")
@@ -379,7 +379,7 @@ def edit(id=1):
         form.is_active.data = asset.is_active
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("assets/edit.html", form=form, users = users, items = items, title_en_US='Edit', app = app)
@@ -412,7 +412,7 @@ def destroy(id=1):
 
         assets.destroy_data(asset.id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = {message:"Record deleted successfully.", asset : m_asset})
         else:
             flash("Record deleted successfully.", category="success")

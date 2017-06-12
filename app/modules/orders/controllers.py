@@ -45,7 +45,7 @@ def add_cart(item_id=1):
         m_orders = Order()
         m_order = m_orders.add_cart(item_id, request.args)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = { message :"Item added successfully.", order: m_order }), 200, {'Content-Type': 'application/json'}
         else : 
             flash("Item added to cart successfully. <a href='" + url_for('orders_page.show', id = m_order.id) + "' >click here to see cart</a>", category="success")
@@ -66,7 +66,7 @@ def update_cart(item_id=1):
         m_order = m_orders.update_cart(item_id, request.args)
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = { message :"Cart updated successfully.", order: m_order }), 200, {'Content-Type': 'application/json'}
         else : 
             flash("Cart updated successfully.", category="success")
@@ -87,7 +87,7 @@ def remove_cart(item_id=1):
         m_orders = Order()
         m_order = m_orders.remove_cart(item_id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = { message :"Item removed successfully.", order: m_order }), 200, {'Content-Type': 'application/json'}
         else : 
             flash("Item removed to cart successfully.", category="success")
@@ -108,8 +108,8 @@ def index(page=1):
         m_orders = Order()
         list_orders = m_orders.all_data(page, app.config['LISTINGS_PER_PAGE'])
         # html or Json response
-        if request.is_xhr == True:
-            return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_orders.items])
+        if request_wants_json():
+            return jsonify([{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_orders.items])
         else:
             return render_template("orders/index.html", list_orders=list_orders, app = app)
 
@@ -129,7 +129,7 @@ def show(id=1):
         m_orders = Order()
         m_order = m_orders.read_data(id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = m_order)
         else:
             return render_template("orders/show.html", order=m_order, app = app)
@@ -173,7 +173,7 @@ def new():
                 orders.create_data(sanitize_form)
                 logger.info("Adding a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record added successfully.", category="success")
@@ -182,7 +182,7 @@ def new():
         form.action = url_for('orders_page.new')
 
          # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("orders/edit.html", form=form,  users = users, items = items, title_en_US='New', app = app)
@@ -236,7 +236,7 @@ def edit(id=1):
 
                 logger.info("Editing a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record updated successfully.", category="success")
@@ -257,7 +257,7 @@ def edit(id=1):
         form.is_active.data = order.is_active
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("orders/edit.html", form=form, users = users, items = items, title_en_US='Edit', app = app)
@@ -278,7 +278,7 @@ def destroy(id=1):
 
         orders.destroy_data(order.id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = {message:"Record deleted successfully.", order : m_order})
         else:
             flash("Record deleted successfully.", category="success")

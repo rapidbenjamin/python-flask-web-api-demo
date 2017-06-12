@@ -12,7 +12,7 @@ from app.modules.auth.forms.login_form import LoginForm
 from app import db
 from app.modules.users.models import User
 from app.modules.sections.models import Section
-
+from app.helpers import *
 
 # ADMIN PROFILE PAGE
 
@@ -23,7 +23,7 @@ def profile():
         m_users = User()
         m_user = current_user
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = m_user)
         else:
             return render_template("users/show.html", user=m_user, app = app)

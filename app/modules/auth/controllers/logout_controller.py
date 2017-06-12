@@ -11,7 +11,7 @@ from app import app
 from app import db
 from app.modules.users.models import User
 from app.modules.orders.models import Order
-
+from app.helpers import *
 
 # AUTHENTICATION PAGE
 
@@ -26,7 +26,7 @@ def logout():
         
 
         # redirect to the login page
-        if request.is_xhr == True :
+        if request_wants_json() :
             # Remove classic session
             logout_user()
             if 'email' in session:

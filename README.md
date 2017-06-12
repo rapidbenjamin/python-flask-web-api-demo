@@ -92,7 +92,16 @@ Python Flask WEB API DEMO
 	- restart the Nginx process to read the our new config: `sudo service nginx restart`
 
 #### PRODUCTION CONFIG with TORNADO : Use it for production with TORNADO SERVER, SUPERVISOR Upstart script and NGINX config from utils directory :
-	- todo
+	- todo : 
+				Supervisor Upstart config script
+				Tornado server config script
+				Nginx server config script
+				Redis server-side session config script
+
+
+#### CORS CONFIG FOR FRONTEND APP : 
+	- edit origins url in "register cors" section in __init__.py file : 
+		CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 
 #### COMMON SQL SCRIPT ON DATABASE FROM MYSQL SERVER :	

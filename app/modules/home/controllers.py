@@ -9,7 +9,7 @@ from flask_login import login_required, current_user
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from . import home_page
 from app import app
-
+from app.helpers import *
 
 # HOME PAGE
 @app.route('/')
@@ -19,7 +19,7 @@ def index():
         post = { 'title_en_US' : 'Quick and Clean' , 'description_en_US' : 'Flask web api demo' }
 
         # html or Json response
-        if request.is_xhr == True :
+        if request_wants_json() :
             return jsonify(data = post), 200, {'Content-Type': 'application/json'}
         else:
             return render_template('home/home.html', post = post, app = app )

@@ -12,7 +12,7 @@ from app import app
 from app.modules.auth.forms.login_form import LoginForm
 from app import db
 from app.modules.users.models import User
-
+from app.helpers import *
 
 
 # AUTHENTICATION PAGE
@@ -23,7 +23,7 @@ def login():
     Log an user in through the login form
     """
     # Check if classic user session already exist
-    if session.get('email') and request.is_xhr == True :
+    if session.get('email') and request_wants_json() :
             flash('Your are already logged in.', 'info')
             return redirect(url_for('home_page.index'))
     # Check if flask-login user session already exist
@@ -38,13 +38,13 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
 
         # password decoding  when remote app client
-        if request.is_xhr == True :
+        if request_wants_json() :
             form.password.data = base64.b64decode(form.password.data).decode('UTF-8')
 
         if user is not None and user.check_password(form.password.data):
 
             # redirect to the dashboard page after login
-            if request.is_xhr == True :
+            if request_wants_json() :
                 # populate classic session with user  email
                 session['email'] = user.email
                 session['current_lang'] = user.locale
@@ -69,14 +69,14 @@ def login():
 
         # when login details are incorrect
         else:
-            if request.is_xhr == True :
+            if request_wants_json() :
                 return jsonify(data =  {message:"Unauthorized : Invalid email or password", user : user}), 422, {'Content-Type': 'application/json'}
             else:
                 flash('Unauthorized : Invalid email or password.', category="danger")
 
 
     # load login template
-    if request.is_xhr == True :
+    if request_wants_json() :
         return jsonify(data = form), 200, {'Content-Type': 'application/json'}
     else:
         return render_template('auth/login.html', form=form, title_en_US='Connexion', app = app)

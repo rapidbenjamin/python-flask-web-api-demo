@@ -47,7 +47,7 @@ def settings():
                 user.update_data(user.id, sanitize_form)
                 logger.info("Editing a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record updated successfully.", category="success")
@@ -64,7 +64,7 @@ def settings():
         form.is_active.data = user.is_active
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("auth/settings.html", form=form, sections = sections, title_en_US='Edit', app = app)

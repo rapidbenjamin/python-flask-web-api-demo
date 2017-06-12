@@ -31,8 +31,8 @@ def index(page=1):
         m_users = User()
         list_users = m_users.all_data(page, app.config['LISTINGS_PER_PAGE'])
         # html or Json response
-        if request.is_xhr == True:
-            return jsonify(data = [{'id' : d.id, 'email' : d.email, 'username' : d.username} for d in list_users.items])
+        if request_wants_json():
+            return jsonify([{'id' : d.id, 'email' : d.email, 'username' : d.username} for d in list_users.items])
         else:
             return render_template("users/index.html", list_users=list_users, app = app)
 
@@ -50,7 +50,7 @@ def show(id=1):
         m_users = User()
         m_user = m_users.read_data(id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = m_user)
         else:
             return render_template("users/show.html", user=m_user, app = app)
@@ -90,7 +90,7 @@ def new():
 
                 users.create_data(sanitize_form)
                 logger.info("Adding a new record.")
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else :
                     flash("Record added successfully.", category="success")
@@ -100,7 +100,7 @@ def new():
 
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("users/edit.html", form=form, in_addresses = in_addresses, in_events = in_events, sections = sections, title_en_US='New', app = app)
@@ -146,7 +146,7 @@ def edit(id=1):
                 user.update_data(user.id, sanitize_form)
                 logger.info("Editing a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record updated successfully.", category="success")
@@ -170,7 +170,7 @@ def edit(id=1):
 
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("users/edit.html", form=form,  in_addresses = in_addresses, in_events = in_events, sections = sections, title_en_US='Edit', app = app)
@@ -190,7 +190,7 @@ def destroy(id=1):
         user = users.query.get_or_404(id)
         users.destroy_data(user.id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = {message:"Record deleted successfully.", user : m_user})
         else:
             flash("Record deleted successfully.", category="success")

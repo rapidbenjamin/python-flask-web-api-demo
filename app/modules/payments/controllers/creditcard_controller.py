@@ -47,8 +47,8 @@ def index(page=1):
         list_creditcards = m_creditcards.all_data(page, app.config['LISTINGS_PER_PAGE'])
         
         # html or Json response
-        if request.is_xhr == True:
-            return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_creditcards.items])
+        if request_wants_json():
+            return jsonify([{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_creditcards.items])
         else:
             return render_template("creditcards/index.html", list_creditcards=list_creditcards, app = app)
 
@@ -70,7 +70,7 @@ def show(id=1):
             m_creditcard.encrypted_number = securityTool.decrypt(securityTool.decode(m_creditcard.encrypted_number))
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = m_creditcard)
         else:
             return render_template("creditcards/show.html", creditcard=m_creditcard, app = app)
@@ -125,7 +125,7 @@ def new():
                 creditcards.create_data(sanitize_form)
                 logger.info("Adding a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record added successfully.", category="success")
@@ -134,7 +134,7 @@ def new():
         form.action = url_for('creditcards_page.new')
 
          # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("creditcards/edit.html", form=form,  users = users, title_en_US='New', app = app)
@@ -196,7 +196,7 @@ def edit(id=1):
 
                 logger.info("Editing a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record updated successfully.", category="success")
@@ -226,7 +226,7 @@ def edit(id=1):
         form.is_active.data = creditcard.is_active
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("creditcards/edit.html", form=form, users = users, title_en_US='Edit', app = app)
@@ -247,7 +247,7 @@ def destroy(id=1):
 
         creditcards.destroy_data(creditcard.id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = {message:"Record deleted successfully.", creditcard : m_creditcard})
         else:
             flash("Record deleted successfully.", category="success")

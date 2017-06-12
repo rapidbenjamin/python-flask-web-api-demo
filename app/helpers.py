@@ -27,6 +27,18 @@ from . import app
 
 
 
+# ------- TEST IF REQUEST ASK JSON -------
+def request_wants_json():
+    # best = request.headers['Accept'].best_match(['application/json', 'text/html'])
+    # return best == 'application/json' and request.headers['Accept'][best] > request.headers['Accept']['text/html']
+    # if 'application/json' in request.headers['Accept']: 
+    
+    # GET request not have body so use Accept param instead of Content-Type param
+    if ('text/html' not in request.headers['Accept']) and ('application/json' in request.headers['Content-Type'] or 'application/json' in request.headers['Accept']):
+        return True
+    return False
+
+
 # ------- TO JSON -------
 def to_json(func):
     def wrapper(*args, **kwargs):

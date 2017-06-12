@@ -66,11 +66,23 @@ class BaseConfig(object):
     PAYPAL_CLIENT_SECRET = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
     # Session
+    
+    SESSION_PERMANENT = False
+    PERMANENT_SESSION_LIFETIME = 5
+
+    # SESSION_TYPE = 'sqlalchemy'
+    # SESSION_SQLALCHEMY = None
+    # SESSION_SQLALCHEMY_TABLE = 'sessions'
+    
     SESSION_TYPE = 'filesystem'
     SESSION_FILE_DIR =  'sessions'
-    SESSION_PERMANENT = False
-    # SESSION_FILE_THRESHOLD = 500
-    # SESSION_FILE_MODE = 600
+    SESSION_FILE_THRESHOLD = 500
+    SESSION_FILE_MODE = 600
+
+
+    # CORS CONFIG
+    CORS_HEADERS = 'Content-Type'
+
 
     # SendGrid Mail example.
     MAIL_SERVER = 'smtp.sendgrid.net'

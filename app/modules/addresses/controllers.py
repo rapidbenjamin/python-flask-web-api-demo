@@ -41,8 +41,8 @@ def index(page=1):
 
 
         # html or Json response
-        if request.is_xhr == True:
-            return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_addresses.items])
+        if request_wants_json():
+            return jsonify([{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_addresses.items])
         else:
             return render_template("addresses/index.html", items = items, users = users, guests = guests, list_addresses=list_addresses, app = app)
 
@@ -58,7 +58,7 @@ def show(id=1):
         m_addresses = Address()
         m_address = m_addresses.read_data(id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = m_address)
         else:
             return render_template("addresses/show.html", address=m_address, app = app)
@@ -122,7 +122,7 @@ def new():
                 addresses.create_data(sanitize_form)
                 logger.info("Adding a new record.")
 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else :
                     flash("Record added successfully.", category="success")
@@ -132,7 +132,7 @@ def new():
 
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("addresses/edit.html", form=form, items=items, users = users, guests = guests, title_en_US='New', app = app)
@@ -198,7 +198,7 @@ def edit(id=1):
                 addresses.update_data(address.id, sanitize_form)
                 logger.info("Editing a new record.")
 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else :
                     flash("Record updated successfully.", category="success")
@@ -242,7 +242,7 @@ def edit(id=1):
         form.is_active.data = address.is_active
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("addresses/edit.html", form=form, items = items, users = users, guests = guests, title_en_US='Edit', app = app)
@@ -262,7 +262,7 @@ def destroy(id=1):
         address = addresses.query.get_or_404(id)
         addresses.destroy_data(address.id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = {message:"Record deleted successfully.", address : m_address})
         else:
             flash("Record deleted successfully.", category="success")

@@ -42,8 +42,8 @@ def index(page=1):
 
         
         # html or Json response
-        if request.is_xhr == True:
-            return jsonify(data = [{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_events.items])
+        if request_wants_json():
+            return jsonify([{'id' : d.id, 'title_en_US' : d.title_en_US, 'description_en_US' : d.description_en_US, 'title_fr_FR' : d.title_fr_FR, 'description_fr_FR' : d.description_fr_FR} for d in list_events.items])
         else:
             return render_template("events/index.html", addresses = addresses, items = items, users = users, guests = guests, list_events=list_events, app = app)
 
@@ -59,7 +59,7 @@ def show(id=1):
         m_events = Event()
         m_event = m_events.read_data(id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = m_event)
         else:
             return render_template("events/show.html", event=m_event, app = app)
@@ -124,7 +124,7 @@ def new():
                 events.create_data(sanitize_form)
                 logger.info("Adding a new record.")
                 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record added successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else : 
                     flash("Record added successfully.", category="success")
@@ -140,7 +140,7 @@ def new():
 
 
          # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("events/edit.html", form=form, addresses = addresses, items=items, users = users, guests = guests, title_en_US='New', app = app)
@@ -206,7 +206,7 @@ def edit(id=1):
                 events.update_data(event.id, sanitize_form)
                 logger.info("Editing a new record.")
 
-                if request.is_xhr == True:
+                if request_wants_json():
                     return jsonify(data = { message :"Record updated successfully.", form: form }), 200, {'Content-Type': 'application/json'}
                 else :
                     flash("Record updated successfully.", category="success")
@@ -250,7 +250,7 @@ def edit(id=1):
         
 
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = form), 200, {'Content-Type': 'application/json'}
         else:
             return render_template("events/edit.html", form=form, addresses = addresses, items = items, users = users, guests = guests, title_en_US='Edit', app = app)
@@ -270,7 +270,7 @@ def destroy(id=1):
         event = events.query.get_or_404(id)
         events.destroy_data(event.id)
         # html or Json response
-        if request.is_xhr == True:
+        if request_wants_json():
             return jsonify(data = {message:"Record deleted successfully.", event : m_event})
         else:
             flash("Record deleted successfully.", category="success")
