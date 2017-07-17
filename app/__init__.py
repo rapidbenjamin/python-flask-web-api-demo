@@ -46,6 +46,7 @@ Session(app)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
 # REGISTER BOOTSTRAP
 Bootstrap(app)
 
@@ -53,8 +54,9 @@ Bootstrap(app)
 # CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 # CORS(app, resources={r"/*": {"origins": "*"}})
 # CORS(app) # then add @cross_origin() in specific route controller
-CORS(app, resources={r"/*": {"origins": "*"}})
-
+# Or allow only from specific origin : 
+CORS(app, resources={r"/*": {"origins": "http://app.quickandclean.org"}})
+logging.getLogger('flask_cors').level = logging.INFO
 
 # ------- IMPORT LOCAL DEPENDENCIES AFTER REGISTERING -------  
 #To solve the problem from circular import, place the other imports which are dependent on 'db' and app below app== and db=SQLAlchemy(app).
