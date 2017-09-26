@@ -3,6 +3,7 @@
 
 # ------- IMPORT DEPENDENCIES ------- 
 import datetime
+import json
 import sendgrid
 from flask import request, render_template, flash, current_app, redirect, abort, jsonify, url_for,g
 from forms import *
@@ -51,7 +52,9 @@ def show(id=1):
         m_user = m_users.read_data(id)
         # html or Json response
         if request_wants_json():
-            return jsonify(data = m_user)
+            return jsonify({'id' : m_user.id, 
+							'email' : m_user.email, 
+							'username' : m_user.username})
         else:
             return render_template("users/show.html", user=m_user, app = app)
 
