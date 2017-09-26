@@ -79,9 +79,10 @@ Python Flask WEB API DEMO
 	- If you visit your server's domain name or IP address with :5000 appended to the end in your web browser, you should see the homepage of your application
 	- Create an Upstart script which will allow server to automatically start Gunicorn and serve our Flask application whenever the server boots :
 					- create Gunicorn Upstart script : `sudo nano /etc/init/myproject_gunicorn.conf`
-					or customize Upstart script file (see example in file 'myproject_gunicorn.conf' in utils directory) (replace user keyword by your chosen server user name ) and place it in /etc/init/myproject_gunicorn.conf
+					or customize Upstart script file (edit example in file 'myproject_gunicorn.conf' in utils directory and replace 'myproject' paths by your project path) (replace user keyword by your chosen server user name ) and place it in /etc/init/myproject_gunicorn.conf
 					- then type `sudo start myproject_gunicorn` (replace myproject with your application folder name)
 					- After editing a code, you can refresh app by typing `sudo service myproject_gunicorn restart`
+					- NOTE : with our Gunicorn config upstart script file, you can generate Python and Gunicorn error logs file and access logs file in your project folder 'myproject/logs' 
 
 	- NGINX:  then create a new server block configuration file in Nginx's sites-available directory.
 		`sudo nano /etc/nginx/sites-available/myproject`

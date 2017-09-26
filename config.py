@@ -3,6 +3,7 @@
 
 # ------- IMPORT DEPENDENCIES ------- 
 import os
+from datetime import timedelta
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 
@@ -68,7 +69,8 @@ class BaseConfig(object):
     # Session
     
     SESSION_PERMANENT = False
-    PERMANENT_SESSION_LIFETIME = 5
+    # PERMANENT_SESSION_LIFETIME = 5 -> ISSUE : if resized to 5, you'll get csrf_token missing issue
+    PERMANENT_SESSION_LIFETIME = timedelta(seconds=120)
 
     # SESSION_TYPE = 'sqlalchemy'
     # SESSION_SQLALCHEMY = None

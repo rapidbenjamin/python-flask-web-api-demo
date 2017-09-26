@@ -9,7 +9,8 @@ import sendgrid
 # ------- IMPORT LOCAL DEPENDENCIES  -------
 from . import contact_page
 from app import app
-from app.helpers import threaded_async
+# from app.helpers import threaded_async
+from app.helpers import *
 from app.modules.users.models import User
 
 
