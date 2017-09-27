@@ -55,7 +55,7 @@ Bootstrap(app)
 # CORS(app, resources={r"/*": {"origins": "*"}})
 # CORS(app) # then add @cross_origin() in specific route controller
 # Or allow only from specific origin : 
-CORS(app, resources={r"/*": {"origins": "http://app.quickandclean.org"}})
+CORS(app, resources={r"/*": {"origins": ["http://spa.quickandclean.org", "http://app.quickandclean.org"]}})
 logging.getLogger('flask_cors').level = logging.INFO
 
 # ------- IMPORT LOCAL DEPENDENCIES AFTER REGISTERING -------  
