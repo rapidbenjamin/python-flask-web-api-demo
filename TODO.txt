@@ -1,0 +1,21 @@
+### FIX ISSUES : 
+# In development config mode(in config.py or dev-config.py file),
+# the session files are not removed in session folder after the end of a user session (after browser closed or after 5 minutes time left)
+    SESSION_TYPE = 'filesystem'
+    SESSION_FILE_DIR =  'sessions'
+    SESSION_FILE_THRESHOLD = 500
+    SESSION_FILE_MODE = 600
+
+    SESSION_PERMANENT = False
+    # PERMANENT_SESSION_LIFETIME = 5 -> ISSUE : if resized to 5, you'll get csrf_token missing issue
+    PERMANENT_SESSION_LIFETIME = timedelta(minutes=5)
+
+
+### FIX ISSUES : 
+# in config.py file,
+# if PERMANENT_SESSION_LIFETIME is set to a big value, you'll get a "csrf_token missing" issue
+PERMANENT_SESSION_LIFETIME = 5 -> ISSUE : if resized to 5
+
+
+### ADD UNIT TESTS TO EACH MODULES ( users, auths, addresses, assets, etc.)
+
