@@ -19,3 +19,4 @@ PERMANENT_SESSION_LIFETIME = 5 -> ISSUE : if resized to 5
 
 ### ADD UNIT TESTS TO EACH MODULES ( users, auths, addresses, assets, etc.)
 
+### FORMAT TO PEP8 STYLE GUIDE (https://www.python.org/dev/peps/pep-0008/)
