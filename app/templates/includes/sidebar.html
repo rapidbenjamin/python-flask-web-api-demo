@@ -17,17 +17,13 @@
                         <span class="glyphicon glyphicon-user"></span><span class="text_sidebar">  User</span> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a class="{{ 'active' if 'users_page.index' in request.endpoint else '' }}" href="/users">
-                                <span class="glyphicon glyphicon-user"></span> User
-                            </a>
-                        </li>
-                        <li><a href="#">Sub Menu1</a></li>
-                        <li><a href="#">Sub Menu2</a></li>
-                        <li><a href="#">Sub Menu3</a></li>
+                        <li><a class="{{ 'active' if 'dashboard' in request.endpoint else '' }}" href="{{ url_for('auth_page.dashboard') }}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+                        <li><a class="{{ 'active' if 'auth_page.profile' in request.endpoint else '' }}" href="{{ url_for('auth_page.profile') }}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                        <li><a class="{{ 'active' if 'auth_page.settings' in request.endpoint else '' }}" href="{{ url_for('auth_page.settings') }}"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">Sub Menu4</a></li>
-                        <li><a href="#">Sub Menu5</a></li>
+                        <li><a class="{{ 'active' if 'users_page.index' in request.endpoint else '' }}" href="/users"><span class="glyphicon glyphicon-folder-open"></span> Users</a></li>
+                        <li class="divider"></li>
+                        <li><a class="{{ 'active' if 'users_page.logout' in request.endpoint else '' }}" href="{{ url_for('auth_page.logout') }}"><span class="glyphicon glyphicon-off"></span> Logout</a></li> 
                     </ul>
                 </li>
                 
