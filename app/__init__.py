@@ -39,8 +39,9 @@ db = SQLAlchemy(app)
 csrf = CSRFProtect(app)
 
 # REGISTER SESSION
-Session(app)
-
+# Session(app)
+sess = Session()
+sess.init_app(app)
 
 # REGISTER LOGGING
 logger = logging.getLogger(__name__)

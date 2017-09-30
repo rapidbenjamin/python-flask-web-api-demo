@@ -3,6 +3,7 @@
 
 # ------- IMPORT DEPENDENCIES ------- 
 import os
+import redis
 from datetime import timedelta
 
 # ------- IMPORT LOCAL DEPENDENCIES  -------
@@ -70,12 +71,16 @@ class BaseConfig(object):
     
     SESSION_PERMANENT = False
     # PERMANENT_SESSION_LIFETIME = 5 -> ISSUE : if resized to 5, you'll get csrf_token missing issue
-    PERMANENT_SESSION_LIFETIME = timedelta(seconds=120)
+    PERMANENT_SESSION_LIFETIME = timedelta(minutes=5)
 
     # SESSION_TYPE = 'sqlalchemy'
     # SESSION_SQLALCHEMY = None
     # SESSION_SQLALCHEMY_TABLE = 'sessions'
-    
+  
+    # SESSION_TYPE = 'redis'
+    # SESSION_REDIS = redis.from_url('127.0.0.1:6379')
+
+    # Tod do : fix issue : session file are not removed after the end of the session
     SESSION_TYPE = 'filesystem'
     SESSION_FILE_DIR =  'sessions'
     SESSION_FILE_THRESHOLD = 500

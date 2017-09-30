@@ -105,6 +105,15 @@ Python Flask WEB API DEMO
 		CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 
+### REDIS CONFIG FOR SERVER-SIDE SESSION WITH FLASK SESSION :
+	- Install, configure and secure Redis in your server : https://redis.io/
+	- Add in your config.py file or prod-config.py file  :
+			import redis
+			...
+			SESSION_TYPE = 'redis'
+			SESSION_REDIS = redis.from_url('127.0.0.1:6379')
+			
+
 #### COMMON SQL SCRIPT ON DATABASE FROM MYSQL SERVER :	
 	- Signin  in first with `mysql -u root -p`
 	- Create a database : `CREATE DATABASE my_database;`
