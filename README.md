@@ -52,7 +52,7 @@ Python Flask WEB API DEMO
 #### Security :
 	You may have some sensitive variables that should not be publicly shared, such as passwords and secret keys.
 	These can be put in an instance/config.py file, which will not be pushed to version control.
-	(Flask dedicated folder for that must be named "instance")
+	(Flask default dedicated folder for secret data must be named /instance)
 
 #### How to use it:
 
