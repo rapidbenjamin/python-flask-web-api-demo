@@ -1,7 +1,7 @@
 Python Flask WEB API DEMO
 ========================
 A full working flask demo api, exhaustive examples of common web services that we can made with this great micro-framework flask.
-A kind of one-size-fits-all which can be too complicated for beginners and also too opinionated for advanced uses but first-of-all it's a full working example of common use cases in web api services featuring authentication and backoffice admin, resources CRUD and query pagination, modular structure, REST json responses or Html renders, bootstrap custom themes, some utils like config files for Nginx (as a frontend reverse proxy), Tornado or Gunicorn (as the application server) and much more features.
+A kind of one-size-fits-all which can be too complicated for beginners and also too opinionated for advanced uses but first-of-all it's a full working example of common use cases in web api services featuring authentication and backoffice admin, resources CRUD and query pagination, modular structure, REST json responses or Html renders, bootstrap custom themes, some utils like config files for Nginx (as a frontend reverse proxy), Gunicorn (as a WSGI application server), Redis (as a server-side session storage) and much more features.
 
 #### This is an advanced demo app forked from AndreiD/Flask-Easy-Template : https://github.com/AndreiD/Flask-Easy-Template
 #### Additional reference sources - mbithenzomo/project-dream-team-three : https://github.com/mbithenzomo/project-dream-team-three
@@ -9,8 +9,8 @@ A kind of one-size-fits-all which can be too complicated for beginners and also 
 
 ### Features:
 	- configuration files, environment variables and sensitive variables (in private folder)
-	- Production environment config : REDIS (as a server-side session storage), Nginx (as a frontend reverse proxy), Tornado or Gunicorn (as the application server) and some supervisor (upstart or supervisord) config file examples in utils folder
-	- Utils for server production setups (nginx and supervisor config files for redis,  tornado or gunicorn)
+	- Production environment config : REDIS (as a server-side session storage), Nginx (as a frontend reverse proxy), Gunicorn (as a multi-threaded WSGI application server) and some supervisor (upstart or supervisord) config file examples in utils folder
+	- Utils for server production setups (nginx and supervisor config files for redis, gunicorn)
 	- Latest bootstrap, bootswatch, modernizer, jquery, moment.js, tinymcs, etc. served from content delivery networks.
 	- Module Sample PAGES, with home page  full-screen layout
 	- Module Sample database SECTIONS with SQLALchemy, relational models and Pagination
@@ -55,6 +55,8 @@ A kind of one-size-fits-all which can be too complicated for beginners and also 
 	You may have some sensitive variables that should not be publicly shared, such as passwords and secret keys.
 	These can be put in an instance/config.py file, which will not be pushed to version control.
 	(Flask default dedicated folder for secret data must be named /instance)
+	Edit example config files in `utils` folder ( `prod-config.py`, `dev-config.py`, `test-config.py` )
+	and move it to `/instance` folder, they will override some default variables in your `config.py` file.
 
 #### How to use it:
 
@@ -71,7 +73,9 @@ A kind of one-size-fits-all which can be too complicated for beginners and also 
 	- `flask run`
 
 ##### Customize config:
-	- check the `config.py`file  or your secret config `instance/config.py` file
+	- check the `config.py`file  or your secret config `instance/config.py` file.
+	Edit also example config files in `utils` folder ( `prod-config.py`, `dev-config.py`, `test-config.py` )
+	and move it to `/instance` folder, they will override some default variables in your `config.py` file.
 
 ##### Customize templates edit `/app/templates/base.html`:
 
@@ -147,11 +151,11 @@ A kind of one-size-fits-all which can be too complicated for beginners and also 
 	or for windows users  `del /S *.pyc`
 
 ---------------------------------------------------------------------------------------------------------
---------------  SECTION PRODUCTION ENVIRONMENT SETTING WITH REDIS, NGINX AND TORNADO OR GUNICORN
+--------------  SECTION PRODUCTION ENVIRONMENT SETTING WITH REDIS, NGINX AND GUNICORN
 ---------------------------------------------------------------------------------------------------------
 
 ##### Extra configs for your server production environment : ./utils
-	with nginx config files and supervisor (upstart or supervisord) configuration  files for tornado or gunicorn
+	with nginx config files and supervisor (upstart or supervisord) configuration  files for gunicorn
 
 #### PRODUCTION CONFIG with GUNICORN : Use it for production with GUNICORN Upstart script and NGINX config from utils directory :
 
@@ -176,13 +180,6 @@ A kind of one-size-fits-all which can be too complicated for beginners and also 
 	`sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled`
 	- test for syntax errors by typing: `sudo nginx -t`
 	- restart the Nginx process to read the our new config: `sudo service nginx restart`
-
-#### PRODUCTION CONFIG with TORNADO : Use it for production with TORNADO SERVER, SUPERVISOR Upstart script and NGINX config from utils directory :
-	- todo :
-				Supervisor Upstart config script
-				Tornado server config script
-				Nginx server config script
-				Redis server-side session config script
 
 ### REDIS CONFIG FOR SERVER-SIDE SESSION WITH FLASK SESSION :
 	- Install, configure and secure Redis in your server : https://redis.io/
