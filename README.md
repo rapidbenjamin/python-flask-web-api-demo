@@ -174,16 +174,16 @@ A kind of one-size-fits-all which can be too complicated for beginners and also 
 					- then type `sudo start myproject_gunicorn` (replace myproject with your application folder name)
 					- After editing a code, you can refresh app by typing `sudo service myproject_gunicorn restart`
 					- NOTE : with our Gunicorn config upstart script file, you can generate Python and Gunicorn error logs file and access logs file in your project folder 'myproject/logs'
-
+### NGINX CONFIG :
 	- NGINX:  then create a new server block configuration file in Nginx's sites-available directory.
 		`sudo nano /etc/nginx/sites-available/myproject`
-	- then customize it : see example in file 'myproject_nginx.txt' in utils directory
+	- then customize it : see example in file 'utils/myproject_nginx.txt' in utils directory
 	- Then enable the Nginx server block configuration,  link the file to the sites-enabled directory:
 	`sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled`
 	- test for syntax errors by typing: `sudo nginx -t`
 	- restart the Nginx process to read the our new config: `sudo service nginx restart`
 
-### REDIS CONFIG FOR SERVER-SIDE SESSION WITH FLASK SESSION :
+### REDIS CONFIG FOR SERVER-SIDE SESSION WITH FLASK SESSION and redis python extension :
 	- Install, configure and secure Redis in your server : https://redis.io/
 	- Add in your config.py file or prod-config.py file  :
 			import redis
