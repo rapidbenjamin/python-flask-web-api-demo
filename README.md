@@ -1,7 +1,7 @@
 Python Flask WEB API DEMO
 ========================
 A full working flask demo api, exhaustive examples of common web services that we can made with this great micro-framework flask.
-A kind of one-size-fits-all which can be too complicated for beginners and also too opinionated for advanced uses but first-of-all it's a full working example of common use cases in web api services featuring authentication and backoffice admin, resources CRUD and query pagination, modular structure, REST json responses or Html renders, bootstrap custom themes, some utils like config files for Nginx (as a frontend reverse proxy), Gunicorn (as a WSGI application server), Redis (as a server-side session storage) and much more features.
+A kind of one-size-fits-all which can be too complicated for beginners and also too opinionated for advanced uses but first-of-all it's a full working example of common use cases in web api services featuring authentication and backoffice admin, resources CRUD and query pagination, modular structure, REST json responses or Html renders, bootstrap custom themes, some utils like config files for Nginx (as a frontend reverse proxy), Gunicorn (as a WSGI application server), Redis (as a server-side session storage), MySQL or SQLite (as DataBase) and much more features.
 
 #### This is an advanced demo app forked from AndreiD/Flask-Easy-Template : https://github.com/AndreiD/Flask-Easy-Template
 #### Additional reference sources - mbithenzomo/project-dream-team-three : https://github.com/mbithenzomo/project-dream-team-three
@@ -9,7 +9,7 @@ A kind of one-size-fits-all which can be too complicated for beginners and also 
 
 ### Features:
 	- configuration files, environment variables and sensitive variables (in private folder)
-	- Production environment config : REDIS (as a server-side session storage), Nginx (as a frontend reverse proxy), Gunicorn (as a multi-threaded WSGI application server) and some supervisor (upstart or supervisord) config file examples in utils folder
+	- Production environment config : REDIS (as a server-side session storage), Nginx (as a frontend reverse proxy), Gunicorn (as a multi-threaded WSGI application server) and some supervisor (upstart) config file examples in utils folder
 	- Utils for server production setups (nginx and supervisor config files for redis, gunicorn)
 	- Latest bootstrap, bootswatch, modernizer, jquery, moment.js, tinymcs, etc. served from content delivery networks.
 	- Module Sample PAGES, with home page  full-screen layout
@@ -61,9 +61,11 @@ A kind of one-size-fits-all which can be too complicated for beginners and also 
 #### How to use it:
 
 	- `git clone https://github.com/systemaker/flask-web-api-demo.git <project_name>` or download the zip
-	- optional : for virtual environment see section below
 	- `pip install -r requirements.txt` or `python -m pip install -r requirements-pip2.txt`
 	- `python run.py` -> http://server_ip:5000
+
+	- Troubleshoots or advanced python setup required ? 
+	for PYTHON VIRTUAL ENVIRONMENT SETTING, see next section below.
 
 #### Use it with configuration environment variable :
 	- `export FLASK_CONFIG=production`
@@ -155,7 +157,7 @@ A kind of one-size-fits-all which can be too complicated for beginners and also 
 ---------------------------------------------------------------------------------------------------------
 
 ##### Extra configs for your server production environment : ./utils
-	with nginx config files and supervisor (upstart or supervisord) configuration  files for gunicorn
+	with nginx config files and supervisor (upstart) configuration  files for gunicorn
 
 #### PRODUCTION CONFIG with GUNICORN : Use it for production with GUNICORN Upstart script and NGINX config from utils directory :
 
@@ -196,11 +198,11 @@ A kind of one-size-fits-all which can be too complicated for beginners and also 
 
 
 ---------------------------------------------------------------------------------------------------------
---------------  SECTION SQL DATABASE
+--------------  SECTION SQL DATABASE (MYSQL OR SQLite)
 ---------------------------------------------------------------------------------------------------------
 
 #####  Customize database :
-		# Edit sql file in data folder
+		# Edit sql file in `/data` folder
 
 #### COMMON SQL SCRIPT ON DATABASE FROM MYSQL SERVER :
 	- Signin  in first with `mysql -u root -p`
