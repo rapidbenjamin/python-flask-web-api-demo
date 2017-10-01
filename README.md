@@ -36,15 +36,15 @@ Python Flask WEB API DEMO
 	- CUSTOM THEME layout and templates
 	- Logger setting service
 	- INTERNATIONALIZATION with functions like get_locale() and get_timezone() (flask-babel optional) based on :
-						current_user locale and current_user timezone 
+						current_user locale and current_user timezone
 						or global current_language  and global timezone
 						or browser language  and locale timezone
 	- Helpers (include decorators like SSL required, threaded function, Datetime and timezone utils, datetime format filter, random populate data, Random token generator)
-	- Maintenance/coming-soon, flash-message page 
+	- Maintenance/coming-soon, flash-message page
 	- Error handlers :  404 (path not found),
-						500 (server error), 
-						403 (forbidden page or invalid csrf token form), 
-						400 (Bad request, the syntax of the request entity is not correct), 
+						500 (server error),
+						403 (forbidden page or invalid csrf token form),
+						400 (Bad request, the syntax of the request entity is not correct),
 						422 (Unprocessable Entity : the request is syntactically correct but his contained instructions is
 							semantically erroneous so it was unable to process )
 
@@ -62,77 +62,42 @@ Python Flask WEB API DEMO
 	- `python run.py` -> http://server_ip:5000
 
 #### Use it with configuration environment variable :
-	- `export FLASK_CONFIG=development` 
-		or on Windows systems shell script `set FLASK_CONFIG=development`
-	- `export FLASK_APP=run.py` 
+	- `export FLASK_CONFIG=production`
+		or on Windows systems shell script `set FLASK_CONFIG=production`
+	- `export FLASK_APP=run.py`
 		or on Windows systems `set FLASK_APP=run.py`
 	- `flask run`
 
+##### Customize config:
+	- check the `config.py`file  or your secret config `instance/config.py` file
 
-#### PRODUCTION CONFIG with GUNICORN : Use it for production with GUNICORN Upstart script and NGINX config from utils directory :
+##### Customize templates edit `/app/templates/base.html`:
 
-	- set environment to production with `export FLASK_CONFIG=development`
-		or on Windows systems shell script `set FLASK_CONFIG=development`
-	- active your Python virtual environment
-	- GUNICORN : on shell command type  `gunicorn --bind 0.0.0.0:5000 run:app`
-		'run' is the name of your main application file 'run.py'  which serve as the entry point for your application
-		'app' is here the name of your defined application in app/__init__.py
-	- If you visit your server's domain name or IP address with :5000 appended to the end in your web browser, you should see the homepage of your application
-	- Create an Upstart script which will allow server to automatically start Gunicorn and serve our Flask application whenever the server boots :
-					- create Gunicorn Upstart script : `sudo nano /etc/init/myproject_gunicorn.conf`
-					or customize Upstart script file (edit example in file 'myproject_gunicorn.conf' in utils directory and replace 'myproject' paths by your project path) (replace user keyword by your chosen server user name ) and place it in /etc/init/myproject_gunicorn.conf
-					- then type `sudo start myproject_gunicorn` (replace myproject with your application folder name)
-					- After editing a code, you can refresh app by typing `sudo service myproject_gunicorn restart`
-					- NOTE : with our Gunicorn config upstart script file, you can generate Python and Gunicorn error logs file and access logs file in your project folder 'myproject/logs' 
+		> <!DOCTYPE html>
+		> {% set bootstrap_version = '3.3.4' %}
+		> {% set jquery_version = '2.1.3' %}
+		> {% set modernizer_version = '2.8.3' %}
+		> {% set bootswatch_version = '3.3.2' %}
+		> {% set bootswatch_theme = 'slate' %}
 
-	- NGINX:  then create a new server block configuration file in Nginx's sites-available directory.
-		`sudo nano /etc/nginx/sites-available/myproject`
-	- then customize it : see example in file 'myproject_nginx.txt' in utils directory
-	- Then enable the Nginx server block configuration,  link the file to the sites-enabled directory:
-	`sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled`
-	- test for syntax errors by typing: `sudo nginx -t`
-	- restart the Nginx process to read the our new config: `sudo service nginx restart`
+		In case you don't like the "slate" theme, you can chose a nice theme from http://bootswatch.com/ and just replace the theme name
 
-#### PRODUCTION CONFIG with TORNADO : Use it for production with TORNADO SERVER, SUPERVISOR Upstart script and NGINX config from utils directory :
-	- todo : 
-				Supervisor Upstart config script
-				Tornado server config script
-				Nginx server config script
-				Redis server-side session config script
+##### authorization control acces with Flask-login :
+			- in template, use current_user  : {% if current_user.is_authenticated %} ... {% else %} ... {% endif %}
+			- in controllers route, use `@login_required` to check if user is already login then  `current_user` to check his role
+								from flask_login import login_required, current_user
+								@auth_page.route('/dashboard')
+								@login_required
+								def dashboard():
+									# prevent non-admin roles from accessing the page
+									if not(current_user.is_admin):
+										abort(403)
+									return render_template('auth/dashboard.html')
 
 
-#### CORS CONFIG FOR FRONTEND APP : 
-	- edit origins url in "register cors" section in __init__.py file : 
-		CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-
-
-### REDIS CONFIG FOR SERVER-SIDE SESSION WITH FLASK SESSION :
-	- Install, configure and secure Redis in your server : https://redis.io/
-	- Add in your config.py file or prod-config.py file  :
-			import redis
-			...
-			SESSION_TYPE = 'redis'
-			SESSION_REDIS = redis.from_url('127.0.0.1:6379')
-			
-
-#### COMMON SQL SCRIPT ON DATABASE FROM MYSQL SERVER :	
-	- Signin  in first with `mysql -u root -p`
-	- Create a database : `CREATE DATABASE my_database;`
-	- Show all databases : `SHOW DATABASES;`
-	- Select my database :  `USE my_database;`
-	- Execute script on my database, for example  insert data into a mysql table : 
-		`INSERT INTO table_name (field1, field2, ...) VALUES (value1, value2, ...);`
-	- Import and execute sql script file :
-		`source /home/myproject_path/data/schema_mysql.sql;`
-	- View current database : `SELECT database();`
-	- Delete my database : `DROP DATABASE my_database;`
-
-
-#### IMPORT SQL SCHEMA DATABASE SAMPLE IN MYSQL: 
-	`mysql -u root -p DB_NAME < /home/myproject_path/data/schema_mysql.sql`
-
-#### EXPORT SQL SCHEMA DATABASE FROM MYSQL:
-	`mysqldump -u root -p --databases DB_NAME > /home/myproject_path/data/schema_mysql.sql`
+---------------------------------------------------------------------------------------------------------
+--------------  SECTION PYTHON VIRTUAL ENVIRONMENTS SETTING
+---------------------------------------------------------------------------------------------------------
 
 #### About python virtual environment : how to manage it in local project directory:
 
@@ -156,7 +121,7 @@ Python Flask WEB API DEMO
 	# Activate this environment for your current shell session
 		`workon [<name>]`
 		or `source my_project/bin/activate`
-		or on Windows go in the Scripts path folder `cd my_project/env/env1/Scripts` then  `activate`
+		or on Windows go in the Scripts path folder `cd my_project/env/libs1/Scripts` then  `activate`
 
 		- WARNING ON WINDOWS SYSTEMS : Some paths within the virtualenv are slightly different on Windows: scripts and executables on Windows go in ENV\Scripts\ instead of ENV/bin/ and libraries go in ENV\Lib\ rather than ENV/lib/.
 			on Windows systems, the equivalent activate script is by opening active shell in the Scripts folder (Based on your active shell (CMD.exe or Powershell.exe), Windows will use either activate.bat or activate.ps1)
@@ -169,74 +134,100 @@ Python Flask WEB API DEMO
 	# Remove a virtual environment
 		`rmvirtualenv [<name>]`
 
+##### To install a new package and save it on requirement file:
+	`python -m pip install <new_package> && pip list > requirements.txt && pip list --format=freeze > requirements-pip2.txt`
 
-##### Customize config:
+##### To install all packages:
+	`pip install -r requirements.txt` or `python -m pip install -r requirements-pip2.txt`
 
-	- check the `config.py`
-	- in **run.py** edit the port of the app (Default: 5000)
+##### To remove all pyc files :
+	`find . -name \*.pyc -delete`
+	or for windows users  `del /S *.pyc`
+
+---------------------------------------------------------------------------------------------------------
+--------------  SECTION PRODUCTION ENVIRONMENT SETTING
+---------------------------------------------------------------------------------------------------------
+
+##### Extra configs for your server production environment : ./utils
+	with nginx, gunicorn, tornado and supervisor (upstart or supervisord) configuration  files
+
+#### PRODUCTION CONFIG with GUNICORN : Use it for production with GUNICORN Upstart script and NGINX config from utils directory :
+
+	- set environment to production with `export FLASK_CONFIG=production`
+		or on Windows systems shell script `set FLASK_CONFIG=production`
+	- active your Python virtual environment
+	- GUNICORN : on shell command type  `gunicorn --bind 0.0.0.0:5000 run:app`
+		'run' is the name of your main application file 'run.py'  which serve as the entry point for your application
+		'app' is here the name of your defined application in app/__init__.py
+	- If you visit your server's domain name or IP address with :5000 appended to the end in your web browser, you should see the homepage of your application
+	- Create an Upstart script which will allow server to automatically start Gunicorn and serve our Flask application whenever the server boots :
+					- create Gunicorn Upstart script : `sudo nano /etc/init/myproject_gunicorn.conf`
+					or customize Upstart script file (edit example in file 'myproject_gunicorn.conf' in utils directory and replace 'myproject' paths by your project path) (replace user keyword by your chosen server user name ) and place it in /etc/init/myproject_gunicorn.conf
+					- then type `sudo start myproject_gunicorn` (replace myproject with your application folder name)
+					- After editing a code, you can refresh app by typing `sudo service myproject_gunicorn restart`
+					- NOTE : with our Gunicorn config upstart script file, you can generate Python and Gunicorn error logs file and access logs file in your project folder 'myproject/logs'
+
+	- NGINX:  then create a new server block configuration file in Nginx's sites-available directory.
+		`sudo nano /etc/nginx/sites-available/myproject`
+	- then customize it : see example in file 'myproject_nginx.txt' in utils directory
+	- Then enable the Nginx server block configuration,  link the file to the sites-enabled directory:
+	`sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled`
+	- test for syntax errors by typing: `sudo nginx -t`
+	- restart the Nginx process to read the our new config: `sudo service nginx restart`
+
+#### PRODUCTION CONFIG with TORNADO : Use it for production with TORNADO SERVER, SUPERVISOR Upstart script and NGINX config from utils directory :
+	- todo :
+				Supervisor Upstart config script
+				Tornado server config script
+				Nginx server config script
+				Redis server-side session config script
 
 
-##### Customize templates edit `/app/templates/base.html`:
+#### CORS CONFIG FOR FRONTEND WEB APP :
+	- edit origins url in "register cors" section in __init__.py file :
+		CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
-		> <!DOCTYPE html>
-		> {% set bootstrap_version = '3.3.4' %}
-		> {% set jquery_version = '2.1.3' %}
-		> {% set modernizer_version = '2.8.3' %}
-		> {% set bootswatch_version = '3.3.2' %}
-		> {% set bootswatch_theme = 'slate' %}
 
-		In case you don't like the "slate" theme, you can chose a nice theme from http://bootswatch.com/ and just replace the theme name
+### REDIS CONFIG FOR SERVER-SIDE SESSION WITH FLASK SESSION :
+	- Install, configure and secure Redis in your server : https://redis.io/
+	- Add in your config.py file or prod-config.py file  :
+			import redis
+			...
+			SESSION_TYPE = 'redis'
+			SESSION_REDIS = redis.from_url('127.0.0.1:6379')
+
+
+---------------------------------------------------------------------------------------------------------
+--------------  SECTION SQL DATABASE
+---------------------------------------------------------------------------------------------------------
 
 #####  Customize database :
 		# Edit sql file in data folder
 
-
-##### authorization control acces with Flask-login : 
-			- in template, use current_user  : {% if current_user.is_authenticated %} ... {% else %} ... {% endif %}
-			- in controllers route, use `@login_required` to check if user is already login then  `current_user` to check his role
-								from flask_login import login_required, current_user
-								@auth_page.route('/dashboard')
-								@login_required
-								def dashboard():
-									# prevent non-admin roles from accessing the page
-									if not(current_user.is_admin):
-										abort(403)
-									return render_template('auth/dashboard.html')
-
-##### To install a new package and save it on requirement file:
-		`python -m pip install <new_package> && pip list > requirements.txt && pip list --format=freeze > requirements-pip2.txt`
-
-##### To install all packages:
-		 `pip install -r requirements.txt` or `python -m pip install -r requirements-pip2.txt`
-
-##### To remove all pyc files :
-		  `find . -name \*.pyc -delete` 
-		  or for windows users  `del /S *.pyc`
+#### COMMON SQL SCRIPT ON DATABASE FROM MYSQL SERVER :
+	- Signin  in first with `mysql -u root -p`
+	- Create a database : `CREATE DATABASE my_database;`
+	- Show all databases : `SHOW DATABASES;`
+	- Select my database :  `USE my_database;`
+	- Execute script on my database, for example  insert data into a mysql table :
+		`INSERT INTO table_name (field1, field2, ...) VALUES (value1, value2, ...);`
+	- Import and execute sql script file :
+		`source /home/myproject_path/data/schema_mysql.sql;`
+	- View current database : `SELECT database();`
+	- Delete my database : `DROP DATABASE my_database;`
 
 
-##### Extra configs for your server production environment : ./utils
+#### IMPORT SQL SCHEMA DATABASE SAMPLE IN MYSQL:
+	`mysql -u root -p DB_NAME < /home/myproject_path/data/schema_mysql.sql`
 
-	- a supervisord.conf [supervisor is used to monitor the web application and restart it, also starts the app in case you restart your server]
-	-----------------------------------------------------------------------------------------
-	NGINX CONFIGURATION
-		nano /etc/nginx/sites-enabled/default
-		service nginx start
-
-	- a simple nginx.conf
-	-----------------------------------------------------------------------------------------
-	SUPERVISOR CONFIGURATION
-		http://supervisord.org/configuration.html
-
-		nano /etc/supervisor/supervisord.conf
-		service supervisor restart
-
-	- UNCOMMENT YOUR SETTING 
-	-----------------------------------------------------------------------------------------
-	- after you go into production, uncomment the settings from run.py for the best performance
-
-	Your Feedback is appreciated :)
+#### EXPORT SQL SCHEMA DATABASE FROM MYSQL:
+	`mysqldump -u root -p --databases DB_NAME > /home/myproject_path/data/schema_mysql.sql`
 
 
+
+---------------------------------------------------------------------------------------------------------
+--------------  SECTION TROUBLESHOOTS
+---------------------------------------------------------------------------------------------------------
 
 ##### TROUBLESHOOTS FOR BEGINNERS :
 
@@ -251,7 +242,7 @@ Python Flask WEB API DEMO
 
     - Error parsing in requirements.txt ?
         Run instead this compatible formatted file :
-            python -m pip install -r requirements-pip2.txt    
+            python -m pip install -r requirements-pip2.txt
         or convert first your requirements.txt to a python 2 pip2 compatible format with this command :
             python -m pip list --format=freeze > requirements.txt
 
@@ -268,17 +259,19 @@ Python Flask WEB API DEMO
         download and install microsoft visual c++ compiler for python 2.7 here : https://www.microsoft.com/en-us/download/details.aspx?id=44266
 
 	-----------------------------------------------------------------------------------------
-    - Error Tornado module not found ? 
-        it is a problem when installing modules like tornado in a multiple python interpreters environment 
-        So run instead this common command python which precize by default  the python 2 version 
+    - Error Tornado module not found ?
+        it is a problem when installing modules like tornado in a multiple python interpreters environment
+        So run instead this common command python which precize by default  the python 2 version
             python -m pip install -r requirements-pip2.txt
             or python -m pip install ...
             or python run.py
-    
+
     - Error Install MySQL-python on Windows systems not working ?
         go over to oracle, and download the MySQL Connector C 6.0.2 and do the typical install.
         http://dev.mysql.com/downloads/connector/c/6.0.html#downloads
 
+
+Your Feedback is appreciated :)
 
 ##### License: Apache 2.0
 
@@ -289,7 +282,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
