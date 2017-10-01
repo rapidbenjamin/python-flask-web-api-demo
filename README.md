@@ -1,6 +1,7 @@
 Python Flask WEB API DEMO
 ========================
-
+A full working flask demo api, exhaustive examples of common web services that we can made with this great micro-framework flask.
+A kind of one-size-fits-all which can be too complicated for beginners and also too opinionated for advanced uses but first-of-all it's a full working example of common use cases in web api services featuring authentication and backoffice admin, resources CRUD and query pagination, modular structure, REST json responses or Html renders, bootstrap custom themes, some utils like config files for Nginx (as a frontend reverse proxy), Tornado or Gunicorn (as the application server) and much more features.
 
 #### This is an advanced demo app forked from AndreiD/Flask-Easy-Template : https://github.com/AndreiD/Flask-Easy-Template
 #### Additional reference sources - mbithenzomo/project-dream-team-three : https://github.com/mbithenzomo/project-dream-team-three
@@ -8,7 +9,8 @@ Python Flask WEB API DEMO
 
 ### Features:
 	- configuration files, environment variables and sensitive variables (in private folder)
-	- Utils for server production setups
+	- Production environment config : REDIS (as a server-side session storage), Nginx (as a frontend reverse proxy), Tornado or Gunicorn (as the application server) and some supervisor (upstart or supervisord) config file examples in utils folder
+	- Utils for server production setups (nginx and supervisor config files for redis,  tornado or gunicorn)
 	- Latest bootstrap, bootswatch, modernizer, jquery, moment.js, tinymcs, etc. served from content delivery networks.
 	- Module Sample PAGES, with home page  full-screen layout
 	- Module Sample database SECTIONS with SQLALchemy, relational models and Pagination
@@ -26,7 +28,7 @@ Python Flask WEB API DEMO
 			- Session based authentication or Basic HTTP authentication or Token based authentication (with active SSL recommended in production environement)
 			- Password hash and password-check with werkzeug.security (bcrypt-like approach) (with active SSL recommended in production environment)
 			- password base64 encoding for remote ajax-based app client (optional)
-			- Role management (is_admin, is_owner, is_member), control access and Dashboard sample page
+			- Role management (is_admin, is_owner, is_member), control access and Dashboard sample page.
 	- SQLite or MySQL database configuration option
 	-  SQL schema files and SQL populate files for SQLite or MySQL
 	- ORM Schema relationships samples with SQLAlchemy :
@@ -145,11 +147,11 @@ Python Flask WEB API DEMO
 	or for windows users  `del /S *.pyc`
 
 ---------------------------------------------------------------------------------------------------------
---------------  SECTION PRODUCTION ENVIRONMENT SETTING
+--------------  SECTION PRODUCTION ENVIRONMENT SETTING WITH REDIS, NGINX AND TORNADO OR GUNICORN
 ---------------------------------------------------------------------------------------------------------
 
 ##### Extra configs for your server production environment : ./utils
-	with nginx, gunicorn, tornado and supervisor (upstart or supervisord) configuration  files
+	with nginx config files and supervisor (upstart or supervisord) configuration  files for tornado or gunicorn
 
 #### PRODUCTION CONFIG with GUNICORN : Use it for production with GUNICORN Upstart script and NGINX config from utils directory :
 
@@ -182,12 +184,6 @@ Python Flask WEB API DEMO
 				Nginx server config script
 				Redis server-side session config script
 
-
-#### CORS CONFIG FOR FRONTEND WEB APP :
-	- edit origins url in "register cors" section in __init__.py file :
-		CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-
-
 ### REDIS CONFIG FOR SERVER-SIDE SESSION WITH FLASK SESSION :
 	- Install, configure and secure Redis in your server : https://redis.io/
 	- Add in your config.py file or prod-config.py file  :
@@ -195,6 +191,11 @@ Python Flask WEB API DEMO
 			...
 			SESSION_TYPE = 'redis'
 			SESSION_REDIS = redis.from_url('127.0.0.1:6379')
+
+
+#### CORS CONFIG FOR FRONTEND WEB APP :
+	- edit origins url in "register cors" section in __init__.py file :
+		CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 
 ---------------------------------------------------------------------------------------------------------
