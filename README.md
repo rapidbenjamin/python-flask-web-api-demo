@@ -1,3 +1,5 @@
+Alert: Sadly, I don't have time to maintain this.
+
 Python Flask WEB API DEMO
 ========================
 A full working flask demo api, exhaustive examples of common web services that we can made with this great micro-framework flask.
